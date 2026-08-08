@@ -2,6 +2,7 @@
 # The values disaplayed here are the default ones. Uncomment and change them to fit your needs.
 Avo.configure do |config|
   ## == Routing ==
+
   config.root_path = '/avo'
   # used only when you have custom `map` configuration in your config.ru
   # config.prefix_path = "/internal"
@@ -205,8 +206,5 @@ Avo.configure do |config|
   #   link "Profile", path: "/avo/profile", icon: "tabler/outline/user-circle"
   # }
 
-if defined?(Propshaft)
-  # Direct path targeting Avo 4's compiled build outputs
-  Rails.application.config.assets.paths << Avo::Engine.root.join("app", "assets", "builds")
-end
+
 end
