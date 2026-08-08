@@ -1,0 +1,430 @@
+module Avo
+  class BaseAction
+    include Avo::Concerns::HasItems
+    include Avo::Concerns::HasActionStimulusControllers
+    include Avo::Concerns::Hydration
+
+    unless defined?(DATA_ATTRIBUTES)
+      DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
+    end
+
+    class_attribute :name, default: nil
+    class_attribute :description, default: nil
+    class_attribute :message, default: -> { I18n.t("avo.are_you_sure_you_want_to_run_this_option") }
+    class_attribute :confirm_button_label, default: -> { I18n.t("avo.run") }
+    class_attribute :cancel_button_label, default: -> { I18n.t("avo.cancel") }
+    class_attribute :confirmation, default: true
+    class_attribute :standalone, default: false
+    class_attribute :visible, default: -> {
+      # Hide on the :new view by default
+      return false if view.new?
+
+      # Show on all other views
+      true
+    }
+    class_attribute :turbo
+    class_attribute :authorize, default: true
+    class_attribute :close_modal_on_backdrop_click, default: true
+    class_attribute :custom_translation_key
+
+    attr_accessor :view
+    attr_accessor :response
+    attr_accessor :record
+    attr_accessor :resource
+    attr_accessor :user
+    attr_reader :arguments
+    attr_reader :icon
+    attr_reader :appended_turbo_streams
+    attr_reader :records_to_reload
+    attr_reader :query
+
+    # TODO: find a differnet way to delegate this to the uninitialized Current variable
+    delegate :context, to: Avo::Current
+    def current_user
+      Avo::Current.user
+    end
+    delegate :params, to: Avo::Current
+    delegate :view_context, to: Avo::Current
+    delegate :avo, to: :view_context
+    delegate :main_app, to: :view_context
+    delegate :to_param, to: :class
+    delegate :link_arguments, to: :class
+    delegate :translation_key, to: :class
+
+    class << self
+      delegate :context, to: ::Avo::Current
+
+      def form_data_attributes
+        {
+          turbo: turbo,
+          turbo_frame: :_top
+        }.compact
+      end
+
+      def to_param
+        to_s
+      end
+
+      def class_name
+        to_s.delete_prefix("Avo::Actions::")
+      end
+
+      def translation_key
+        custom_translation_key || "avo.action_translations.#{class_name.underscore}"
+      end
+      alias_method :translation_key=, :custom_translation_key=
+
+      def path(resource:, arguments: {}, **args)
+        Avo::Services::URIService.parse(resource.record&.to_param.present? ? resource.record_path : resource.records_path)
+          .append_paths("actions")
+          .append_query(
+            **{
+              action_id: to_param,
+              arguments: encode_arguments(arguments),
+              resource_view: resource.view,
+              view_type: resource.view_type,
+              **args
+            }.compact
+          )
+          .to_s
+      end
+
+      def link_arguments(resource:, arguments: {}, **args)
+        [path(resource:, arguments:, **args), DATA_ATTRIBUTES]
+      end
+
+      # Encrypt the arguments so we can pass sensible data as a query param.
+      # EncryptionService can generate special characters that can break the URL.
+      # We use Base64 to encode the encrypted string so we can safely pass it as a query param and don't break the URL.
+      def encode_arguments(arguments)
+        return if arguments.blank?
+
+        Base64.encode64 Avo::Services::EncryptionService.encrypt(
+          message: arguments,
+          purpose: :action_arguments
+        )
+      end
+
+      def decode_arguments(arguments)
+        return if arguments.blank?
+
+        Avo::Services::EncryptionService.decrypt(
+          message: Base64.decode64(arguments),
+          purpose: :action_arguments
+        )
+      end
+    end
+
+    def action_name
+      translated = translated_option(:name)
+      return translated if translated.present?
+
+      if name.present?
+        return Avo::ExecutionContext.new(
+          target: name,
+          resource: @resource,
+          record: @record,
+          view: @view,
+          arguments: @arguments,
+          query: @query
+        ).handle
+      end
+
+      self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
+    end
+
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: "tabler/outline/player-play", query: nil, index_query: nil)
+      @record = record
+      @resource = resource
+      @user = user
+      @view = Avo::ViewInquirer.new(view)
+      @icon = icon
+      @arguments = Avo::ExecutionContext.new(
+        target: arguments,
+        resource: resource,
+        record: record
+      ).handle.with_indifferent_access
+      @query = query
+      @index_query = index_query
+
+      self.items_holder = Avo::Resources::Items::Holder.new
+
+      @response ||= {}
+      @response[:messages] = []
+    end
+
+    # Blank method
+    def fields
+    end
+
+    def get_description
+      resolve_option(:description)
+    end
+
+    def get_message
+      resolve_option(:message)
+    end
+
+    def cancel_button_label
+      resolve_option(:cancel_button_label)
+    end
+
+    def confirm_button_label
+      resolve_option(:confirm_button_label)
+    end
+
+    def handle_action(**args)
+      processed_fields = if args[:fields].present?
+        # Fetching the field definitions and not the actual fields (get_fields) because they will break if the user uses a `visible` block and adds a condition using the `params` variable. The params are different in the show method and the handle method.
+        action_fields = get_field_definitions.map do |field|
+          field.hydrate(resource: @resource)
+
+          [field.id, field]
+        end.to_h
+
+        # For some fields, like belongs_to, the id and database_id differ (user vs user_id).
+        # That's why we need to fetch the database_id for when we process the action.
+        action_fields_by_database_id = action_fields.map do |id, value|
+          [value.database_id.to_sym, value]
+        end.to_h
+
+        args[:fields].to_unsafe_h.map do |name, value|
+          field = action_fields_by_database_id[name.to_sym]
+
+          next if field.blank?
+
+          [name, field.resolve_attribute(value)]
+        end.reject(&:blank?).to_h
+      else
+        {}
+      end
+
+      handle(
+        fields: processed_fields.with_indifferent_access,
+        current_user: args[:current_user],
+        resource: args[:resource],
+        records: args[:query],
+        query: args[:query],
+        request: args[:request]
+      )
+
+      self
+    end
+
+    def visible_in_view(parent_resource: nil)
+      Avo::ExecutionContext.new(
+        target: visible,
+        params: params,
+        parent_resource: parent_resource,
+        resource: @resource,
+        view: @view,
+        arguments: arguments
+      ).handle && authorized?
+    end
+
+    def succeed(text, timeout: nil)
+      add_message text, :success, timeout: timeout
+
+      self
+    end
+
+    def error(text, timeout: nil)
+      add_message text, :error, timeout: timeout
+
+      self
+    end
+
+    def inform(text, timeout: nil)
+      add_message text, :info, timeout: timeout
+
+      self
+    end
+
+    def warn(text, timeout: nil)
+      add_message text, :warning, timeout: timeout
+
+      self
+    end
+
+    def keep_modal_open
+      response[:type] = :keep_modal_open
+
+      self
+    end
+
+    def close_modal
+      response[:type] = :close_modal
+
+      self
+    end
+
+    # def do_nothing
+    alias_method :do_nothing, :close_modal
+
+    # Add a placeholder silent message from when a user wants to do a redirect action or something similar
+    def silent
+      add_message nil, :silent
+
+      self
+    end
+
+    def redirect_to(path = nil, **args, &block)
+      response[:type] = :redirect
+      response[:redirect_args] = args
+      response[:path] = if block.present?
+        block
+      else
+        path
+      end
+
+      self
+    end
+
+    def reload
+      response[:type] = :reload
+
+      self
+    end
+
+    def reload_record(records)
+      # Force close modal to avoid default redirect to
+      # Redirect is 100% not wanted when using reload_record
+      close_modal
+
+      @records_to_reload = Array(records)
+
+      case @resource.view_type.to_sym
+      when :table, :map
+        reload_row_items
+      when :grid
+        reload_grid_items
+      end
+    end
+
+    # def reload_records
+    alias_method :reload_records, :reload_record
+
+    def navigate_to_action(action, **kwargs)
+      response[:type] = :navigate_to_action
+      response[:action] = action
+      response[:navigate_to_action_args] = kwargs
+
+      self
+    end
+
+    def download(path, filename)
+      response[:type] = :download
+      response[:path] = path
+      response[:filename] = filename
+
+      self
+    end
+
+    def authorized?
+      Avo::ExecutionContext.new(
+        target: authorize,
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments: arguments
+      ).handle
+    end
+
+    def append_to_response(turbo_stream)
+      @appended_turbo_streams = turbo_stream
+    end
+
+    def enabled?
+      self.class.standalone || @record&.to_param.present?
+    end
+
+    def disabled?
+      !enabled?
+    end
+
+    def confirmation?
+      Avo::ExecutionContext.new(
+        target: confirmation,
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments:
+      ).handle
+    end
+
+    private
+
+    def translated_option(option)
+      I18n.t("#{translation_key}.#{option}", default: nil)
+    end
+
+    def resolve_option(option)
+      translated = translated_option(option)
+      return translated if translated.present?
+
+      Avo::ExecutionContext.new(
+        target: self.class.public_send(option),
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments,
+        query: @query
+      ).handle
+    end
+
+    def add_message(body, type = :info, timeout: nil)
+      response[:messages] << {
+        type: type,
+        body: body&.truncate(320),
+        timeout: timeout
+      }
+    end
+
+    def reload_row_items
+      append_to_response -> {
+        table_row_components = []
+        header_fields = []
+        component_to_replace = @resource.resolve_component(Avo::Index::TableRowComponent)
+
+        @action.records_to_reload.each do |record|
+          resource = @resource.dup
+          resource.hydrate(record:, view: :index)
+          resource.detect_fields
+          row_fields = resource.get_fields(only_root: true)
+          header_fields.concat row_fields
+          table_row_components << component_to_replace.new(
+            resource: resource,
+            header_fields: row_fields.map(&:table_header_label),
+            fields: row_fields,
+            row_selector_checked: @action.records_to_reload.include?(record)
+          )
+        end
+
+        header_fields.uniq!(&:table_header_label)
+
+        header_fields_ids = header_fields.map(&:table_header_label)
+
+        table_row_components.map.with_index do |table_row_component, index|
+          table_row_component.header_fields = header_fields_ids
+          turbo_stream.replace(
+            "#{component_to_replace.name.underscore}_#{@action.records_to_reload[index].to_param}",
+            table_row_component
+          )
+        end
+      }
+    end
+
+    def reload_grid_items
+      append_to_response -> {
+        component_to_replace = @resource.resolve_component(Avo::Index::GridItemComponent)
+
+        @action.records_to_reload.map do |record|
+          turbo_stream.replace(
+            "#{component_to_replace.name.underscore}_#{record.to_param}",
+            component_to_replace.new(resource: @resource.dup.hydrate(record:, view: :index), grid_item_checked: @action.records_to_reload.include?(record))
+          )
+        end
+      }
+    end
+  end
+end

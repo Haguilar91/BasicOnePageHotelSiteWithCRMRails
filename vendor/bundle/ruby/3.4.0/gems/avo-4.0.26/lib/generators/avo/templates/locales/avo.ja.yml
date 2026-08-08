@@ -1,0 +1,231 @@
+---
+ja:
+  avo:
+    action_ran_successfully: アクションは正常に実行されました！
+    actions: アクション
+    add_filter: フィルターの追加
+    and_x_other_resources: その他%{count}件のリソース
+    appearance:
+      accent_picker: アクセントカラー
+      accents: アクセント
+      accents_list:
+        amber: アンバー
+        blue: ブルー
+        brand: ブランド
+        cyan: シアン
+        emerald: エメラルド
+        fuchsia: フクシア
+        green: グリーン
+        indigo: インディゴ
+        lime: ライム
+        orange: オレンジ
+        pink: ピンク
+        purple: パープル
+        red: レッド
+        rose: ローズ
+        sky: スカイ
+        teal: ティール
+        violet: バイオレット
+        yellow: イエロー
+      auto: 自動
+      auto_tooltip: 自動（システム設定）
+      dark: ダーク
+      dark_tooltip: ダークモード
+      hide: 非表示
+      light: ライト
+      light_tooltip: ライトモード
+      neutrals: テーマ
+      neutrals_list:
+        brand: ブランド
+        gray: グレー
+        mauve: モーブ
+        mist: ミスト
+        neutral: ニュートラル
+        olive: オリーブ
+        slate: スレート
+        stone: ストーン
+        taupe: トープ
+        zinc: ジンク
+      neutrals_picker: ニュートラルテーマ
+      schemes: 外観
+      shortcut_badges: ショートカットバッジ
+      shortcut_badges_hide_tooltip: キーボードショートカットバッジを非表示
+      shortcut_badges_show_tooltip: キーボードショートカットバッジを表示
+      show: 表示
+      title: 外観
+    applied:
+      one: applied
+      other: applied
+    are_you_sure: 本当によろしいですか？
+    are_you_sure_detach_item: この%{item}をデタッチしてもよろしいですか？
+    are_you_sure_you_want_to_run_this_option: このアクションを実行してもよろしいですか？
+    attach: 添付
+    attach_and_attach_another: アタッチして別のものをアタッチ
+    attach_item: "%{item}をアタッチ"
+    attachment_class_attached: "%{attachment_class}をアタッチしました。"
+    attachment_class_detached: "%{attachment_class}をデタッチしました。"
+    attachment_destroyed: アタッチは削除されました
+    attachment_failed: "%{attachment_class}の添付に失敗しました"
+    back_to_top: トップに戻る
+    cancel: キャンセル
+    checkbox_list:
+      hidden_selections:
+        one: 検索によって隠された1つの選択肢
+        other: 検索によって隠された%{count}の選択肢
+    choose_a_country: 国を選択
+    choose_an_option: オプションを選択
+    choose_item: "%{item}を選択"
+    clear_value: 値をクリア
+    click_to_load: 読み込みをクリック
+    click_to_reveal_filters: フィルターを表示するにはクリック
+    close: 閉じる
+    close_modal: モーダルを閉じる
+    confirm: 確認
+    copy: コピー
+    create_new_item: 新しい%{item}を作成
+    created_at: 作成日時
+    created_at_timestamp: "%{created_at}で作成"
+    dashboard: ダッシュボード
+    dashboards: ダッシュボード
+    default_scope: 全て
+    delete: 削除
+    delete_file: ファイルを削除
+    delete_item: "%{item}を削除"
+    detach_item: "%{item}を切り離す"
+    details: 詳細
+    download: ダウンロード
+    download_file: ファイルをダウンロード
+    download_item: "%{item}をダウンロード"
+    edit: 編集
+    edit_item: "%{item}を編集"
+    empty_dashboard_message: このダッシュボードにカードを追加
+    failed: 失敗
+    failed_to_find_attachment: アタッチメントを見つけるのに失敗
+    failed_to_load: 読み込みに失敗
+    failed_to_load_item: "%{item}の読み込みに失敗しました"
+    'false': 偽
+    file:
+      one: ファイル
+      other: ファイル
+    filter_by: フィルター条件
+    filters: フィルター
+    global_search:
+      empty_state:
+        no_results_for_query: '"%{query}" に一致するものが見つかりませんでした'
+        no_results_found: 結果が見つかりませんでした
+        start_typing: 検索を開始するには入力してください
+        start_typing_with_resource_list: "%{resources}で検索できます"
+        start_typing_with_resources: "%{resources} %{other_resources}で検索できます"
+        try_adjusting_search: 検索用語を調整するか、タイプミスを確認してください
+      go_to: 移動する
+      keyboard_hints:
+        close: 閉じる
+        navigate: ナビゲート
+        press: 押す
+        select: 選択
+      results:
+        count_of_total: "%{count} / %{total}"
+      show_all_results_for: すべての結果を表示
+    go_back: 戻る
+    grid_view: グリッドビュー
+    hide_content: 内容を非表示
+    home: ホーム
+    key_value_field:
+      add_row: 行を追加
+      delete_row: 行を削除
+      key: キー
+      reorder_row: 行の並べ替え
+      value: 値
+    less_content: コンテンツが少ない
+    list_is_empty: リストは空です
+    load_item: "%{item}を読み込む"
+    loading: 読み込み中
+    media_library:
+      title: メディアライブラリ
+    more: もっと
+    more_content: さらなるコンテンツ
+    more_records_available: さらに多くのレコードが利用可能です。
+    nested:
+      add_new_item: 新しい%{item}を追加
+    new: 新規
+    next_page: 次のページ
+    no_cancel: いいえ、キャンセル
+    no_cards_present: カードがありません
+    no_item_found: レコードが見つかりませんでした
+    no_options_available: 利用可能なオプションがありません
+    no_related_item_found: 関連するレコードが見つかりませんでした
+    not_authorized: このアクションを実行する権限がありません。
+    number_of_items:
+      one: 一つの%{item}
+      other: "%{count}の%{item}"
+      zero: "%{item}がありません"
+    oops_nothing_found: おっと！ 何も見つかりませんでした...
+    open_in_new_tab: 新しいタブで開く
+    open_in_your_editor: エディターで開く
+    order:
+      higher: レコードを上に移動
+      lower: レコードを下に移動
+      reorder_record: レコードを並べ替える
+      to_bottom: レコードを一番下に移動
+      to_top: レコードを一番上に移動
+    pages: ページ
+    per_page: ページあたり
+    prev_page: 前のページ
+    record:
+      one: レコード
+      other: レコード
+    records_selected_from_all_pages_html: 全ページから選択された全レコード
+    reload: リロード
+    remove_selection: 選択を解除
+    reset: リセット
+    reset_filters: フィルターをリセット
+    resize_sidebar: サイドバーのサイズを変更
+    resize_sidebar_hint: ドラッグしてサイドバーのサイズを変更します。ダブルクリックでリセットします。
+    resource_created: レコードが作成されました
+    resource_destroyed: レコードが破棄されました
+    resource_updated: レコードが更新されました
+    resources: リソース
+    retry: 再試行
+    retry_item: "%{item}を再試行"
+    reupload_file: Reupload %{item}
+    run: 実行
+    save: 保存
+    search:
+      cancel_button: キャンセル
+      placeholder: 検索
+    select_all: すべて選択
+    select_all_matching: 一致するすべてを選択
+    select_item: アイテムを選択
+    show_content: 内容を表示
+    sign_out: サインアウト
+    skip_to_content: コンテンツへスキップ
+    skip_to_sidebar: サイドバーにスキップ
+    sort_asc: 昇順で並べ替え
+    sort_desc: 降順で並べ替え
+    sort_reset: ソートをリセット
+    switch_to_view: "%{view_type}ビューに切り替える"
+    table_view: テーブルビュー
+    this_field_has_attachments_disabled: このフィールドには添付ファイルが無効になっています。
+    tools: ツール
+    'true': 真
+    type_to_search: 検索する内容を入力してください。
+    unauthorized: 許可されていません
+    undo: 元に戻す
+    updated_at: 更新日時
+    updated_at_timestamp: "%{updated_at}で更新"
+    view: ビュー
+    view_item: "%{item}を表示"
+    visit_record_on_external_path: 外部リンクで記録を確認する
+    was_successfully_created: は正常に作成されました
+    was_successfully_updated: は正常に更新されました
+    x_items_more:
+      one: もう一つのアイテム
+      other: "%{count}個のその他のアイテム"
+      zero: その他のアイテムはありません
+    x_records_selected_from_a_total_of_x_html: このページの<span class="font-bold">%{count}</span>個中、<span class="font-bold">%{selected}</span>個のレコードが選択されました
+    x_records_selected_from_all_pages_html: すべてのページから<span class="font-bold">%{count}</span>個のレコードが選択されました
+    x_records_selected_from_page_html: このページから<span class="font-bold">%{selected}</span>個のレコードが選択されました
+    yes_confirm: はい、私は確信しています
+    you_cant_upload_new_resource: リソースを保存するまで、Trixエディタにファイルをアップロードすることはできません。
+    you_havent_set_attachment_key: このTrixフィールドに`attachment_key`が設定されていません。
+    you_missed_something_check_form: 何か見落としているかもしれません。フォームを確認してください。

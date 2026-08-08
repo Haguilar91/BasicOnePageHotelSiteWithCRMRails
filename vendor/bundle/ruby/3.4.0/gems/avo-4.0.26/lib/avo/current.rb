@@ -1,0 +1,61 @@
+begin
+  require "active_support/isolated_execution_state"
+rescue LoadError
+  # Older ActiveSupport versions may not expose this file directly.
+end
+require "active_support/current_attributes"
+begin
+  require "active_support/code_generator"
+rescue LoadError
+  # ActiveSupport 6.1 does not have this file.
+end
+class Avo::Current < ActiveSupport::CurrentAttributes
+  attribute :app
+  attribute :license
+  attribute :context
+  attribute :user
+  attribute :view_context
+  attribute :error_manager
+  attribute :resource_manager
+  attribute :tool_manager
+  attribute :plugin_manager
+  attribute :locale
+
+  # The tenant attributes are here so the user can add them on their own will
+  attribute :tenant_id
+  attribute :tenant
+
+  attribute :appearance_settings
+
+  # Rails 7.1 CurrentAttributes#attribute is only `def attribute(*names)` — no `default:` keyword.
+  # `attribute :x, default: {}` is passed as a second positional `{ default: {} }`, so `names.map(&:to_sym)` raises.
+  resets { self.appearance_settings = {} }
+
+  def initialize
+    super
+    self.appearance_settings = {}
+  end
+
+  # Protect from error #<RuntimeError: Missing rack.input> when request is ActionDispatch::Request.empty
+  def params
+    request.params
+  rescue
+    {}
+  end
+
+  def request
+    view_context&.request || ActionDispatch::Request.empty
+  end
+
+  def user_is_admin?
+    return false unless user&.respond_to?(Avo.configuration.is_admin_method)
+
+    user.send(Avo.configuration.is_admin_method)
+  end
+
+  def user_is_developer?
+    return false unless user&.respond_to?(Avo.configuration.is_developer_method)
+
+    user.send(Avo.configuration.is_developer_method)
+  end
+end

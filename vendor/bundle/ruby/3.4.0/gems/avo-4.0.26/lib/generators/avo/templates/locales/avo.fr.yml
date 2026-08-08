@@ -1,0 +1,231 @@
+---
+fr:
+  avo:
+    action_ran_successfully: L'action s'est exécutée avec succès !
+    actions: Actions
+    add_filter: Ajouter un filtre
+    and_x_other_resources: et %{count} autres ressources
+    appearance:
+      accent_picker: Couleur d'accent
+      accents: Accent
+      accents_list:
+        amber: Ambre
+        blue: Bleu
+        brand: Marque
+        cyan: Cyan
+        emerald: Émeraude
+        fuchsia: Fuchsia
+        green: Vert
+        indigo: Indigo
+        lime: Citron vert
+        orange: Orange
+        pink: Rose
+        purple: Violet
+        red: Rouge
+        rose: Rosé
+        sky: Ciel
+        teal: Sarcelle
+        violet: Violet
+        yellow: Jaune
+      auto: Automatique
+      auto_tooltip: Automatique (préférence système)
+      dark: Sombre
+      dark_tooltip: Mode sombre
+      hide: Cacher
+      light: Clair
+      light_tooltip: Mode clair
+      neutrals: Thème
+      neutrals_list:
+        brand: Marque
+        gray: Gris
+        mauve: Mauve
+        mist: Brume
+        neutral: Neutre
+        olive: Olive
+        slate: Ardoise
+        stone: Pierre
+        taupe: Taupe
+        zinc: Zinc
+      neutrals_picker: Thème neutre
+      schemes: Apparence
+      shortcut_badges: Badges de raccourci
+      shortcut_badges_hide_tooltip: Cacher les badges de raccourci clavier
+      shortcut_badges_show_tooltip: Afficher les badges de raccourci clavier
+      show: Afficher
+      title: Apparence
+    applied:
+      one: appliqué
+      other: appliqués
+    are_you_sure: Êtes-vous sûr ?
+    are_you_sure_detach_item: Êtes-vous sûr de vouloir détacher %{item}.
+    are_you_sure_you_want_to_run_this_option: Etes-vous sûr de vouloir exécuter cette action ?
+    attach: Attacher
+    attach_and_attach_another: joindre et joindre un autre
+    attach_item: Attacher %{item}
+    attachment_class_attached: "%{attachment_class} attaché."
+    attachment_class_detached: "%{attachment_class} détaché."
+    attachment_destroyed: Pièce jointe détruite
+    attachment_failed: Échec de l'ajout de %{attachment_class}
+    back_to_top: Retour en haut
+    cancel: Annuler
+    checkbox_list:
+      hidden_selections:
+        one: 1 option sélectionnée cachée par la recherche
+        other: "%{count} options sélectionnées cachées par la recherche"
+    choose_a_country: Sélectionnez un pays
+    choose_an_option: Sélectionnez une option
+    choose_item: Choisir %{item}
+    clear_value: Effacer la valeur
+    click_to_load: Cliquez pour charger
+    click_to_reveal_filters: Cliquez pour révéler les filtres
+    close: Fermer
+    close_modal: Fermer la fenêtre modale
+    confirm: Confirmer
+    copy: Copier
+    create_new_item: Créer un nouveau %{item}
+    created_at: Créé à
+    created_at_timestamp: Créé le %{created_at}
+    dashboard: Tableau de bord
+    dashboards: Tableaux de bord
+    default_scope: Tout
+    delete: supprimer
+    delete_file: Supprimer le fichier
+    delete_item: Supprimer %{item}
+    detach_item: détacher %{item}
+    details: détails
+    download: Télécharger
+    download_file: Télécharger le fichier
+    download_item: Télécharger %{item}
+    edit: éditer
+    edit_item: éditer %{item}
+    empty_dashboard_message: Ajouter des cartes à ce tableau de bord
+    failed: Échec
+    failed_to_find_attachment: Impossible de trouver la pièce jointe
+    failed_to_load: Impossible de charger
+    failed_to_load_item: Échec du chargement de %{item}
+    'false': Faux
+    file:
+      one: fichier
+      other: fichiers
+    filter_by: Filtrer par
+    filters: Filtres
+    global_search:
+      empty_state:
+        no_results_for_query: Nous n'avons trouvé aucun élément correspondant à "%{query}"
+        no_results_found: Aucun résultat trouvé
+        start_typing: Commencez à taper pour rechercher
+        start_typing_with_resource_list: Vous pouvez rechercher sur %{resources}
+        start_typing_with_resources: Vous pouvez rechercher sur %{resources} %{other_resources}
+        try_adjusting_search: Essayez d'ajuster vos termes de recherche ou vérifiez les fautes de frappe
+      go_to: Aller à
+      keyboard_hints:
+        close: Fermer
+        navigate: Naviguer
+        press: Appuyez sur
+        select: Sélectionner
+      results:
+        count_of_total: "%{count} sur %{total}"
+      show_all_results_for: Afficher tous les résultats pour
+    go_back: Retourner en arrière
+    grid_view: Vue grille
+    hide_content: Cacher le contenu
+    home: Accueil
+    key_value_field:
+      add_row: Ajouter une ligne
+      delete_row: Supprimer une ligne
+      key: Clé
+      reorder_row: Réorganiser la ligne
+      value: Valeur
+    less_content: Moins de contenu
+    list_is_empty: La liste est vide
+    load_item: Charger %{item}
+    loading: Chargement
+    media_library:
+      title: Bibliothèque multimédia
+    more: Plus
+    more_content: Plus de contenu
+    more_records_available: Il y a plus d'enregistrements disponibles.
+    nested:
+      add_new_item: Ajouter un nouveau %{item}
+    new: Nouveau
+    next_page: Page suivante
+    no_cancel: Non, annuler
+    no_cards_present: Aucune carte présente
+    no_item_found: Enregistrement non trouvé
+    no_options_available: Aucune option disponible
+    no_related_item_found: Enregistrement connexe introuvable
+    not_authorized: Vous n'êtes pas autorisé à effectuer cette action.
+    number_of_items:
+      one: un %{item}
+      other: "%{count} %{item}"
+      zero: aucun %{item}
+    oops_nothing_found: Oups ! Rien n'a été trouvé...
+    open_in_new_tab: Ouvrir dans un nouvel onglet
+    open_in_your_editor: Ouvrir dans votre éditeur
+    order:
+      higher: Déplacer plus haut
+      lower: Déplacer plus bas
+      reorder_record: Réorganiser
+      to_bottom: Déplacer tout en bas
+      to_top: Déplacer tout en haut
+    pages: Pages
+    per_page: Par page
+    prev_page: Page précédente
+    record:
+      one: enregistrement
+      other: enregistrements
+    records_selected_from_all_pages_html: tous les éléments sélectionnés de toutes les pages
+    reload: Recharger
+    remove_selection: Supprimer la sélection
+    reset: réinitialiser
+    reset_filters: Réinitialiser les filtres
+    resize_sidebar: Redimensionner la barre latérale
+    resize_sidebar_hint: Faites glisser pour redimensionner la barre latérale. Double-cliquez pour réinitialiser.
+    resource_created: Ressource créee
+    resource_destroyed: Ressource détruite
+    resource_updated: Ressource mise à jour
+    resources: Ressources
+    retry: Réessayer
+    retry_item: Réessayer %{item}
+    reupload_file: Reupload %{item}
+    run: Exécuter
+    save: Enregistrer
+    search:
+      cancel_button: Annuler
+      placeholder: Rechercher
+    select_all: Sélectionner tout sur la page
+    select_all_matching: Sélectionner toutes les correspondances
+    select_item: Sélectionnez un élément
+    show_content: Afficher le contenu
+    sign_out: Se déconnecter
+    skip_to_content: Passer au contenu
+    skip_to_sidebar: Passer au menu latéral
+    sort_asc: Trier par ordre croissant
+    sort_desc: Trier par ordre décroissant
+    sort_reset: Réinitialiser le tri
+    switch_to_view: Passez à la vue %{view_type}
+    table_view: Vue table
+    this_field_has_attachments_disabled: Ce champ a les pièces jointes désactivées.
+    tools: Outils
+    'true': Vrai
+    type_to_search: Type à rechercher.
+    unauthorized: Non autorisé
+    undo: annuler
+    updated_at: Mis à jour à
+    updated_at_timestamp: Mis à jour le %{updated_at}
+    view: Vue
+    view_item: voir %{item}
+    visit_record_on_external_path: Consulter l'enregistrement via un lien externe
+    was_successfully_created: a été créé avec succès
+    was_successfully_updated: a été mis à jour avec succès
+    x_items_more:
+      one: un élément de plus
+      other: "%{count} éléments en plus"
+      zero: aucun élément supplémentaire
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> enregistrements sélectionnés sur cette page sur un total de <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> enregistrements sélectionnés dans toutes les pages
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> éléments sélectionnés de cette page
+    yes_confirm: Oui, je suis sûr
+    you_cant_upload_new_resource: Vous ne pouvez pas télécharger de fichiers dans l'éditeur Trix tant que vous n'avez pas enregistré la ressource.
+    you_havent_set_attachment_key: Vous devez définir une `attachment_key` pour ce champ Trix.
+    you_missed_something_check_form: Vous avez peut-être oublié quelque chose. Veuillez vérifier le formulaire

@@ -1,0 +1,229 @@
+---
+en:
+  avo:
+    action_ran_successfully: Action ran successfully!
+    actions: Actions
+    add_filter: Add filter
+    and_x_other_resources: and %{count} other resources
+    appearance:
+      accent_picker: Select accent color
+      accents: Accent
+      accents_list:
+        amber: Amber
+        blue: Blue
+        brand: Brand
+        cyan: Cyan
+        emerald: Emerald
+        fuchsia: Fuchsia
+        green: Green
+        indigo: Indigo
+        lime: Lime
+        orange: Orange
+        pink: Pink
+        purple: Purple
+        red: Red
+        rose: Rose
+        sky: Sky
+        teal: Teal
+        violet: Violet
+        yellow: Yellow
+      auto: Auto
+      auto_tooltip: Auto (system preference)
+      dark: Dark
+      dark_tooltip: Dark mode
+      hide: Hide
+      light: Light
+      light_tooltip: Light mode
+      neutrals: Theme
+      neutrals_list:
+        brand: Brand
+        gray: Gray
+        mauve: Mauve
+        mist: Mist
+        neutral: Neutral
+        olive: Olive
+        slate: Slate
+        stone: Stone
+        taupe: Taupe
+        zinc: Zinc
+      neutrals_picker: Select neutral color
+      schemes: Appearance
+      shortcut_badges: Shortcut badges
+      shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
+      shortcut_badges_show_tooltip: Show keyboard shortcut badges
+      show: Show
+      title: Appearance
+    applied: applied
+    are_you_sure: Are you sure?
+    are_you_sure_detach_item: Are you sure you want to detach this %{item}.
+    are_you_sure_you_want_to_run_this_option: Are you sure you want to run this action?
+    attach: Attach
+    attach_and_attach_another: Attach & Attach another
+    attach_item: Attach %{item}
+    attachment_class_attached: "%{attachment_class} attached."
+    attachment_class_detached: "%{attachment_class} detached."
+    attachment_destroyed: Attachment destroyed
+    attachment_failed: Failed to attach %{attachment_class}
+    back_to_top: Back to top
+    cancel: Cancel
+    checkbox_list:
+      hidden_selections:
+        one: 1 selected option hidden by search
+        other: "%{count} selected options hidden by search"
+    choose_a_country: Choose a country
+    choose_an_option: Choose an option
+    choose_item: Choose %{item}
+    clear_value: Clear value
+    click_to_load: Click to load
+    click_to_reveal_filters: Click to reveal filters
+    close: Close
+    close_modal: Close modal
+    confirm: Confirm
+    copy: Copy
+    create_new_item: Create new %{item}
+    created_at: Created at
+    created_at_timestamp: Created at %{created_at}
+    dashboard: Dashboard
+    dashboards: Dashboards
+    default_scope: All
+    delete: delete
+    delete_file: Delete file
+    delete_item: Delete %{item}
+    detach_item: detach %{item}
+    details: details
+    download: Download
+    download_file: Download file
+    download_item: Download %{item}
+    edit: edit
+    edit_item: edit %{item}
+    empty_dashboard_message: Add cards to this dashboard
+    failed: Failed
+    failed_to_find_attachment: Failed to find attachment
+    failed_to_load: Failed to load
+    failed_to_load_item: Failed to load %{item}
+    'false': 'False'
+    file:
+      one: file
+      other: files
+    filter_by: Filter by
+    filters: Filters
+    global_search:
+      empty_state:
+        no_results_for_query: We couldn't find anything matching "%{query}"
+        no_results_found: No results found
+        start_typing: Start typing to search
+        start_typing_with_resource_list: You can search on %{resources}
+        start_typing_with_resources: You can search on %{resources} %{other_resources}
+        try_adjusting_search: Try adjusting your search terms or check for typos
+      go_to: Go to
+      keyboard_hints:
+        close: Close
+        navigate: Navigate
+        press: Press
+        select: Select
+      results:
+        count_of_total: "%{count} of %{total}"
+      show_all_results_for: Show all results for
+    go_back: Go back
+    grid_view: Grid view
+    hide_content: Hide content
+    home: Home
+    key_value_field:
+      add_row: Add row
+      delete_row: Delete row
+      key: Key
+      reorder_row: Reorder row
+      value: Value
+    less_content: Less content
+    list_is_empty: List is empty
+    load_item: Load %{item}
+    loading: Loading
+    media_library:
+      title: Media Library
+    more: More
+    more_content: More content
+    more_records_available: There are more records available.
+    nested:
+      add_new_item: Add new %{item}
+    new: new
+    next_page: Next page
+    no_cancel: No, cancel
+    no_cards_present: No cards present
+    no_item_found: No record found
+    no_options_available: No options available
+    no_related_item_found: No related record found
+    not_authorized: You are not authorized to perform this action.
+    number_of_items:
+      one: one %{item}
+      other: "%{count} %{item}"
+      zero: no %{item}
+    oops_nothing_found: Oops! Nothing found...
+    open_in_new_tab: Open in a new tab
+    open_in_your_editor: Open in your editor
+    order:
+      higher: Move record higher
+      lower: Move record lower
+      reorder_record: Reorder record
+      to_bottom: Move record to bottom
+      to_top: Move record to top
+    pages: Pages
+    per_page: Per page
+    prev_page: Previous page
+    record:
+      one: record
+      other: records
+    records_selected_from_all_pages_html: All records selected from all pages
+    reload: Reload
+    remove_selection: Remove selection
+    reset: reset
+    reset_filters: Reset filters
+    resize_sidebar: Resize sidebar
+    resize_sidebar_hint: Drag to resize the sidebar. Double-click to reset.
+    resource_created: Record created
+    resource_destroyed: Record destroyed
+    resource_updated: Record updated
+    resources: Resources
+    retry: Retry
+    retry_item: Retry %{item}
+    reupload_file: Reupload %{item}
+    run: Run
+    save: Save
+    search:
+      cancel_button: Cancel
+      placeholder: Search
+    select_all: Select all
+    select_all_matching: Select all matching
+    select_item: Select item
+    show_content: Show content
+    sign_out: Sign out
+    skip_to_content: Skip to content
+    skip_to_sidebar: Skip to sidebar
+    sort_asc: Sort ascending
+    sort_desc: Sort descending
+    sort_reset: Reset sorting
+    switch_to_view: Switch to %{view_type} view
+    table_view: Table view
+    this_field_has_attachments_disabled: This field has attachments disabled.
+    tools: Tools
+    'true': 'True'
+    type_to_search: Type to search.
+    unauthorized: Unauthorized
+    undo: undo
+    updated_at: Updated at
+    updated_at_timestamp: Updated at %{updated_at}
+    view: View
+    view_item: view %{item}
+    visit_record_on_external_path: Visit record on external path
+    was_successfully_created: was successfully created
+    was_successfully_updated: was successfully updated
+    x_items_more:
+      one: one more item
+      other: "%{count} more items"
+      zero: no more items
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> records selected on this page from a total of <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> records selected from all pages
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> records selected on this page
+    yes_confirm: Yes, I'm sure
+    you_cant_upload_new_resource: You can't upload files into the Trix editor until you save the resource.
+    you_havent_set_attachment_key: You haven't set an `attachment_key` to this Trix field.
+    you_missed_something_check_form: You might have missed something. Please check the form.

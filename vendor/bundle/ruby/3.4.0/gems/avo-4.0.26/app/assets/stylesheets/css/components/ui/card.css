@@ -1,0 +1,126 @@
+/* Card radii as shared design tokens. Consumed via Tailwind's `rounded-(--var)`
+   arbitrary-property syntax so the value can be reused and overridden anywhere
+   instead of being a one-off literal. */
+@theme {
+}
+
+/* Card Component - Based on Figma Design System */
+.card {
+  @apply flex flex-col items-start self-stretch rounded-card border border-tertiary bg-secondary;
+
+  /* Contain horizontal overflow so a wide inner scroller (e.g. .card__wrapper
+     wrapping a wide table) can't bleed past the card and push the document
+     wider than the viewport on narrow screens. */
+  overflow-x: clip;
+}
+
+/* Card modifiers. Combine as needed via the `class` option. */
+
+/* Tightens the wrapper padding around the card's contents. */
+.card--compact-wrapper {
+  .card__wrapper {
+    @apply p-0.5;
+  }
+}
+
+/* Padded modifier. `.card__body` ships unpadded so wide content (tables,
+   scrollers) can sit flush to the card edge. Add `card--padded` to a card whose
+   body holds free-form content (custom tools, forms, prose) that should get the
+   standard card padding. Usage: `panel.with_card(class: "card--padded")`. */
+.card--padded {
+  .card__body {
+    @apply p-4;
+  }
+}
+
+/* Card wrapper */
+.card__wrapper {
+  @apply flex flex-col items-start self-stretch w-full;
+  /* offset 1px from the wrapper to match the design */
+  padding: calc(var(--spacing) - 1px);
+  /* prevent scrollIntoView from shifting the table horizontally by the padding amount */
+  scroll-padding-inline: calc(var(--spacing) );
+}
+
+/* for pagination we need the padding to be 4px */
+/* TODO: maybe we can make the same padding for all the cases */
+.card:has(.card__footer .pagination) {
+  .card__wrapper {
+    @apply p-1;
+  }
+}
+
+/* Card header */
+.card__header {
+  @apply flex flex-col items-start self-stretch py-2 px-4 leading-tight;
+
+  &:has(select),
+  &:has(.button) {
+    @apply pe-0;
+  }
+
+  /* `sm` size buttons make the header too tall. This will compensate for it. */
+  .button {
+    @apply -my-1;
+  }
+}
+
+/* Header compaction is split per axis so a card can shorten its header without
+   also narrowing it. Compose the two when you want both. */
+.card--compact-header-y {
+  .card__header {
+    @apply py-1;
+  }
+
+  /* Most of a header's height is leading, not padding, so the title is
+     tightened here too. Scoped to the modifier so cards without it keep the
+     design system's leading; the description keeps the base value. */
+  .card__title {
+    @apply leading-normal;
+  }
+}
+
+.card--compact-header-x {
+  .card__header {
+    @apply px-2;
+  }
+
+  /* A header holding a control pulls its end padding in so the control sits
+     near the edge, keeping a hair of breathing room. This has to be repeated
+     here because `.card--compact-header-x .card__header` (0,2,0) outranks the
+     base `.card__header:has(select)` (0,1,1) that sets it. */
+  .card__header:has(select),
+  .card__header:has(.button) {
+    @apply pe-1;
+  }
+}
+
+/* Card title - Copy/14/500 from Figma */
+.card__title {
+  @apply text-content font-medium leading-6 text-sm;
+}
+
+/* Card description - Copy/14/400 from Figma */
+.card__description {
+  @apply text-content-secondary font-normal leading-5 text-sm;
+}
+
+/* Card body */
+.card__body {
+  @apply flex flex-col items-start self-stretch w-full rounded-card-wrapper border border-tertiary bg-primary;
+}
+
+/* Card footer - full width so pagination can span edge to edge */
+.card__footer {
+  @apply w-full;
+    &:has(.pagination) {
+      @apply p-1 pt-0;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card__header {
+    @apply py-2 px-3;
+  }
+}

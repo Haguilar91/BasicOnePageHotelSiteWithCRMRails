@@ -1,0 +1,374 @@
+class Avo::ResourceComponent < Avo::BaseComponent
+  include Avo::Concerns::ChecksAssocAuthorization
+  include Avo::Concerns::RequestMethods
+  include Avo::Concerns::HasResourceStimulusControllers
+
+  attr_reader :fields_by_panel
+  attr_reader :has_one_panels
+  attr_reader :has_many_panels
+  attr_reader :has_as_belongs_to_many_panels
+  attr_reader :resource_tools
+  attr_reader :resource
+  attr_reader :view
+
+  def can_create?
+    return authorize_association_for(:create) if @reflection.present?
+
+    @resource.authorization.authorize_action(:create, raise_exception: false)
+  end
+
+  def can_delete?
+    return authorize_association_for(:destroy) if @reflection.present?
+
+    @resource.authorization.authorize_action(:destroy, raise_exception: false)
+  end
+
+  def can_detach?
+    return false if @reflection.blank? || @resource.record.blank? || !authorize_association_for(:detach)
+
+    # If the inverse_of is a belongs_to, we need to check if it's optional in order to know if we can detach it.
+    if inverse_of.is_a?(ActiveRecord::Reflection::BelongsToReflection)
+      inverse_of.options[:optional]
+    else
+      true
+    end
+  end
+
+  def detach_path
+    return "/" if @reflection.blank?
+
+    helpers.resource_detach_path(params[:resource_name], params[:id], @reflection.name.to_s, @resource.record_param)
+  end
+
+  def can_see_the_edit_button?
+    # Disable edit for ArrayResources
+    return false if @resource.resource_type_array?
+
+    return authorize_association_for(:edit) if @reflection.present?
+
+    @resource.authorization.authorize_action(:edit, raise_exception: false)
+  end
+
+  def can_see_the_destroy_button?
+    # Disable destroy for ArrayResources
+    return false if @resource.resource_type_array?
+
+    @resource.authorization.authorize_action(:destroy, raise_exception: false)
+  end
+
+  def can_see_the_actions_button?
+    return authorize_association_for(:act_on) if @reflection.present?
+
+    @resource.authorization.authorize_action(:act_on, raise_exception: false)
+  end
+
+  def destroy_path
+    args = {record: @resource.record, resource: @resource}
+
+    args[:referrer] = if params[:via_resource_class].present?
+      back_path
+    # If we're deleting a resource from a parent resource, we need to go back to the parent resource page after the deletion
+    elsif @parent_resource.present?
+      helpers.resource_path(record: @parent_record, resource: @parent_resource)
+    end
+
+    helpers.resource_path(**args)
+  end
+
+  def sidebars
+    @sidebars ||= @item.items
+      .select do |item|
+        item.is_sidebar?
+      end
+      .map do |sidebar|
+        sidebar.hydrate(view: view, resource: resource)
+      end
+  end
+
+  def render_control(control)
+    send :"render_#{control.type}", control
+  end
+
+  def render_cards_component
+    if Avo.plugin_manager.installed?("avo-dashboards")
+      render Avo::CardsComponent.new cards: @resource.detect_cards.visible_cards, classes: "pb-4 sm:grid-cols-3"
+    end
+  end
+
+  private
+
+  def via_resource?
+    (params[:via_resource_class].present? || params[:via_relation_class].present?) && params[:via_record_id].present?
+  end
+
+  def keep_referrer_params
+    referrer_params
+  end
+
+  def render_back_button(control)
+    return if back_path.blank? || is_a_related_resource?
+
+    via_belongs_to = params[:via_belongs_to_resource_class].present?
+
+    a_link via_belongs_to ? "javascript:void(0);" : back_path,
+      style: :text,
+      title: control.title,
+      data: {
+        hotkey: "b",
+        action: ("click->modal#close" if via_belongs_to),
+        tippy: control.title ? :tooltip : nil
+      }.compact,
+      icon: "tabler/outline/arrow-left" do
+      control.label
+    end
+  end
+
+  def render_actions_list(actions_list)
+    return unless can_see_the_actions_button?
+
+    # Inside an index table row the hotkey must be managed by the index-row-navigator
+    # (data-hotkey-original); page-level headers use a plain data-hotkey.
+    as_index_row_control = row_controls_context?
+
+    # `as_row_control` hydrates each action with the current record (needed for both
+    # index rows and the single-record show/edit headers). @item is only ever set for
+    # the show/edit field-panel switcher, so it's blank for index rows -- fall back to
+    # row_controls_context? there so per-row actions_list entries get hydrated too.
+    as_row_control = @item.present? || as_index_row_control
+
+    # @actions is built once by the controller's set_actions, before any row exists
+    # (its @resource.record is nil there), so a `visible` block that inspects the
+    # record can't tell rows apart -- and since set_actions already dropped the
+    # non-visible ones, there's nothing left downstream to recover them from. Rebuild
+    # the list fresh from this row's own hydrated resource instead of reusing it.
+    actions = as_index_row_control ? row_actions : @actions
+
+    # Actions button hotkey "a" on the main index, show and edit pages (non-nested,
+    # not an index row). The index component doesn't carry a @view, so detect it by
+    # class; show renders through the switcher and edit directly, both of which do
+    # carry a @view, so detect those by view.
+    hotkey = "a" if @reflection.nil? && !as_index_row_control && (
+      instance_of?(Avo::Views::ResourceIndexComponent) || @view&.show? || @view&.edit?
+    )
+
+    render Avo::ActionsComponent.new(
+      actions:,
+      resource: @resource,
+      view: @view,
+      exclude: actions_list.exclude,
+      include: actions_list.include,
+      style: actions_list.style,
+      color: actions_list.color,
+      label: actions_list.label,
+      size: actions_list.size,
+      icon: actions_list.icon,
+      icon_class: actions_list.icon_class,
+      title: actions_list.title,
+      as_row_control:,
+      as_index_row_control:,
+      hotkey: hotkey
+    )
+  end
+
+  def row_actions
+    @resource.get_actions
+      .map { |action_bag| action_bag[:class].new(record: @resource.record, resource: @resource, view: @view, **action_bag.except(:class)) }
+      .select { |action| action.is_a?(Avo::Divider) || action.visible_in_view(parent_resource: @parent_resource) }
+  end
+
+  def render_delete_button(control)
+    # If the resource is a related resource, we use the can_delete? policy method because it uses
+    # authorize_association_for(:destroy).
+    # Otherwise we use the can_see_the_destroy_button? policy method because it do no check for association
+    # only for authorize_action .
+    policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
+    return unless send policy_method
+
+    # Row hotkeys: detect if we're rendering in a row control and use data-hotkey-original
+    # so the index-row-navigator controller can manage the hotkey visibility.
+    # Same as edit button: prevents @github/hotkey from registering all row buttons at once.
+    is_row_control = row_controls_context?
+    hotkey_attr = is_row_control ? :hotkey_original : :hotkey
+    data_attrs = {hotkey_attr => "d"}
+
+    a_link destroy_path,
+      style: :text,
+      color: :red,
+      icon: "tabler/outline/trash",
+      title: control.title,
+      aria_label: control.title,
+      data: {
+        **data_attrs,
+        turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
+        turbo_method: :delete,
+        target: "control:destroy",
+        control: :destroy,
+        tippy: control.title ? :tooltip : nil,
+        "resource-id": @resource.record_param
+      } do
+      control.label
+    end
+  end
+
+  def render_save_button(control)
+    return unless can_see_the_save_button?
+
+    data_attributes = {
+      hotkey: "Mod+Enter",
+      turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+    }.compact
+
+    add_stimulus_attributes_for(@resource, data_attributes, "saveButton")
+
+    a_button color: :accent,
+      style: :primary,
+      loading: true,
+      type: :submit,
+      icon: "tabler/outline/device-floppy",
+      data: data_attributes do
+      control.label
+    end
+  end
+
+  def render_edit_button(control)
+    return unless can_see_the_edit_button?
+
+    # Row hotkeys are handled by index-row-navigator controller:
+    # - Use data-hotkey-original for index row controls (controller moves it to data-hotkey when row is focused)
+    # - Use data-hotkey directly for show page buttons (always available)
+    # This prevents the @github/hotkey library from registering all row buttons at once,
+    # which would cause the "last-registered wins" problem.
+    is_row_control = row_controls_context?
+    hotkey_attr = is_row_control ? :hotkey_original : :hotkey
+    data_attrs = {hotkey_attr => "e"}
+
+    a_link edit_path,
+      color: :accent,
+      style: :primary,
+      title: control.title,
+      data: {
+        **data_attrs,
+        tippy: control.title ? :tooltip : nil
+      }.compact,
+      icon: "tabler/outline/edit" do
+      control.label
+    end
+  end
+
+  def render_detach_button(control)
+    return unless is_a_related_resource? && can_detach?
+
+    a_link detach_path,
+      icon: "tabler/outline/unlink",
+      style: :text,
+      data: {
+        turbo_method: :delete,
+        turbo_confirm: "Are you sure you want to detach this #{title}."
+      } do
+      control.label || t("avo.detach_item", item: title).humanize
+    end
+  end
+
+  def render_create_button(control)
+    return unless can_see_the_create_button?
+
+    hotkey = "c" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+
+    a_link create_path,
+      color: :accent,
+      style: :primary,
+      icon: "tabler/outline/plus",
+      data: {
+        hotkey:,
+        target: :create
+      } do
+      control.label
+    end
+  end
+
+  def render_attach_button(control)
+    return unless can_attach?
+
+    a_link attach_path,
+      icon: "tabler/outline/link",
+      style: :text,
+      data: {
+        turbo_frame: Avo::MODAL_FRAME_ID,
+        target: :attach
+      } do
+      control.label
+    end
+  end
+
+  def row_controls_context?
+    is_a?(Avo::Index::ResourceControlsComponent)
+  end
+
+  def render_link_to(link)
+    # Anything outside CONTROL_OPTIONS is a plain HTML attribute (rel:, id:…) and
+    # rides ButtonComponent's `prop :args, kind: :**` wildcard onto the <a> tag.
+    a_link link.path,
+      **link.args.except(*Avo::Resources::Controls::BaseControl::CONTROL_OPTIONS),
+      color: link.color,
+      style: link.style,
+      icon: link.icon,
+      icon_class: link.icon_class,
+      title: link.title, target: link.target,
+      class: link.classes,
+      size: link.size,
+      data: {
+        **link.data,
+        tippy: link.title ? :tooltip : nil,
+      } do
+      link.label
+    end
+  end
+
+  def render_action(action)
+    return if !can_see_the_actions_button?
+    return if !action.action.visible_in_view(parent_resource: @parent_resource)
+
+    a_link action.path,
+      color: action.color,
+      style: action.style,
+      icon: action.icon,
+      icon_class: action.icon_class,
+      title: action.title,
+      size: action.size,
+      data: {
+        controller: "actions-picker",
+        turbo_frame: Avo::MODAL_FRAME_ID,
+        action_name: action.action.action_name,
+        tippy: action.title ? :tooltip : nil,
+        action: "click->actions-picker#visitAction",
+        turbo_prefetch: false,
+        # When action has record present behave as standalone and keep always active.
+        "actions-picker-target": (action.action.standalone || action.action.record.present?) ? "standaloneAction" : "resourceAction",
+        disabled: action.action.disabled?,
+        resource_name: action.action.resource.model_key
+      } do
+      action.label
+    end
+  end
+
+  def is_a_related_resource?
+    @reflection.present? && @resource.record.present?
+  end
+
+  def inverse_of
+    current_reflection = @reflection.active_record.reflect_on_all_associations.find do |reflection|
+      reflection.name == @reflection.name.to_sym
+    end
+
+    inverse_of = current_reflection.inverse_of
+
+    if inverse_of.blank? && Rails.env.development?
+      puts "WARNING! Avo uses the 'inverse_of' option to determine the inverse association and figure out if the association permit or not detaching."
+      # Ex: Please configure the 'inverse_of' option for the ':users' association on the 'Project' model.
+      puts "Please configure the 'inverse_of' option for the '#{current_reflection.macro} :#{current_reflection.name}' association on the '#{current_reflection.active_record.name}' model."
+      puts "Otherwise the detach button will be visible by default.\n\n"
+    end
+
+    inverse_of
+  end
+end

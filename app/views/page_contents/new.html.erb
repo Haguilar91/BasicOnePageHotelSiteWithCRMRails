@@ -1,0 +1,11 @@
+<% content_for :title, "New page content" %>
+
+<h1>New page content</h1>
+
+<%= render "form", page_content: @page_content %>
+
+<br>
+
+<div>
+  <%= link_to "Back to page contents", page_contents_path %>
+</div>

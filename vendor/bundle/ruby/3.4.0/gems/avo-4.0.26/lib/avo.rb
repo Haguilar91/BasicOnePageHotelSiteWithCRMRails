@@ -1,0 +1,224 @@
+require_relative "avo/engine_dsl"
+require_relative "avo/railtie_dsl"
+
+require "zeitwerk"
+require "net/http"
+require "active_support/inflector"
+require_relative "avo/version"
+require_relative "avo/tailwind_builder"
+require_relative "avo/configuration"
+require_relative "avo/engine" if defined?(Rails)
+
+loader = Zeitwerk::Loader.for_gem
+loader.inflector.inflect(
+  "html" => "HTML",
+  "uri_service" => "URIService",
+  "has_html_attributes" => "HasHTMLAttributes",
+  "engine_dsl" => "EngineDSL",
+  "plugin_dsl" => "PluginDSL",
+  "railtie_dsl" => "RailtieDSL"
+)
+loader.ignore("#{__dir__}/generators")
+loader.ignore("#{__dir__}/avo/engine_dsl.rb")
+loader.ignore("#{__dir__}/avo/plugin_dsl.rb")
+loader.ignore("#{__dir__}/avo/railtie_dsl.rb")
+loader.setup
+
+module Avo
+  ROOT_PATH = Pathname.new(File.join(__dir__, ".."))
+  IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
+  PACKED = !IN_DEVELOPMENT
+  COOKIES_KEY = "avo"
+
+  # Resizable-sidebar width bounds and starting width, in pixels. The server
+  # clamps the persisted `avo.sidebar.width` cookie to this range
+  # (Avo::ApplicationHelper#sidebar_width) and emits all three into
+  # window.Avo.configuration for the JS drag layer; the CSS clamp() in
+  # css/layout.css keeps a commented duplicate of the bounds.
+  #
+  # All three are private_constant. The BOUNDS have no host-facing knob by
+  # design. The DEFAULT does — `Avo.configuration.sidebar[:default_width]` — and
+  # this constant is only its fallback, so it must not become public API by
+  # accident either. Reachable inside Avo via unqualified lexical lookup (e.g.
+  # from Avo::Configuration and Avo::ApplicationHelper, both nested in Avo);
+  # views read them through the #sidebar_width_min / #sidebar_width_max /
+  # #sidebar_width_default helpers rather than the constants.
+  SIDEBAR_WIDTH_MIN = 200
+  SIDEBAR_WIDTH_MAX = 480
+  SIDEBAR_WIDTH_DEFAULT = 256
+  private_constant :SIDEBAR_WIDTH_MIN, :SIDEBAR_WIDTH_MAX, :SIDEBAR_WIDTH_DEFAULT
+
+  # Frame IDs
+  MODAL_FRAME_ID = :modal_frame
+  MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID = :media_library_item_details
+  ACTIONS_BACKGROUND_FRAME_ID = :actions_background
+
+  class LicenseVerificationTemperedError < StandardError; end
+
+  class LicenseInvalidError < StandardError; end
+
+  class NotAuthorizedError < StandardError; end
+
+  class ActionNotRegisteredError < StandardError
+    def initialize(action_id, resource_class)
+      super("Action '#{action_id}' is not registered on resource '#{resource_class}'.")
+    end
+  end
+
+  class NoPolicyError < StandardError; end
+
+  class MissingGemError < StandardError; end
+
+  class DeprecatedAPIError < StandardError; end
+
+  class ViewTypeComponentNotFoundError < StandardError; end
+
+  # Serializes Avo.boot so concurrent code reloads (config.to_prepare fires on
+  # every reload, from every request thread) can't interleave the plugin
+  # registry reset with its repopulation. See PluginManager#begin_reload.
+  @boot_mutex = Mutex.new
+
+  # Exception raised when a resource is missing
+  class MissingResourceError < StandardError
+    def initialize(model_class, field)
+      super(missing_resource_message(model_class, field))
+    end
+
+    private
+
+    def missing_resource_message(model_class, field)
+      model_name = model_class.to_s.underscore
+      field_name = field.id
+
+      "Failed to find a resource while rendering the :#{field_name} field.\n" \
+      "You may generate a resource for it by running 'rails generate avo:resource #{model_name.singularize}#{" --array" if field.type == "array"}'.\n" \
+      "\n" \
+      "Alternatively add the 'use_resource' option to the :#{field_name} field to specify a custom resource to be used.\n" \
+      "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/#{"array-" if field.type == "array"}resources.html."
+    end
+  end
+
+  class ResourceNotFoundError < StandardError
+    def initialize(resource_name)
+      super(
+        "Resource for '#{resource_name}' not found.\n" \
+        "You can generate a resource for it by running 'rails generate avo:resource #{resource_name}'."
+      )
+    end
+  end
+
+  class << self
+    attr_reader :logger
+    attr_reader :cache_store
+    attr_reader :field_manager
+    delegate :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
+
+    # Runs when the app boots up
+    def boot
+      @boot_mutex.synchronize do
+        Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
+        @logger = Avo.configuration.logger
+        @field_manager = Avo::Fields::FieldManager.build
+        @view_type_manager = nil # force re-init with defaults on next access
+        @cache_store = Avo.configuration.cache_store
+        Avo.plugin_manager.begin_reload
+        # Run load hooks for plugins to include them in the app.
+        # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
+        ActiveSupport.run_load_hooks(:avo_plugin_include, self)
+        ActiveSupport.run_load_hooks(:avo_boot, self)
+        Avo.plugin_manager.commit_reload
+      end
+      eager_load_actions
+    end
+
+    # Runs on each request
+    def init
+      Avo::Current.error_manager = Avo::ErrorManager.build
+      # Check rails version issues only on NON Production environments
+      unless Rails.env.production?
+        check_rails_version_issues
+        display_menu_editor_warning
+        display_profile_menu_editor_warning
+      end
+      Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
+      Avo::Current.tool_manager = Avo::Tools::ToolManager.build
+
+      ActiveSupport.run_load_hooks(:avo_init, self)
+    end
+
+    # Generate a dynamic root path using the URIService
+    def root_path(paths: [], query: {}, **args)
+      Avo::Services::URIService.parse(Avo::Current.view_context.avo.root_url.to_s)
+        .append_paths(paths)
+        .append_query(query)
+        .to_s
+    end
+
+    def app_status
+      :ok
+    end
+
+    def avo_dynamic_filters_installed?
+      defined?(Avo::DynamicFilters).present?
+    end
+
+    def mount_engines
+      -> {
+        raise "'mount_engines' method is now obsolete. \n" \
+          "Please refer to the upgrade guide for details on the new mounting point: \n" \
+          "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
+      }
+    end
+
+    def extra_gems
+      [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
+    end
+
+    def eager_load_actions
+      Rails.autoloaders.main.eager_load_namespace(Avo::Actions) if defined?(Avo::Actions)
+    end
+
+    def check_rails_version_issues
+      return if Rails.env.test?
+
+      if Rails.version.start_with?("7.1")
+        Avo.error_manager.add({
+          url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
+          target: "_blank",
+          message: "Due to a Rails 7.1 bug the following features won't work:\n\r
+                    - Dashboards\n\r
+                    - Ordering\n\r
+                    - Dynamic filters\n\r
+                    We recommend you upgrade to Rails 7.2\n\r
+                    Click banner for more information."
+        })
+      end
+    end
+
+    def display_menu_editor_warning
+      return if Avo.configuration.main_menu.nil?
+
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/4.0/menu-editor.html",
+        target: "_blank",
+        message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
+      })
+    end
+
+    def display_profile_menu_editor_warning
+      return if Avo.configuration.profile_menu.nil?
+
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/4.0/menu-editor.html#profile-menu",
+        target: "_blank",
+        message: "The profile menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
+      })
+    end
+  end
+end
+
+def 🥑
+  Avo
+end
+
+loader.eager_load if defined?(Rails)

@@ -1,0 +1,105 @@
+import { Controller } from '@hotwired/stimulus'
+
+export default class extends Controller {
+  static targets = ['panel']
+
+  checkbox = {}
+
+  get actionLinks() {
+    return document.querySelectorAll(
+      'a[data-actions-picker-target="resourceAction"]',
+    )
+  }
+
+  get currentIds() {
+    try {
+      return JSON.parse(this.stateHolderElement.dataset.selectedResources)
+    } catch (error) {
+      return []
+    }
+  }
+
+  set currentIds(value) {
+    this.stateHolderElement.dataset.selectedResources = JSON.stringify(value)
+
+    if (this.actionLinks.length > 0) {
+      if (value.length > 0) {
+        this.enableResourceActions()
+      } else {
+        this.disableResourceActions()
+      }
+    }
+  }
+
+  connect() {
+    this.resourceName = this.element.dataset.resourceName
+    this.resourceId = this.element.dataset.resourceId
+    this.stateHolderElement = document.querySelector(
+      `[data-selected-resources-name="${this.resourceName}"]`,
+    )
+  }
+
+  addToSelected() {
+    const ids = this.currentIds
+
+    ids.push(this.resourceId)
+
+    // Mark the row as selected if on table view
+    if (this.element.closest('tr')) {
+      this.element.closest('tr').classList.add('selected-row')
+    }
+
+    this.currentIds = ids
+  }
+
+  removeFromSelected() {
+    // Un-mark the row as selected if on table view
+    if (this.element.closest('tr')) {
+      this.element.closest('tr').classList.remove('selected-row')
+    }
+
+    this.currentIds = this.currentIds.filter(
+      (item) => item.toString() !== this.resourceId,
+    )
+  }
+
+  toggle(event) {
+    this.checkbox = event.target
+
+    if (this.checkbox.checked) {
+      this.addToSelected()
+    } else {
+      this.removeFromSelected()
+    }
+  }
+
+  enableResourceActions() {
+    this.actionLinks.forEach((link) => {
+      // Enable only if is on the same resource context
+      // Avoiding to enable unrelated actions when selecting items on a has many table
+      if (link.dataset.resourceName === this.resourceName) {
+        link.classList.remove(link.dataset.disabledClasses)
+        link.setAttribute('data-href', link.getAttribute('href'))
+        link.dataset.disabled = false
+        // Re-enabled actions rejoin the keyboard tab order.
+        link.removeAttribute('tabindex')
+        link.setAttribute('aria-disabled', 'false')
+      }
+    })
+  }
+
+  disableResourceActions() {
+    this.actionLinks.forEach((link) => {
+      // Disable only if is on the same resource context
+      // Avoiding to disable unrelated actions when selecting items on a has many table
+      if (link.dataset.resourceName === this.resourceName) {
+        link.classList.add(link.dataset.disabledClasses)
+        link.setAttribute('href', link.getAttribute('data-href'))
+        link.dataset.disabled = true
+        // Keep disabled actions out of the tab order and announce their state.
+        link.setAttribute('tabindex', '-1')
+        link.setAttribute('aria-disabled', 'true')
+      }
+    })
+  }
+}

@@ -1,0 +1,41 @@
+require_relative "base_generator"
+
+module Generators
+  module Avo
+    class AllResourcesGenerator < BaseGenerator
+      namespace "avo:all_resources"
+
+      def task
+        # Rails.application.eager_load!
+        # get all models
+        models = fetch_models
+        models.delete("ApplicationRecord")
+
+        models
+          .each do |model|
+            Rails::Generators.invoke "avo:resource", [model.underscore], {}
+          rescue => e
+            puts "Error: #{e.message}"
+          end
+      end
+
+      no_tasks do
+        def fetch_models
+          model_files = Dir[Rails.root.join("app/models/**/*.rb")]
+          model_files.filter_map do |file|
+            model_name = file.sub(Rails.root.join("app/models/").to_s, "").sub(".rb", "")
+            klass = model_name.camelize.constantize
+
+            next unless klass.is_a?(Class)
+            next unless klass < ActiveRecord::Base
+            next if klass.abstract_class?
+
+            model_name.camelize
+          rescue NameError
+            nil
+          end
+        end
+      end
+    end
+  end
+end

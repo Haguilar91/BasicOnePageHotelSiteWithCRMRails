@@ -1,0 +1,181 @@
+# requires all dependencies
+Gem.loaded_specs["avo"].dependencies.each do |d|
+  case d.name
+  when "activerecord"
+    require "active_record/railtie"
+  when "activesupport"
+    require "active_support/railtie"
+  when "actionview"
+    require "action_view/railtie"
+  when "activestorage"
+    require "active_storage/engine"
+  when "actiontext"
+    require "action_text/engine"
+  when "avo-icons"
+    require "avo/icons"
+  else
+    require d.name
+  end
+end
+
+# Check for avo-licensing as a transitive dependency
+# This handles cases where avo-licensing is a dependency of other avo gems
+if Gem.loaded_specs.key?("avo-licensing") && !defined?(Avo::Licensing)
+  require "avo/licensing"
+end
+
+module Avo
+  class Engine < ::Rails::Engine
+    isolate_namespace Avo
+
+    rake_tasks do
+      if ENV["BUILD_AVO_ASSETS"] == "true"
+        if Rake::Task.task_defined?("assets:precompile")
+          Rake::Task["assets:precompile"].enhance(["avo:build"])
+        end
+      end
+
+      if Avo::TailwindBuilder.enabled? && Rake::Task.task_defined?("assets:precompile")
+        Rake::Task["assets:precompile"].enhance(["avo:tailwindcss:build"])
+      end
+    end
+
+    initializer "avo.tailwindcss", after: :load_config_initializers do
+      next unless Rails.env.development?
+      next unless defined?(Rails::Server)
+
+      Rails.application.config.after_initialize do
+        next unless Avo::TailwindBuilder.enabled?
+
+        begin
+          unless Avo::TailwindBuilder.build
+            Rails.logger.warn "Avo: Custom Tailwind CSS auto-build failed (run bin/rails avo:tailwindcss:build for details)."
+          end
+        rescue => e
+          Rails.logger.warn "Avo: Failed to auto-build Tailwind CSS: #{e.message}"
+        end
+      end
+    end
+
+    config.after_initialize do
+      # Reset before reloads in development
+      ::Avo.asset_manager.reset
+
+      # Boot Avo
+      ::Avo.boot
+    end
+
+    # Ensure we reboot the app when something changes
+    config.to_prepare do
+      # Boot Avo
+      ::Avo.boot
+    end
+
+    initializer "avo.autoload" do |app|
+      # This undoes Rails' previous nested directories behavior in the `app` dir.
+      # More on this: https://github.com/fxn/zeitwerk/issues/250
+      avo_directory = Rails.root.join("app", "avo").to_s
+      engine_avo_directory = Engine.root.join("app", "avo").to_s
+
+      [avo_directory, engine_avo_directory].each do |directory_path|
+        ActiveSupport::Dependencies.autoload_paths.delete(directory_path)
+
+        if Dir.exist?(directory_path)
+          Rails.autoloaders.main.push_dir(directory_path, namespace: Avo)
+          app.config.watchable_dirs[directory_path] = [:rb]
+        end
+      end
+
+      # Add the mount_avo method to Rails
+      # rubocop:disable Style/ArgumentsForwarding
+      ActionDispatch::Routing::Mapper.include(Module.new {
+        def mount_avo(at: Avo.configuration.root_path, mount_lookbook: false, **options, &block)
+          Avo.configuration.mount_lookbook = mount_lookbook
+
+          mount Avo::Engine, at:, **options
+
+          scope at do
+            Avo.plugin_manager.engines.each do |engine|
+              mount engine[:klass], **engine[:options].dup
+            end
+
+            if block_given?
+              Avo::Engine.routes.draw(&block)
+            end
+          end
+        end
+      })
+      # rubocop:enable Style/ArgumentsForwarding
+    end
+
+    initializer "avo.reloader" do |app|
+      Avo::Reloader.new.tap do |reloader|
+        reloader.execute
+        app.reloaders << reloader
+        app.reloader.to_run { reloader.execute }
+      end
+    end
+
+    initializer "avo.test_buddy" do |app|
+      if Avo::IN_DEVELOPMENT
+        Rails.autoloaders.main.push_dir Engine.root.join("spec", "testing_helpers")
+      end
+    end
+
+    initializer "debug_exception_response_format" do |app|
+      app.config.debug_exception_response_format = :api
+    end
+
+    initializer "avo.assets-importmaps", before: "importmap" do |app|
+      if app.respond_to?(:importmap)
+        app.config.importmap.paths << Engine.root.join("config/importmap.rb")
+      end
+    end
+
+    initializer "avo.assets" do |app|
+      if app.config.respond_to?(:assets)
+        # Add Avo's assets to the asset pipeline
+        app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "images").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "svgs").to_s
+        # Expose the fonts directory to sprockets
+        app.config.assets.paths << Engine.root.join("app", "assets", "images", "avo").to_s
+
+        if defined?(::Sprockets)
+          # Tell sprockets where your assets are located
+          app.config.assets.precompile += %w[avo_manifest.js]
+
+          # Listed after avo_manifest.js on purpose. When the Tailwind integration is on, the
+          # app builds its own app/assets/builds/avo/application.css to replace the stock one
+          # we ship — but our avo_manifest.js and the app's manifest.js both `link_tree
+          # ../builds`, so two different files compile under the logical path
+          # avo/application.css and Sprockets keeps whichever it wrote last. Since we append
+          # our manifest after the app's, ours used to win and production served a stylesheet
+          # with none of the app's utilities in it. Silently: the build succeeded, the file was
+          # right there, and only the precompiled manifest pointed elsewhere.
+          #
+          # Naming the logical path here compiles it once more, last, and Sprockets resolves it
+          # through the load path — which picks the app's build when it has one (its
+          # app/assets/builds precedes ours) and our stock file when it doesn't. That also
+          # covers apps whose manifest.js doesn't link ../builds at all.
+          #
+          # Propshaft resolves through the load path to begin with, so it was never affected.
+          app.config.assets.precompile += %w[avo/application.css]
+        end
+      end
+    end
+
+    config.generators do |g|
+      g.test_framework :rspec, view_specs: false
+    end
+
+    generators do |app|
+      Rails::Generators.configure! app.config.generators
+      require_relative "../generators/model_generator"
+    end
+
+    initializer "avo.locales" do |app|
+      I18n.load_path += Dir[Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
+    end
+  end
+end

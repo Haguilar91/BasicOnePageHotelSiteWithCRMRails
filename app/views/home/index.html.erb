@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Mesón del Bosque - Experiencia Inolvidable</title>
+
+    <!-- Dynamic Favicon from Avo -->
+    <% brand_settings = PageContent.find_by(key: 'global') %>
+    <% if brand_settings&.favicon&.attached? %>
+      <link rel="icon" href="<%= url_for(brand_settings.favicon) %>">
+      <link rel="apple-touch-icon" href="<%= url_for(brand_settings.favicon) %>">
+    <% elsif brand_settings&.logo&.attached? %>
+      <!-- Fallback to the main brand logo if no separate favicon is uploaded -->
+      <link rel="icon" href="<%= url_for(brand_settings.logo) %>">
+      <link rel="apple-touch-icon" href="<%= url_for(brand_settings.logo) %>">
+    <% end %>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f172a;
+        }
+        
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .room-card {
+            transition: all 0.4s ease;
+        }
+        
+        .room-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .room-card img {
+            transition: transform 0.5s ease;
+        }
+        
+        .room-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 50%, #d4af37 100%);
+            background-size: 200% 200%;
+            animation: shine 3s ease infinite;
+        }
+        
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #d4af37;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+    
+    <!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            
+            <!-- Brand / Logo Section -->
+            <a href="#inicio" class="flex items-center">
+                <% brand_settings = PageContent.find_by(key: 'global') %>
+                <% if brand_settings&.logo&.attached? %>
+                    <img src="<%= url_for(brand_settings.logo) %>" 
+                         alt="Hotel Mesón del Bosque" 
+                         class="h-11 w-11 mr-3 rounded-full object-contain border border-amber-500/30">
+                <% else %>
+                    <i class="fas fa-landmark text-amber-500 text-2xl mr-3"></i>
+                <% end %>
+                <span class="font-serif text-xl font-bold">Hotel Mesón <span class="gradient-text">del Bosque</span></span>
+            </a>
+
+            <div class="hidden md:flex space-x-8">
+                <a href="#inicio" class="nav-link text-gray-300 hover:text-white transition">Inicio</a>
+                <a href="#habitaciones" class="nav-link text-gray-300 hover:text-white transition">Habitaciones</a>
+                <a href="#servicios" class="nav-link text-gray-300 hover:text-white transition">Servicios</a>
+                <a href="#contacto" class="nav-link text-gray-300 hover:text-white transition">Contacto</a>
+            </div>
+            <a href="#reservar" class="btn-gold text-slate-900 px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-amber-500/50 transition">
+                Reservar Ahora
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+  <% hero_bg_url = (@hero_image&.image&.attached?) ? url_for(@hero_image.image) : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80' %>
+  <section id="inicio" 
+           class="hero min-h-screen flex items-center justify-center"
+           style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<%= hero_bg_url %>'); background-size: cover; background-position: center; background-attachment: fixed;">
+      <div class="text-center px-4">
+          <p class="text-amber-500 tracking-widest mb-4 uppercase text-sm">Bienvenido al Hotel Mesón</p>
+          
+          <!-- Large Centered Hero Emblem -->
+          <% brand_settings = PageContent.find_by(key: 'global') %>
+          <% if brand_settings&.logo&.attached? %>
+              <img src="<%= url_for(brand_settings.logo) %>" 
+                   alt="Hotel Mesón del Bosque" 
+                   class="w-32 h-32 mx-auto mb-6 rounded-full object-contain border-2 border-amber-500/50 shadow-2xl">
+          <% end %>
+
+          <h1 class="text-5xl md:text-7xl font-bold mb-6">
+              <%= raw(PageContent.find_by(key: 'home_hero_title')&.content || 'Hotel Mesón') %>
+          </h1>
+          <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              <%= PageContent.find_by(key: 'home_hero_subtitle')&.content || 'Una experiencia de lujo en el corazón histórico de Querétaro' %>
+          </p>
+            </a>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="#habitaciones" class="btn-gold text-slate-900 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-amber-500/50 transition inline-flex items-center justify-center">
+                  <i class="fas fa-bed mr-2"></i> Ver Habitaciones
+              </a>
+              <a href="#reservar" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-slate-900 transition inline-flex items-center justify-center">
+                  <i class="fas fa-calendar-check mr-2"></i> Reservar
+              </a>
+          </div>
+      </div>
+  </section> 
+
+
+<!-- Features -->
+<section class="py-20 bg-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <% @features.each do |feature| %>
+              <div class="text-center p-6">
+                  <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-700 flex items-center justify-center">
+                      <i class="fas fa-<%= feature.icon.presence || 'star' %> text-amber-500 text-3xl"></i>
+                  </div>
+                  <h3 class="text-xl font-serif font-semibold mb-2"><%= feature.title %></h3>
+                  <p class="text-gray-400"><%= feature.description %></p>
+              </div>
+            <% end %>
+        </div>
+    </div>
+</section>
+
+    <!-- Rooms Section -->
+    <section id="habitaciones" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm"><%= PageContent.find_by(key: 'home_features_title')&.content || 'Nuestras Habitaciones' %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= PageContent.find_by(key: 'home_features_subtitle')&.content || 'Habitaciones Premium' %></h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Diseñadas para brindarte la máxima comodidad y tranquilidad</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <% (@rooms.presence || Room.order(:position, :id)).each do |room| %>
+                <div class="room-card bg-slate-800 rounded-2xl overflow-hidden shadow-xl <%= 'border-2 border-amber-500/30' if room.badge.present? %> fade-in">
+                    <div class="relative h-64 overflow-hidden">
+                        <% if room.photo.attached? %>
+                          <img src="<%= url_for(room.photo) %>" 
+                               alt="<%= room.name %>" 
+                               class="w-full h-full object-cover">
+                        <% else %>
+                          <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80" 
+                               alt="<%= room.name %>" 
+                               class="w-full h-full object-cover">
+                        <% end %>
+                        <% if room.price.present? %>
+                          <div class="absolute top-4 right-4 bg-amber-500 text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
+                              <%= room.price %>
+                          </div>
+                        <% end %>
+                        <% if room.badge.present? %>
+                          <div class="absolute top-4 left-4 bg-amber-500 text-slate-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
+                              <%= room.badge %>
+                          </div>
+                        <% end %>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-serif font-semibold mb-2"><%= room.name %></h3>
+                        <p class="text-gray-400 mb-4"><%= room.description %></p>
+                        <% if room.features.present? %>
+                          <ul class="text-sm text-gray-300 space-y-2 mb-6">
+                            <% room.features.split("\n").map(&:strip).reject(&:empty?).each do |feature| %>
+                              <li><i class="fas fa-check text-amber-500 mr-2"></i> <%= feature %></li>
+                            <% end %>
+                          </ul>
+                        <% end %>
+                        <% if room.booking_url.present? %>
+                          <a href="<%= room.booking_url %>" target="_blank" rel="noopener" class="block text-center <%= room.badge.present? ? 'bg-amber-500 text-slate-900 hover:bg-amber-600 font-semibold' : 'bg-slate-700 hover:bg-slate-600' %> py-3 rounded-lg transition">
+                              Reservar en <%= room.booking_url.include?('booking') ? 'Booking.com' : (room.booking_url.include?('airbnb') ? 'Airbnb' : 'Línea') %>
+                          </a>
+                        <% else %>
+                          <a href="#reservar" class="block text-center bg-slate-700 hover:bg-slate-600 py-3 rounded-lg transition">
+                              Reservar
+                          </a>
+                        <% end %>
+                    </div>
+                </div>
+                <% end %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section (Experiencias Extraordinarias) -->
+    <section id="servicios" class="py-20 bg-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm">Nuestros Servicios</p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold">Experiencias Extraordinarias</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <% (@experiences.presence || Experience.order(:position, :id)).each_with_index do |exp, idx| %>
+                <div class="testimonial-card p-6 rounded-2xl text-center floating" style="animation-delay: <%= idx * 0.2 %>s;">
+                    <% if exp.icon_image.attached? %>
+                      <img src="<%= url_for(exp.icon_image) %>" alt="<%= exp.title %>" class="w-12 h-12 mx-auto mb-4 object-contain">
+                    <% else %>
+                      <i class="fas fa-<%= exp.icon.presence || 'star' %> text-4xl text-amber-500 mb-4"></i>
+                    <% end %>
+                    <h3 class="text-lg font-semibold mb-2"><%= exp.title %></h3>
+                    <p class="text-gray-400 text-sm"><%= exp.description %></p>
+                </div>
+                <% end %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="contacto" class="py-20">
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm">Ubicación</p>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= PageContent.find_by(key: 'home_location_title')&.content || 'En el Corazón de Querétaro' %></h2>
+                    <p class="text-gray-300 mb-6">
+                        <%= PageContent.find_by(key: 'home_location_desc')&.content || 'Nuestra ubicación privilegiada en el centro histórico de Querétaro te permite disfrutar de la historia, la cultura y el colonialismo en un solo lugar.' %>
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas map-marker-alt text-amber-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-semibold">Dirección</h4>
+                                <p class="text-gray-400"><%= PageContent.find_by(key: 'address_line')&.content || 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México' %></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas phone text-amber-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-semibold">Teléfono</h4>
+                                <p class="text-gray-400"><%= PageContent.find_by(key: 'contact_phone')&.content || '+52 442 212 3456' %></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas envelope text-amber-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-semibold">Email</h4>
+                                <p class="text-gray-400"><%= PageContent.find_by(key: 'contact_email')&.content || 'info@hotelmeson.com' %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-2xl overflow-hidden shadow-2xl fade-in">
+<iframe 
+  src="<%= PageContent.find_by(key: 'map_iframe_url')&.content || 'https://maps.google.com/maps?q=Calle+Ignacio+Allende+Norte+82,+Centro+Historico,+Queretaro,+Mexico&t=&z=16&ie=UTF8&iwloc=&output=embed' %>" 
+  width="100%" 
+  height="400" 
+  style="border:0;" 
+  allowfullscreen="" 
+  loading="lazy">
+</iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="reservar" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-amber-500/10"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center fade-in">
+            <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= PageContent.find_by(key: 'cta_title')&.content || '¡Listo para una experiencia inolvidable?' %></h2>
+            <p class="text-xl text-gray-300 mb-8">
+                <%= PageContent.find_by(key: 'cta_subtitle')&.content || 'Reserva ahora y disfruta de las mejores tarifas de temporada' %>
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="tel:+524422123456" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-amber-500/50 transition inline-flex items-center justify-center">
+                    <i class="fas phone-alt mr-2"></i> Llamar Ahora
+                </a>
+                <a href="mailto:info@hotelmeson.com" class="bg-slate-700 hover:bg-slate-600 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center">
+                    <i class="fas envelope mr-2"></i> Enviar Email
+                </a>
+            </div>
+        </div>
+    </section>
+
+<!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Brand / Logo Column -->
+                <div>
+                    <a href="#inicio" class="flex items-center mb-4 inline-flex">
+                        <% brand_settings = PageContent.find_by(key: 'global') %>
+                        <% if brand_settings&.logo&.attached? %>
+                            <img src="<%= url_for(brand_settings.logo) %>" 
+                                 alt="Hotel Mesón del Bosque" 
+                                 class="h-12 w-12 mr-3 rounded-full object-contain border border-amber-500/30 shadow-md">
+                        <% else %>
+                            <i class="fas fa-landmark text-amber-500 text-2xl mr-3"></i>
+                        <% end %>
+                        <span class="font-serif text-xl font-bold">Hotel Mesón <span class="gradient-text">del Bosque</span></span>
+                    </a>
+                    <p class="text-gray-400">
+                        <%= PageContent.find_by(key: 'home_hero_subtitle')&.content || 'Su mejor descanso en Querétaro, Qro.' %>
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#inicio" class="hover:text-amber-500 transition">Inicio</a></li>
+                        <li><a href="#habitaciones" class="hover:text-amber-500 transition">Habitaciones</a></li>
+                        <li><a href="#servicios" class="hover:text-amber-500 transition">Servicios</a></li>
+                        <li><a href="#contacto" class="hover:text-amber-500 transition">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Síguenos</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Hotel Mesón del Bosque. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Navbar background on scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-slate-900/95');
+            } else {
+                nav.classList.remove('bg-slate-900/95');
+            }
+        });
+
+    </script>
+</body>
+</html>

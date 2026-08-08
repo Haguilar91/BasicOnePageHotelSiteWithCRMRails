@@ -1,0 +1,324 @@
+module Avo
+  module Concerns
+    module HasItems
+      extend ActiveSupport::Concern
+
+      attr_writer :items_holder
+
+      delegate :invalid_fields, to: :items_holder
+
+      delegate :field, to: :items_holder
+      delegate :panel, to: :items_holder
+      delegate :card, to: :items_holder
+      delegate :tabs, to: :items_holder
+      delegate :tool, to: :items_holder
+      delegate :heading, to: :items_holder
+      delegate :sidebar, to: :items_holder
+      delegate :header, to: :items_holder
+      delegate :collaboration_timeline, to: :items_holder
+
+      def items_holder
+        @items_holder || Avo::Resources::Items::Holder.new
+      end
+
+      # def items
+      #   items_holder.items
+      # end
+
+      def invalid_fields
+        invalid_fields = items_holder.invalid_fields
+
+        items_holder.items.each do |item|
+          if item.respond_to? :items
+            invalid_fields += item.invalid_fields
+          end
+        end
+
+        invalid_fields
+      end
+
+      def fields(**args)
+        self.class.fields(**args)
+      end
+
+      def tab_groups
+        self.class.tab_groups
+      end
+
+      # Dives deep into panels and tabs to fetch all the fields for a resource.
+      def only_fields(only_root: false)
+        fields = []
+
+        items.each do |item|
+          next if item.nil?
+
+          if only_root
+            # When only_root == true we want to extract the panel and card items
+            if item.is_panel? || item.is_card?
+              if item.visible_in_view?(view: view)
+                fields << extract_fields(item)
+              end
+            end
+          else
+            # Dive into panels to fetch their fields
+            if item.is_panel?
+              fields << extract_fields(item)
+            end
+
+            # Dive into tabs to fetch their fields
+            if item.is_tab_group?
+              item.items.map do |tab|
+                fields << extract_fields(tab)
+              end
+            end
+
+            # Dive into sidebar to fetch their fields
+            if item.is_sidebar?
+              fields << extract_fields(item)
+            end
+
+            if item.is_card?
+              fields << extract_fields(item)
+            end
+          end
+
+          if item.is_field?
+            fields << item
+          end
+        end
+
+        fields.flatten
+      end
+
+      def get_field_definitions(only_root: false)
+        only_fields(only_root:).map do |field|
+          # When nested field hydrate the field with the nested resource
+          resource = if field.try(:nested_on?, view)
+            Avo.resource_manager.get_resource_by_model_class(model_class.reflections[field.id.to_s].klass)
+              .new(view:, params:)
+              .detect_fields
+          else
+            self
+          end
+
+          field.hydrate(resource:, user:, view:, record: resource.record)
+        end
+      end
+
+      def get_preview_fields
+        get_field_definitions.select do |field|
+          field.visible_in_view?(view: :preview)
+        end
+      end
+
+      def get_fields(panel: nil, reflection: nil, only_root: false)
+        fields = get_field_definitions(only_root: only_root)
+          .select do |field|
+            # Get the fields for this view
+            field.visible_in_view?(view: view)
+          end
+          .select do |field|
+            field.visible?
+          end
+          .select do |field|
+            is_valid = true
+
+            # Strip out the reflection field in index queries with a parent association.
+            if reflection.present?
+              # regular non-polymorphic association
+              # we're matching the reflection inverse_of foriegn key with the field's foreign_key
+              if field.is_a?(Avo::Fields::BelongsToField)
+                if field.respond_to?(:foreign_key) &&
+                    reflection.inverse_of.present? &&
+                    reflection.inverse_of.respond_to?(:foreign_key) &&
+                    reflection.inverse_of.foreign_key == field.foreign_key
+                  is_valid = false
+                end
+
+                # polymorphic association
+                if field.respond_to?(:foreign_key) &&
+                    field.is_polymorphic? &&
+                    reflection.respond_to?(:polymorphic?) &&
+                    reflection.inverse_of.respond_to?(:foreign_key) &&
+                    reflection.inverse_of.foreign_key == field.reflection.foreign_key
+                  is_valid = false
+                end
+              end
+            end
+
+            is_valid
+          end
+
+        if panel.present?
+          fields = fields.select do |field|
+            field.panel_name == panel
+          end
+        end
+
+        # hydrate_fields fields
+        fields.map do |field|
+          field.dup.hydrate(record: @record, view: @view, resource: self)
+        end
+      end
+
+      def get_field(id)
+        get_field_definitions.find do |f|
+          f.id == id.to_sym
+        end
+      end
+
+      # Default renderable items for any HasItems container. Subclasses that
+      # need to auto-wrap (Tab, Panel, Sidebar, Resource) override this.
+      # Card and TabGroup fall through to the raw visible_items.
+      def get_items
+        visible_items
+      end
+
+      # Groups consecutive "standalone" fields (fields that don't bring their
+      # own panel — text, select, date, etc.) into cards, so containers like
+      # Panel/Sidebar/Tab render a nice card background around them even when
+      # the user forgot to write `card do ... end` themselves. Fields that
+      # have their own panel (has_many, has_and_belongs_to_many, has_one,
+      # belongs_to) and explicit panels/cards pass through untouched and
+      # break the run, so you get separate cards around each group.
+      def items_with_standalone_fields_wrapped_in_cards
+        grouped_items = visible_items.slice_when do |prev, curr|
+          is_standalone?(prev) != is_standalone?(curr)
+        end.to_a.map do |group|
+          {elements: group, is_standalone: is_standalone?(group.first)}
+        end
+
+        grouped_items.select { |group| group[:is_standalone] }.each do |group|
+          card = Avo::Resources::Items::Card.new
+          hydrate_item card
+          card.items_holder.items = group[:elements]
+          group[:elements] = card
+        end
+
+        grouped_items.flat_map { |group| group[:elements] }
+      end
+
+      def items
+        items_holder&.items || []
+      end
+
+      def visible_items
+        items
+          .map do |item|
+            hydrate_item item
+
+            if item.is_a? Avo::Resources::Items::TabGroup
+              # Set the target to _top for all belongs_to fields in the tab group
+              item.items.grep(Avo::Resources::Items::Tab).each do |tab|
+                tab.items.grep(Avo::Resources::Items::Panel).each do |panel|
+                  set_target_to_top panel.items.grep(Avo::Fields::BelongsToField)
+                end
+              end
+            end
+
+            item
+          end
+          .select do |item|
+            item.visible?
+          end
+          .select do |item|
+            if item.respond_to?(:visible_in_view?)
+              item.visible_in_view? view: view
+            else
+              true
+            end
+          end
+          .select do |item|
+            # Check if record has the setter method
+            # Next if the view is not on forms
+            next true if !view.in?(%w[edit update new create])
+
+            # Skip items that don't have an id
+            next true if !item.respond_to?(:id)
+
+            # Skip tab groups and tabs
+            # Skip headings
+            # Skip location fields
+            # On location field we can have field coordinates and setters with different names
+            #   like latitude and longitude
+            next true if item.is_a?(Avo::Resources::Items::TabGroup) ||
+              item.is_a?(Avo::Resources::Items::Tab) ||
+              item.is_heading? ||
+              item.is_a?(Avo::Fields::LocationField) ||
+              item.is_header?
+
+            # Skip nested fields
+            next true if item.try(:nested_on?, view)
+
+            # When the resource is a form, we want to show all items even if there is no setter method
+            next true if defined?(Avo::Forms::Core::Resources::FormResource) && try(:resource).is_a?(Avo::Forms::Core::Resources::FormResource)
+
+            item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
+          end
+          .select do |item|
+            # Check if the user is authorized to view it.
+            # This is usually used for has_* fields
+            if item.respond_to? :authorized?
+              item.authorized?
+            else
+              true
+            end
+          end
+          .select do |item|
+            !item.is_a?(Avo::Resources::Items::Sidebar)
+          end.compact
+      end
+
+      def is_empty?
+        visible_items.blank?
+      end
+
+      private
+
+      def set_target_to_top(fields)
+        fields.each do |field|
+          field.target = :_top
+        end
+      end
+
+      # Extracts fields from a structure
+      # Structures can be panels, cards, and sidebars
+      def extract_fields(structure)
+        structure.items.map do |item|
+          if item.is_field?
+            item
+          elsif extractable_structure?(item)
+            extract_fields(item)
+          end
+        end.compact
+      end
+
+      # Extractable structures are panels, cards, and sidebars
+      # Sidebars are only extractable if they are not on the index view
+      def extractable_structure?(structure)
+        structure.is_panel? || structure.is_card? || (structure.is_sidebar? && !view.index?)
+      end
+
+      # Standalone items are fields that don't have their own panel
+      def is_standalone?(item)
+        item.is_field? && !item.has_own_panel?
+      end
+
+      def hydrate_item(item)
+        return unless item.respond_to? :hydrate
+
+        # Use self when this is executed from a resource context, call resource otherwise.
+        the_resource = self.class.ancestors.include?(Avo::Resources::Base) ? self : resource
+
+        if view.form? && item.try(:nested_on?, view)
+          nested_resource = Avo.resource_manager
+            .get_resource_by_model_class(the_resource.model_class.reflections[item.id.to_s].klass)
+            .new(view:)
+            .detect_fields
+        end
+
+        item.hydrate(view:, resource: nested_resource || the_resource)
+      end
+    end
+  end
+end

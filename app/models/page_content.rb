@@ -1,0 +1,8 @@
+class PageContent < ApplicationRecord
+  has_many_attached :images
+  
+  # Specific attachments for brand assets
+  has_one_attached :logo
+  has_one_attached :favicon
+  has_one_attached :app_icon
+end

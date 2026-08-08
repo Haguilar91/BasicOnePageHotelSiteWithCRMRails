@@ -1,0 +1,133 @@
+# frozen_string_literal: true
+
+class Avo::TabGroupComponent < Avo::BaseComponent
+  delegate :group_param, to: :@group
+
+  prop :resource, reader: :public
+  # variable @group was changed with group to avoid cases where we need to pass down the group object as a prop
+  prop :group, reader: :public
+  prop :index, reader: :public
+  prop :form, reader: :public
+  prop :params, reader: :public
+  prop :view, reader: :public
+
+  def after_initialize
+    group.index = index
+  end
+
+  def render?
+    tabs_have_content? && visible_tabs.present?
+  end
+
+  def frame_args(tab)
+    args = {
+      target: :_top,
+      class: "block"
+    }
+
+    if is_not_loaded?(tab)
+      args[:loading] = :lazy
+      args[:src] = manual_frame_url(tab)
+    end
+
+    args
+  end
+
+  # The deferred load URL for a tab's turbo frame. Mirrors the `src` the lazy
+  # branch builds in `frame_args`, so a manual tab's Load button fetches the
+  # exact same proven URL — carrying `tab_turbo_frame` so `is_not_loaded?` is
+  # false on the framed re-render and the real `TabContentComponent` renders.
+  def manual_frame_url(tab)
+    helpers.resource_path(
+      resource: resource,
+      record: resource.record,
+      keep_query_params: true,
+      active_tab_title: tab.title,
+      tab_turbo_frame: tab.turbo_frame_id(parent: group)
+    )
+  end
+
+  def is_not_loaded?(tab)
+    params[:tab_turbo_frame] != tab.turbo_frame_id(parent: group)
+  end
+
+  def tabs_have_content?
+    visible_tabs.present?
+  end
+
+  def active_tab_title
+    requested_tab_title = CGI.unescape(params[group_param].to_s)
+    visible_tab_titles = visible_tabs.map { |tab| tab.title.to_s }
+
+    if requested_tab_title.present? && visible_tab_titles.include?(requested_tab_title)
+      requested_tab_title
+    else
+      visible_tab_titles.first
+    end
+  end
+
+  def tabs
+    group.visible_items.map do |tab|
+      tab.hydrate(view: view)
+    end
+  end
+
+  def visible_tabs
+    tabs.select do |tab|
+      tab.visible?
+    end
+  end
+
+  def active_tab
+    visible_tabs.find do |tab|
+      tab.title.to_s == active_tab_title.to_s
+    end
+  end
+
+  def args(tab)
+    {
+      # Hide the turbo frames that aren't in the current tab
+      # This way we can lazy load the un-selected tabs on the show view
+      class: "block space-y-4 #{"hidden" unless tab.title == active_tab_title}",
+      data: {
+        # Add a marker to know if we already loaded a turbo frame
+        loaded: tab.title == active_tab_title,
+        tabs_target: :tabPanel,
+        tab_id: tab.title,
+      }
+    }
+  end
+
+  def tab_path(tab)
+    base_options = {
+      resource: resource,
+      keep_query_params: true,
+      active_tab_title: tab.title,
+      tab_turbo_frame: group.turbo_frame_id
+    }
+
+    if view.in?(%w[edit update])
+      helpers.edit_resource_path(**base_options, record: resource.record)
+    elsif view.in?(%w[new create])
+      helpers.new_resource_path(**base_options)
+    else
+      helpers.resource_path(**base_options, record: resource.record)
+    end
+  end
+
+  def tab_data(tab, current_tab)
+    data = {
+      action: "click->tabs#changeTab",
+      tabs_tab_name_param: tab.title,
+      tabs_group_id_param: group.to_param,
+      tabs_resource_name_param: resource.underscore_name,
+      selected: tab_active?(tab, current_tab)
+    }
+    data[:tippy] = "tooltip" if tab.description.present?
+    data
+  end
+
+  def tab_active?(tab, current_tab)
+    tab.title == current_tab.title
+  end
+end

@@ -1,0 +1,139 @@
+# frozen_string_literal: true
+
+class Avo::FieldWrapperComponent < Avo::BaseComponent
+  include Avo::Concerns::HasResourceStimulusControllers
+
+  prop :dash_if_blank, default: true
+  prop :data, default: {}.freeze
+  prop :density, default: :default
+  prop :help
+  prop :label_help
+  prop :field
+  prop :form
+  prop :full_width, default: false
+  prop :label
+  prop :resource
+  prop :stacked
+  prop :style, default: ""
+  prop :view, default: Avo::ViewInquirer.new(:show).freeze
+  prop :label_for do |value|
+    value&.to_sym
+  end
+  prop :args, kind: :**, default: {}.freeze
+
+  def after_initialize
+    @action = @field.action
+    @classes = @args.dig(:class) || ""
+  end
+
+  def classes(extra_classes = "")
+    class_names("field-wrapper",
+      @classes,
+      extra_classes,
+      @field.width_class,
+      @field.get_html(:classes, view: @view, element: :wrapper),
+      {
+        "field-wrapper--stacked": stacked?,
+        "field-wrapper--full-width": full_width?,
+        "field-wrapper--density-#{@density}": @density && @density != :default,
+      })
+  end
+
+  def style
+    "#{@style} #{@field.get_html(:style, view: @view, element: :wrapper)}"
+  end
+
+  def label_classes
+    class_names("field-wrapper__label", @field.get_html(:classes, view: @view, element: :label))
+  end
+
+  # Returned as-is so a blank value stays `nil` and `content_tag` omits the
+  # attribute instead of rendering an empty `style` on every field wrapper.
+  def label_style
+    @field.get_html(:style, view: @view, element: :label)
+  end
+
+  # The slot goes first so field-declared data merges on top of it rather than
+  # replacing it — `[data-slot="label"]` is a selector the app relies on.
+  def label_data
+    {slot: "label"}.merge(@field.get_html(:data, view: @view, element: :label))
+  end
+
+  def content_classes
+    class_names("field-wrapper__content", @field.get_html(:classes, view: @view, element: :content))
+  end
+
+  def content_style
+    @field.get_html(:style, view: @view, element: :content)
+  end
+
+  def content_data
+    {slot: "value"}.merge(@field.get_html(:data, view: @view, element: :content))
+  end
+
+  def label
+    @label || @field.name
+  end
+
+  def label_for
+    @label_for || @field.form_field_label
+  end
+
+  delegate :show?, :edit?, to: :@view, prefix: :on
+
+  def help
+    Avo::ExecutionContext.new(target: @help || @field.help, record: record, resource: @resource, view: @view).handle
+  end
+
+  def label_help
+    Avo::ExecutionContext.new(target: @label_help || @field.label_help, record: record, resource: @resource, view: @view).handle
+  end
+
+  def record
+    @resource.present? ? @resource.record : nil
+  end
+
+  def data
+    attributes = {
+      field_id: @field.id,
+      field_type: @field.type,
+      **@data
+    }
+
+    # Fetch the data attributes off the html option
+    wrapper_data_attributes = @field.get_html :data, view: @view, element: :wrapper
+    if wrapper_data_attributes.present?
+      attributes.merge! wrapper_data_attributes
+    end
+
+    # Add the built-in stimulus integration data tags.
+    if @resource.present?
+      add_stimulus_attributes_for(@resource, attributes)
+    end
+
+    if @action.present?
+      add_stimulus_attributes_for(@action, attributes)
+    end
+
+    attributes
+  end
+
+  def stacked?
+    # Override on the declaration level
+    return @stacked unless @stacked.nil?
+
+    # Fetch it from the field
+    return @field.stacked unless @field.stacked.nil?
+
+    # Fallback to defaults
+    Avo.configuration.field_wrapper_layout == :stacked
+  end
+
+  def full_width?
+    @full_width
+  end
+
+  def render_dash?
+    @field.value.blank? && @dash_if_blank
+  end
+end

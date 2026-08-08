@@ -1,0 +1,43 @@
+/* eslint-disable camelcase */
+import { StreamActions } from '@hotwired/turbo'
+import { saveAs } from 'file-saver'
+
+// TODO: move these to the avo_filters gem
+
+StreamActions.close_filters_dropdown = function () {
+  const el = document.querySelector('.filters-dropdown-selector[open]')
+  if (el) el.close()
+}
+
+// Uses Turbo to refresh the page
+StreamActions.turbo_reload = function () {
+  window.Turbo.visit(window.location.href, { action: 'replace' })
+}
+// END TODO: move these to the avo_filters gem
+
+// https://stackoverflow.com/a/77850750/9067704
+StreamActions.download = function () {
+  const byteCharacters = atob(this.getAttribute('content'))
+  const byteNumbers = new Array(byteCharacters.length)
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i)
+  }
+  const byteArray = new Uint8Array(byteNumbers)
+
+  saveAs(
+    new Blob(
+      [byteArray],
+    ),
+    this.getAttribute('filename'),
+  )
+}
+
+// Overriding the turbo_power as it needs the timeout to work
+
+StreamActions.turbo_progress_bar_hide = function () {
+  setTimeout(() => {
+    window.Turbo.navigator.adapter.progressBar.hide()
+  }, 1)
+}
+
+window.StreamActions = StreamActions

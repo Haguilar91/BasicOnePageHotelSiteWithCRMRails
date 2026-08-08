@@ -1,0 +1,123 @@
+/* EDIT STYLES */
+
+.tiptap {
+  @apply m-0 p-4 outline-hidden min-h-44;
+
+  >*+* {
+    @apply mt-4;
+  }
+
+  ul,
+  ol {
+    @apply ps-6 list-outside;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+}
+
+.tiptap__field {
+  @apply w-full mb-4 rounded-lg border border-tertiary;
+}
+
+.tiptap__editor {
+  @apply border-none;
+}
+
+.tiptap__toolbar {
+  @apply flex items-center justify-between px-3 py-2 rounded-t-lg border border-tertiary bg-secondary;
+}
+
+.tiptap__toolbar-area {
+  @apply flex flex-wrap items-center sm:divide-x sm:rtl:divide-x-reverse divide-tertiary;
+  --tw-divide-opacity: 1;
+}
+
+.tiptap__button-group {
+  @apply flex flex-wrap items-center space-x-1 rtl:space-x-reverse;
+
+  &:not(:first-child):not(:last-child) {
+    @apply px-4;
+  }
+
+  &:first-child {
+    @apply pe-4;
+  }
+
+  &:last-child {
+    @apply ps-4;
+  }
+}
+
+.tiptap__button {
+  @apply p-1 rounded-sm cursor-pointer;
+
+  &:hover:enabled {
+    background-color: var(--color-tertiary);
+  }
+
+  &:active:enabled {
+    @apply bg-tertiary;
+  }
+
+  &:disabled {
+    @apply cursor-default text-content-secondary;
+  }
+
+  svg {
+    @apply block h-6;
+    stroke: var(--color-content);
+  }
+}
+
+.tiptap__button--selected {
+  @apply bg-tertiary;
+}
+
+/* LINK STYLES */
+
+.tiptap__link-area {
+  @apply opacity-100 transition-all;
+}
+
+.tiptap__link-field {
+  &::placeholder {
+    @apply italic text-content-secondary;
+  }
+
+  &:focus::placeholder {
+    @apply text-transparent;
+  }
+}
+
+.tiptap__link-field {
+  @apply text-sm me-2 py-1 rounded-lg border border-tertiary bg-primary text-content;
+}
+
+/* SHOW STYLES */
+
+.tiptap__content {
+  @apply py-2 max-w-4xl text-content;
+
+  >*+* {
+    @apply mt-4;
+  }
+
+  ul,
+  ol {
+    @apply ps-6 list-outside;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+}

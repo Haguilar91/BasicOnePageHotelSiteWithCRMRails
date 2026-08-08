@@ -1,0 +1,120 @@
+# frozen_string_literal: true
+
+class Avo::BaseComponent < ViewComponent::Base
+  extend PropInitializer::Properties
+  include Turbo::FramesHelper
+  include Avo::Concerns::FindAssociationField
+  include Avo::ApplicationHelper
+
+  delegate :e, to: :helpers
+  delegate :d, to: :helpers
+  delegate :main_app, to: :helpers
+  delegate :avo, to: :helpers
+  delegate :ui, to: :helpers
+  delegate :svg, to: :helpers
+
+  def component_name = self.class.name.to_s.underscore
+
+  # Renders a <kbd> badge for a hotkey string.
+  # Supports modifier tokens rendered in a friendly OS-aware way.
+  def hotkey_badge(hotkey, **html_options)
+    return unless Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges]
+
+    # `@github/hotkey` uses:
+    # - `+` for modifier combos (e.g. "Mod+Enter")
+    # - spaces for sequences/alternatives (e.g. "g n" or "Meta+Enter Control+Enter")
+    #
+    # Render key parts for the badge, mapping supported modifiers to OS-aware glyphs.
+    keys = hotkey.to_s.split(/[+\s]+/).reject(&:blank?)
+
+    first_key = keys.first
+    return if first_key.blank?
+
+    html_options[:class] = class_names("hotkey-badge", html_options[:class])
+
+    content_tag(:span, **html_options) do
+      # Render multiple keys (e.g. "g n") inside a wrapper so any provided
+      # classes (like `ms-auto`) are applied once.
+      safe_join(keys.map { |key| render_hotkey_badge_key(key) }, " ")
+    end
+  end
+
+  private
+
+  def render_hotkey_badge_key(key)
+    token = key.to_s.strip
+
+    case token.downcase
+    when "mod"
+      tag.kbd do
+        helpers.safe_join([
+          tag.abbr("⌘", title: "Command", class: "no-underline os-pc:hidden"),
+          tag.abbr("CTRL", title: "CTRL", class: "no-underline os-mac:hidden")
+        ])
+      end
+    when "enter", "return"
+      tag.kbd("↵")
+    when "escape"
+      tag.kbd("Esc")
+    else
+      tag.kbd(token.upcase)
+    end
+  end
+
+  # Use the @parent_resource to fetch the field using the @reflection name.
+  def field
+    find_association_field(resource: @parent_resource, association: params[:related_name] || @reflection.name)
+  rescue
+    nil
+  end
+
+  # Fetch the resource and hydrate it with the record
+  def association_resource
+    resource = Avo.resource_manager.get_resource(params[:via_resource_class])
+
+    model_class = if params[:via_relation_class].present?
+      ::Avo::BaseResource.get_model_by_name params[:via_relation_class]
+    else
+      resource.model_class
+    end
+
+    resource = Avo.resource_manager.get_resource_by_model_class model_class if resource.blank?
+
+    record = resource.find_record params[:via_record_id], query: model_class, params: params
+
+    resource.new record: record
+  end
+
+  # Get the resource for the resource using the klass attribute so we get the namespace too
+  def reflection_resource
+    Avo.resource_manager.get_resource_by_model_class(@reflection.klass.to_s)
+  rescue
+    nil
+  end
+
+  # Get the resource for the resource using the klass attribute so we get the namespace too
+  def reflection_parent_resource
+    Avo.resource_manager.get_resource_by_model_class(@reflection.active_record.to_s)
+  rescue
+    nil
+  end
+
+  def parent_or_child_resource
+    return @resource unless link_to_child_resource_is_enabled?
+    return @resource if @resource.record.class.base_class == @resource.record.class
+
+    Avo.resource_manager.get_resource_by_model_class(@resource.record.class) || @resource
+  end
+
+  def link_to_child_resource_is_enabled?
+    enabled = field_linked_to_child_resource? if @parent_resource
+    return enabled unless enabled.nil?
+
+    @resource.link_to_child_resource
+  end
+
+  def field_linked_to_child_resource?
+    resolved_field = @reflection ? @parent_resource.get_field(params[:for_attribute] || @reflection.name) : field
+    resolved_field.link_to_child_resource if resolved_field.respond_to?(:link_to_child_resource)
+  end
+end
