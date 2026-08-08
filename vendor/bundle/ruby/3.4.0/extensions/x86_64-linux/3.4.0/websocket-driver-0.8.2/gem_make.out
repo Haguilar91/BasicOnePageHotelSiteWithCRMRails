@@ -1,0 +1,21 @@
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/websocket-driver-0.8.2/ext/websocket-driver
+/usr/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/websocket-driver-0.8.2/ext/websocket-driver
+make -j3 DESTDIR\= sitearchdir\=./.gem.20260802-3386477-i5kscs sitelibdir\=./.gem.20260802-3386477-i5kscs clean
+make: warning: -j3 forced in submake: resetting jobserver mode.
+
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/websocket-driver-0.8.2/ext/websocket-driver
+make -j3 DESTDIR\= sitearchdir\=./.gem.20260802-3386477-i5kscs sitelibdir\=./.gem.20260802-3386477-i5kscs
+make: warning: -j3 forced in submake: resetting jobserver mode.
+compiling websocket_mask.c
+linking shared-object websocket_mask.so
+
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/websocket-driver-0.8.2/ext/websocket-driver
+make -j3 DESTDIR\= sitearchdir\=./.gem.20260802-3386477-i5kscs sitelibdir\=./.gem.20260802-3386477-i5kscs install
+make: warning: -j3 forced in submake: resetting jobserver mode.
+/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20260802-3386477-i5kscs
+
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/websocket-driver-0.8.2/ext/websocket-driver
+make DESTDIR\= sitearchdir\=./.gem.20260802-3386477-i5kscs sitelibdir\=./.gem.20260802-3386477-i5kscs clean

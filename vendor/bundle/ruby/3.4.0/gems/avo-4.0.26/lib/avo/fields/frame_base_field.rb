@@ -1,0 +1,147 @@
+module Avo
+  module Fields
+    class FrameBaseField < BaseField
+      include Avo::Fields::Concerns::UseResource
+      include Avo::Fields::Concerns::ReloadIcon
+      include Avo::Fields::Concerns::LinkableTitle
+      include Avo::Concerns::HasDescription
+      include Avo::Concerns::FrameLoadingMode
+
+      def initialize(id, **args, &block)
+        super
+
+        @use_resource = args[:use_resource]
+        @reloadable = args[:reloadable]
+        @linkable = args[:linkable]
+        @description = args[:description]
+        @loading = args[:loading]
+      end
+
+      def field_resource
+        resource || get_resource_by_model_class(@record.class)
+      end
+
+      def turbo_frame
+        "#{self.class.name.demodulize.to_s.underscore}_show_#{@id}"
+      end
+
+      def frame_url(add_turbo_frame: true)
+        Avo::Services::URIService.parse(field_resource.record_path)
+          .append_path(id.to_s)
+          .append_query(query_params(add_turbo_frame:))
+          .to_s
+      end
+
+      # Association frames inherit their cold-start defaults (`loading`,
+      # `auto_load_for`) from `config.associations = {frames: {...}}` when the
+      # field itself doesn't pass `loading:`. See Avo::Concerns::FrameLoadingMode.
+      def frame_loading_defaults
+        Avo.configuration.associations.fetch(:frames, {})
+      end
+
+      # The value
+      def field_value
+        value.send(database_value)
+      rescue
+        nil
+      end
+
+      # What the user sees in the text field
+      def field_label
+        target_resource.new(record: value, view: view, user: user).record_title
+      rescue
+        nil
+      end
+
+      def target_resource
+        reflection = @record.class.reflect_on_association(association_name)
+
+        if reflection.klass.present?
+          get_resource_by_model_class(reflection.klass.to_s)
+        elsif reflection.options[:class_name].present?
+          get_resource_by_model_class(reflection.options[:class_name])
+        else
+          Avo.resource_manager.get_resource_by_name association_name
+        end
+      end
+
+      def default_placeholder
+        I18n.t("avo.choose_an_option")
+      end
+
+      def has_own_panel?
+        true
+      end
+
+      def visible_in_reflection?(reflection = nil)
+        false
+      end
+
+      # Adds the view override component
+      # has_one, has_many, has_and_belongs_to_many fields don't have edit views
+      def component_for_view(view = Avo::ViewInquirer.new("index"))
+        view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
+
+        super
+      end
+
+      def authorized?
+        return true unless Avo.configuration.authorization_enabled?
+
+        method = :"view_#{id}?"
+        service = field_resource.authorization
+
+        if service.has_method? method
+          service.authorize_action(method, raise_exception: false)
+        else
+          !Avo.configuration.explicit_authorization
+        end
+      end
+
+      def default_name
+        use_resource&.name || super
+      end
+
+      def association_name
+        @association_name ||= attribute_id.to_s
+      end
+
+      def query_params(add_turbo_frame: true)
+        {
+          view:,
+          for_attribute: @for_attribute,
+          turbo_frame: add_turbo_frame ? turbo_frame : nil
+        }.compact
+      end
+
+      def resource_class(params)
+        return use_resource if use_resource.present?
+
+        return Avo.resource_manager.get_resource_by_name @id.to_s if @array
+
+        reflection = @record.class.reflect_on_association(@for_attribute || params[:related_name])
+
+        reflected_model = reflection.klass
+
+        Avo.resource_manager.get_resource_by_model_class reflected_model
+      end
+
+      private
+
+      def default_view
+        Avo.configuration.resource_default_view.edit? ? :edit : :show
+      end
+
+      # Attributes exposed to callable descriptions. `loading_type` tells a
+      # description lambda how the field is being rendered: `:manual` for a
+      # not-yet-loaded manual placeholder, `nil` for live/loaded content. A
+      # lambda can branch on it to avoid touching the association (e.g.
+      # `query.count`) on the placeholder paint. The manual placeholder render
+      # path passes `loading_type: :manual`; every other context keeps the
+      # `nil` default.
+      def description_attributes
+        {loading_type: nil}
+      end
+    end
+  end
+end

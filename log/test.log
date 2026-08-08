@@ -1,0 +1,1621 @@
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_attachments"[0m
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "name" varchar NOT NULL, "record_id" bigint NOT NULL, "record_type" varchar NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments" ("blob_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_attachments_uniqueness" ON "active_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_blobs"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_blobs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "byte_size" bigint NOT NULL, "checksum" varchar, "content_type" varchar, "created_at" datetime(6) NOT NULL, "filename" varchar NOT NULL, "key" varchar NOT NULL, "metadata" text, "service_name" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_blobs_on_key" ON "active_storage_blobs" ("key")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_variant_records"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_variant_records_uniqueness" ON "active_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "offers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "offers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "description" text, "price" decimal, "title" varchar, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "page_contents"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "page_contents" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "content" text, "created_at" datetime(6) NOT NULL, "key" varchar, "title" varchar, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aactive_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "name" varchar NOT NULL, "record_id" bigint NOT NULL, "record_type" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aactive_storage_attachments_uniqueness" ON "aactive_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aactive_storage_attachments_on_blob_id" ON "aactive_storage_attachments" ("blob_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aactive_storage_attachments" ("id","blob_id","created_at","name","record_id","record_type")
+                     SELECT "id","blob_id","created_at","name","record_id","record_type" FROM "active_storage_attachments"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "active_storage_attachments"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "name" varchar NOT NULL, "record_id" bigint NOT NULL, "record_type" varchar NOT NULL, CONSTRAINT "fk_rails_c3b3935057"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments" ("blob_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_attachments_uniqueness" ON "active_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "active_storage_attachments" ("id","blob_id","created_at","name","record_id","record_type")
+                     SELECT "id","blob_id","created_at","name","record_id","record_type" FROM "aactive_storage_attachments"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aactive_storage_attachments"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aactive_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aactive_storage_variant_records_uniqueness" ON "aactive_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aactive_storage_variant_records" ("id","blob_id","variation_digest")
+                     SELECT "id","blob_id","variation_digest" FROM "active_storage_variant_records"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "active_storage_variant_records"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL, CONSTRAINT "fk_rails_993965df05"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_variant_records_uniqueness" ON "active_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "active_storage_variant_records" ("id","blob_id","variation_digest")
+                     SELECT "id","blob_id","variation_digest" FROM "aactive_storage_variant_records"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aactive_storage_variant_records"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20260806221012)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20260806213315),
+(20260806200819),
+(20260804061730),
+(20260804060032);[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'test', '2026-08-07 03:26:19.090300', '2026-08-07 03:26:19.090304') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '13d740ea3c13e2c6f3ae7b7bb8600c1e873f4ef8', '2026-08-07 03:26:19.091168', '2026-08-07 03:26:19.091170') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mFixtures Load (0.1ms)[0m  [1m[31mDELETE FROM "offers";
+DELETE FROM "page_contents";
+INSERT INTO "offers" ("id", "created_at", "description", "price", "title", "updated_at") VALUES (980190962, '2026-08-07 03:26:19.188800', 'MyText', 9.99, 'MyString', '2026-08-07 03:26:19.188800'), (298486374, '2026-08-07 03:26:19.188800', 'MyText', 9.99, 'MyString', '2026-08-07 03:26:19.188800');
+INSERT INTO "page_contents" ("id", "content", "created_at", "key", "title", "updated_at") VALUES (980190962, 'MyText', '2026-08-07 03:26:19.191747', 'MyString', 'MyString', '2026-08-07 03:26:19.191747'), (298486374, 'MyText', '2026-08-07 03:26:19.191747', 'MyString', 'MyString', '2026-08-07 03:26:19.191747')[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (6.9ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_key_check[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+PageContentsControllerTest: test_should_get_new
+-----------------------------------------------
+  [1m[36mPageContent Load (0.2ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/new" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by PageContentsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/new.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 3.6ms | GC: 0.0ms)
+  Rendered page_contents/new.html.erb within layouts/application (Duration: 4.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 148.3ms | GC: 58.7ms)
+Completed 200 OK in 190ms (Views: 150.8ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 58.7ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------------------
+PageContentsControllerTest: test_should_destroy_page_content
+------------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started DELETE "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by PageContentsController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "images"]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "logo"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "favicon"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "app_icon"], ["LIMIT", 1]]
+  [1m[36mPageContent Destroy (0.0ms)[0m  [1m[31mDELETE FROM "page_contents" WHERE "page_contents"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents
+Completed 303 See Other in 15ms (ActiveRecord: 1.0ms (6 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+---------------------------------------------------------
+PageContentsControllerTest: test_should_show_page_content
+---------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by PageContentsController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/show.html.erb within layouts/application
+  Rendered page_contents/_page_content.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered page_contents/show.html.erb within layouts/application (Duration: 1.5ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.3ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.5ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_create_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started POST "/page_contents" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by PageContentsController#create as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPageContent Create (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("content", "created_at", "key", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["content", "MyText"], ["created_at", "2026-08-07 03:26:19.489318"], ["key", "MyString"], ["title", "MyString"], ["updated_at", "2026-08-07 03:26:19.489318"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents/980190963
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" ORDER BY "page_contents"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------------
+PageContentsControllerTest: test_should_get_index
+-------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by PageContentsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents"[0m
+  Rendered page_contents/_page_content.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered page_contents/_page_content.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered page_contents/index.html.erb within layouts/application (Duration: 1.2ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.0ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------
+PageContentsControllerTest: test_should_get_edit
+------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962/edit" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by PageContentsController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/edit.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 18.1ms | GC: 16.4ms)
+  Rendered page_contents/edit.html.erb within layouts/application (Duration: 18.8ms | GC: 16.4ms)
+  [1m[36mPageContent Load (0.2ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 20.6ms | GC: 16.4ms)
+Completed 200 OK in 22ms (Views: 20.8ms | ActiveRecord: 0.3ms (4 queries, 2 cached) | GC: 16.4ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_update_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by PageContentsController#update as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/page_contents/980190962
+Completed 303 See Other in 2ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+HomeControllerTest: test_should_get_index
+-----------------------------------------
+Started GET "/home/index" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.2ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_subtitle"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_subtitle"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "standard_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "deluxe_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "suite_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_desc"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "address_line"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_phone"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_email"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_subtitle"], ["LIMIT", 1]]
+  Rendered home/index.html.erb within layouts/application (Duration: 5.5ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 7.3ms | GC: 0.5ms)
+Completed 200 OK in 9ms (Views: 7.0ms | ActiveRecord: 1.1ms (17 queries, 2 cached) | GC: 0.5ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+OffersControllerTest: test_should_get_new
+-----------------------------------------
+  [1m[36mOffer Load (0.2ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/new" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by OffersController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/new.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 1.8ms | GC: 0.0ms)
+  Rendered offers/new.html.erb within layouts/application (Duration: 2.5ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.2ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 3.9ms | GC: 0.0ms)
+Completed 200 OK in 5ms (Views: 4.4ms | ActiveRecord: 0.2ms (3 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+OffersControllerTest: test_should_destroy_offer
+-----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started DELETE "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by OffersController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Destroy (0.3ms)[0m  [1m[31mDELETE FROM "offers" WHERE "offers"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers
+Completed 303 See Other in 3ms (ActiveRecord: 0.5ms (2 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+--------------------------------------------
+OffersControllerTest: test_should_show_offer
+--------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by OffersController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/show.html.erb within layouts/application
+  Rendered offers/_offer.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered offers/show.html.erb within layouts/application (Duration: 1.5ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 3.6ms | GC: 0.3ms)
+Completed 200 OK in 5ms (Views: 3.8ms | ActiveRecord: 0.3ms (4 queries, 2 cached) | GC: 0.3ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_create_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started POST "/offers" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by OffersController#create as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Create (0.4ms)[0m  [1m[32mINSERT INTO "offers" ("created_at", "description", "price", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-08-07 03:26:19.581444"], ["description", "MyText"], ["price", 9.99], ["title", "MyString"], ["updated_at", "2026-08-07 03:26:19.581444"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers/980190963
+Completed 302 Found in 3ms (ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mOffer Load (0.2ms)[0m  [1m[34mSELECT "offers".* FROM "offers" ORDER BY "offers"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------
+OffersControllerTest: test_should_get_index
+-------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by OffersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/index.html.erb within layouts/application
+  [1m[36mOffer Load (0.2ms)[0m  [1m[34mSELECT "offers".* FROM "offers"[0m
+  Rendered offers/_offer.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered offers/_offer.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered offers/index.html.erb within layouts/application (Duration: 2.0ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.2ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 3.7ms | GC: 0.0ms)
+Completed 200 OK in 5ms (Views: 3.9ms | ActiveRecord: 0.3ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------
+OffersControllerTest: test_should_get_edit
+------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962/edit" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by OffersController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/edit.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 0.9ms | GC: 0.0ms)
+  Rendered offers/edit.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.7ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 2.9ms | ActiveRecord: 0.3ms (4 queries, 2 cached) | GC: 0.4ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_update_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:26:19 -0600
+Processing by OffersController#update as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mOffer Load (0.2ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/offers/980190962
+Completed 303 See Other in 3ms (ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mFixtures Load (0.1ms)[0m  [1m[31mDELETE FROM "offers";
+DELETE FROM "page_contents";
+INSERT INTO "offers" ("id", "created_at", "description", "price", "title", "updated_at") VALUES (980190962, '2026-08-07 03:27:09.056176', 'MyText', 9.99, 'MyString', '2026-08-07 03:27:09.056176'), (298486374, '2026-08-07 03:27:09.056176', 'MyText', 9.99, 'MyString', '2026-08-07 03:27:09.056176');
+INSERT INTO "page_contents" ("id", "content", "created_at", "key", "title", "updated_at") VALUES (980190962, 'MyText', '2026-08-07 03:27:09.057614', 'MyString', 'MyString', '2026-08-07 03:27:09.057614'), (298486374, 'MyText', '2026-08-07 03:27:09.057614', 'MyString', 'MyString', '2026-08-07 03:27:09.057614')[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (12.7ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_key_check[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_create_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.2ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started POST "/page_contents" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by PageContentsController#create as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPageContent Create (0.4ms)[0m  [1m[32mINSERT INTO "page_contents" ("content", "created_at", "key", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["content", "MyText"], ["created_at", "2026-08-07 03:27:09.182901"], ["key", "MyString"], ["title", "MyString"], ["updated_at", "2026-08-07 03:27:09.182901"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents/980190963
+Completed 302 Found in 19ms (ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 6.7ms)
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" ORDER BY "page_contents"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+---------------------------------------------------------
+PageContentsControllerTest: test_should_show_page_content
+---------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by PageContentsController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/show.html.erb within layouts/application
+  Rendered page_contents/_page_content.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered page_contents/show.html.erb within layouts/application (Duration: 1.6ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 114.1ms | GC: 32.4ms)
+Completed 200 OK in 150ms (Views: 116.7ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 34.6ms)
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------------------
+PageContentsControllerTest: test_should_destroy_page_content
+------------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started DELETE "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by PageContentsController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "images"]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "logo"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "favicon"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "app_icon"], ["LIMIT", 1]]
+  [1m[36mPageContent Destroy (0.1ms)[0m  [1m[31mDELETE FROM "page_contents" WHERE "page_contents"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents
+Completed 303 See Other in 15ms (ActiveRecord: 1.0ms (6 queries, 0 cached) | GC: 0.6ms)
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------
+PageContentsControllerTest: test_should_get_edit
+------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962/edit" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by PageContentsController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/edit.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 3.9ms | GC: 0.3ms)
+  Rendered page_contents/edit.html.erb within layouts/application (Duration: 4.5ms | GC: 0.3ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 5.4ms | GC: 0.3ms)
+Completed 200 OK in 6ms (Views: 5.6ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.3ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+PageContentsControllerTest: test_should_get_new
+-----------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/new" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by PageContentsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/new.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 0.9ms | GC: 0.2ms)
+  Rendered page_contents/new.html.erb within layouts/application (Duration: 1.2ms | GC: 0.2ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.0ms | GC: 0.2ms)
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 0.2ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------------
+PageContentsControllerTest: test_should_get_index
+-------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by PageContentsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents"[0m
+  Rendered page_contents/_page_content.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered page_contents/_page_content.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered page_contents/index.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_update_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by PageContentsController#update as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/page_contents/980190962
+Completed 303 See Other in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+HomeControllerTest: test_should_get_index
+-----------------------------------------
+Started GET "/home/index" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_subtitle"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_subtitle"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "standard_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "deluxe_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "suite_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_desc"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "address_line"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_phone"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_email"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_subtitle"], ["LIMIT", 1]]
+  Rendered home/index.html.erb within layouts/application (Duration: 3.4ms | GC: 0.2ms)
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 4.2ms | GC: 0.2ms)
+Completed 200 OK in 5ms (Views: 4.0ms | ActiveRecord: 0.7ms (17 queries, 2 cached) | GC: 0.2ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_create_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started POST "/offers" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by OffersController#create as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Create (0.3ms)[0m  [1m[32mINSERT INTO "offers" ("created_at", "description", "price", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-08-07 03:27:09.399960"], ["description", "MyText"], ["price", 9.99], ["title", "MyString"], ["updated_at", "2026-08-07 03:27:09.399960"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers/980190963
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" ORDER BY "offers"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+--------------------------------------------
+OffersControllerTest: test_should_show_offer
+--------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by OffersController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/show.html.erb within layouts/application
+  Rendered offers/_offer.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered offers/show.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+OffersControllerTest: test_should_destroy_offer
+-----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started DELETE "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by OffersController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Destroy (0.1ms)[0m  [1m[31mDELETE FROM "offers" WHERE "offers"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers
+Completed 303 See Other in 1ms (ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------
+OffersControllerTest: test_should_get_edit
+------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962/edit" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by OffersController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/edit.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 1.2ms | GC: 0.0ms)
+  Rendered offers/edit.html.erb within layouts/application (Duration: 1.7ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.5ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.8ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.1ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+OffersControllerTest: test_should_get_new
+-----------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/new" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by OffersController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/new.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 0.7ms | GC: 0.0ms)
+  Rendered offers/new.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------
+OffersControllerTest: test_should_get_index
+-------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by OffersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/index.html.erb within layouts/application
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers"[0m
+  Rendered offers/_offer.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered offers/_offer.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered offers/index.html.erb within layouts/application (Duration: 1.2ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_update_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:27:09 -0600
+Processing by OffersController#update as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/offers/980190962
+Completed 303 See Other in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.3ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mFixtures Load (0.1ms)[0m  [1m[31mDELETE FROM "offers";
+DELETE FROM "page_contents";
+INSERT INTO "offers" ("id", "created_at", "description", "price", "title", "updated_at") VALUES (980190962, '2026-08-07 03:30:39.956367', 'MyText', 9.99, 'MyString', '2026-08-07 03:30:39.956367'), (298486374, '2026-08-07 03:30:39.956367', 'MyText', 9.99, 'MyString', '2026-08-07 03:30:39.956367');
+INSERT INTO "page_contents" ("id", "content", "created_at", "key", "title", "updated_at") VALUES (980190962, 'MyText', '2026-08-07 03:30:39.957825', 'MyString', 'MyString', '2026-08-07 03:30:39.957825'), (298486374, 'MyText', '2026-08-07 03:30:39.957825', 'MyString', 'MyString', '2026-08-07 03:30:39.957825')[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (12.9ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_key_check[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+HomeControllerTest: test_should_get_index
+-----------------------------------------
+Started GET "/home/index" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.2ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_subtitle"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_subtitle"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "standard_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "deluxe_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "suite_room_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_desc"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "address_line"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_phone"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_email"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_subtitle"], ["LIMIT", 1]]
+  Rendered home/index.html.erb within layouts/application (Duration: 8.0ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 118.5ms | GC: 29.8ms)
+Completed 200 OK in 189ms (Views: 120.7ms | ActiveRecord: 0.8ms (17 queries, 2 cached) | GC: 57.2ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_create_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started POST "/offers" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by OffersController#create as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Create (0.3ms)[0m  [1m[32mINSERT INTO "offers" ("created_at", "description", "price", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-08-07 03:30:40.245637"], ["description", "MyText"], ["price", 9.99], ["title", "MyString"], ["updated_at", "2026-08-07 03:30:40.245637"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers/980190963
+Completed 302 Found in 3ms (ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" ORDER BY "offers"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+--------------------------------------------
+OffersControllerTest: test_should_show_offer
+--------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by OffersController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/show.html.erb within layouts/application
+  Rendered offers/_offer.html.erb (Duration: 0.6ms | GC: 0.4ms)
+  Rendered offers/show.html.erb within layouts/application (Duration: 1.9ms | GC: 0.4ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.9ms | GC: 0.4ms)
+Completed 200 OK in 4ms (Views: 3.3ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.4ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------
+OffersControllerTest: test_should_get_index
+-------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by OffersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/index.html.erb within layouts/application
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers"[0m
+  Rendered offers/_offer.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered offers/_offer.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered offers/index.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.4ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+OffersControllerTest: test_should_get_new
+-----------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/new" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by OffersController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/new.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 3.6ms | GC: 0.0ms)
+  Rendered offers/new.html.erb within layouts/application (Duration: 4.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 5.2ms | GC: 0.2ms)
+Completed 200 OK in 6ms (Views: 5.4ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 0.2ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------
+OffersControllerTest: test_should_get_edit
+------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962/edit" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by OffersController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/edit.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered offers/edit.html.erb within layouts/application (Duration: 1.2ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+OffersControllerTest: test_should_destroy_offer
+-----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started DELETE "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by OffersController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Destroy (0.2ms)[0m  [1m[31mDELETE FROM "offers" WHERE "offers"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers
+Completed 303 See Other in 1ms (ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_update_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by OffersController#update as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/offers/980190962
+Completed 303 See Other in 1ms (ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_create_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started POST "/page_contents" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by PageContentsController#create as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPageContent Create (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("content", "created_at", "key", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["content", "MyText"], ["created_at", "2026-08-07 03:30:40.292337"], ["key", "MyString"], ["title", "MyString"], ["updated_at", "2026-08-07 03:30:40.292337"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents/980190963
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" ORDER BY "page_contents"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+---------------------------------------------------------
+PageContentsControllerTest: test_should_show_page_content
+---------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by PageContentsController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/show.html.erb within layouts/application
+  Rendered page_contents/_page_content.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered page_contents/show.html.erb within layouts/application (Duration: 1.0ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.8ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------------
+PageContentsControllerTest: test_should_get_index
+-------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by PageContentsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents"[0m
+  Rendered page_contents/_page_content.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered page_contents/_page_content.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered page_contents/index.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.0ms)
+Completed 200 OK in 2ms (Views: 2.0ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+PageContentsControllerTest: test_should_get_new
+-----------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/new" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by PageContentsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/new.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 1.2ms | GC: 0.0ms)
+  Rendered page_contents/new.html.erb within layouts/application (Duration: 1.8ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.8ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 0.1ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------
+PageContentsControllerTest: test_should_get_edit
+------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962/edit" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by PageContentsController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/edit.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered page_contents/edit.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------------------
+PageContentsControllerTest: test_should_destroy_page_content
+------------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started DELETE "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by PageContentsController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "images"]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "logo"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "favicon"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "app_icon"], ["LIMIT", 1]]
+  [1m[36mPageContent Destroy (0.1ms)[0m  [1m[31mDELETE FROM "page_contents" WHERE "page_contents"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents
+Completed 303 See Other in 13ms (ActiveRecord: 1.0ms (6 queries, 0 cached) | GC: 0.2ms)
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_update_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:30:40 -0600
+Processing by PageContentsController#update as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/page_contents/980190962
+Completed 303 See Other in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_attachments"[0m
+  [1m[35m (6.4ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "name" varchar NOT NULL, "record_id" bigint NOT NULL, "record_type" varchar NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments" ("blob_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_attachments_uniqueness" ON "active_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_blobs"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_blobs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "byte_size" bigint NOT NULL, "checksum" varchar, "content_type" varchar, "created_at" datetime(6) NOT NULL, "filename" varchar NOT NULL, "key" varchar NOT NULL, "metadata" text, "service_name" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_blobs_on_key" ON "active_storage_blobs" ("key")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_variant_records"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_variant_records_uniqueness" ON "active_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "experiences"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "experiences" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "description" text, "icon" varchar, "position" integer, "title" varchar, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "offers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "offers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "description" text, "price" decimal, "title" varchar, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "page_contents"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "page_contents" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "content" text, "created_at" datetime(6) NOT NULL, "key" varchar, "title" varchar, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "rooms"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "rooms" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "badge" varchar, "booking_url" varchar, "created_at" datetime(6) NOT NULL, "description" text, "features" text, "name" varchar, "position" integer, "price" varchar, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aactive_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "name" varchar NOT NULL, "record_id" bigint NOT NULL, "record_type" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aactive_storage_attachments_uniqueness" ON "aactive_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aactive_storage_attachments_on_blob_id" ON "aactive_storage_attachments" ("blob_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aactive_storage_attachments" ("id","blob_id","created_at","name","record_id","record_type")
+                     SELECT "id","blob_id","created_at","name","record_id","record_type" FROM "active_storage_attachments"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "active_storage_attachments"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "name" varchar NOT NULL, "record_id" bigint NOT NULL, "record_type" varchar NOT NULL, CONSTRAINT "fk_rails_c3b3935057"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments" ("blob_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_attachments_uniqueness" ON "active_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "active_storage_attachments" ("id","blob_id","created_at","name","record_id","record_type")
+                     SELECT "id","blob_id","created_at","name","record_id","record_type" FROM "aactive_storage_attachments"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aactive_storage_attachments"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aactive_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aactive_storage_variant_records_uniqueness" ON "aactive_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aactive_storage_variant_records" ("id","blob_id","variation_digest")
+                     SELECT "id","blob_id","variation_digest" FROM "active_storage_variant_records"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "active_storage_variant_records"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL, CONSTRAINT "fk_rails_993965df05"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_variant_records_uniqueness" ON "active_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "active_storage_variant_records" ("id","blob_id","variation_digest")
+                     SELECT "id","blob_id","variation_digest" FROM "aactive_storage_variant_records"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aactive_storage_variant_records"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20260807033714)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20260807033711),
+(20260806221012),
+(20260806213315),
+(20260806200819),
+(20260804061730),
+(20260804060032);[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'test', '2026-08-07 03:38:12.497784', '2026-08-07 03:38:12.497788') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', '3919778717b038b9a9617b687f405b2f0756f2f1', '2026-08-07 03:38:12.498621', '2026-08-07 03:38:12.498624') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.5ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mFixtures Load (0.2ms)[0m  [1m[31mDELETE FROM "experiences";
+DELETE FROM "offers";
+DELETE FROM "page_contents";
+DELETE FROM "rooms";
+INSERT INTO "experiences" ("id", "created_at", "description", "icon", "position", "title", "updated_at") VALUES (980190962, '2026-08-07 03:38:12.595222', 'MyText', 'MyString', 1, 'MyString', '2026-08-07 03:38:12.595222'), (298486374, '2026-08-07 03:38:12.595222', 'MyText', 'MyString', 1, 'MyString', '2026-08-07 03:38:12.595222');
+INSERT INTO "offers" ("id", "created_at", "description", "price", "title", "updated_at") VALUES (980190962, '2026-08-07 03:38:12.597986', 'MyText', 9.99, 'MyString', '2026-08-07 03:38:12.597986'), (298486374, '2026-08-07 03:38:12.597986', 'MyText', 9.99, 'MyString', '2026-08-07 03:38:12.597986');
+INSERT INTO "page_contents" ("id", "content", "created_at", "key", "title", "updated_at") VALUES (980190962, 'MyText', '2026-08-07 03:38:12.598845', 'MyString', 'MyString', '2026-08-07 03:38:12.598845'), (298486374, 'MyText', '2026-08-07 03:38:12.598845', 'MyString', 'MyString', '2026-08-07 03:38:12.598845');
+INSERT INTO "rooms" ("id", "badge", "booking_url", "created_at", "description", "features", "name", "position", "price", "updated_at") VALUES (980190962, 'MyString', 'MyString', '2026-08-07 03:38:12.599666', 'MyText', 'MyText', 'MyString', 1, 'MyString', '2026-08-07 03:38:12.599666'), (298486374, 'MyString', 'MyString', '2026-08-07 03:38:12.599666', 'MyText', 'MyText', 'MyString', 1, 'MyString', '2026-08-07 03:38:12.599666')[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (6.8ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_key_check[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_update_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.6ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by PageContentsController#update as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/page_contents/980190962
+Completed 303 See Other in 12ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+PageContentsControllerTest: test_should_get_new
+-----------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/new" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by PageContentsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/new.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 3.4ms | GC: 0.0ms)
+  Rendered page_contents/new.html.erb within layouts/application (Duration: 4.0ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 128.7ms | GC: 36.9ms)
+Completed 200 OK in 162ms (Views: 131.3ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 37.9ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------------------
+PageContentsControllerTest: test_should_destroy_page_content
+------------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started DELETE "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by PageContentsController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "images"]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "logo"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "favicon"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "app_icon"], ["LIMIT", 1]]
+  [1m[36mPageContent Destroy (0.1ms)[0m  [1m[31mDELETE FROM "page_contents" WHERE "page_contents"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents
+Completed 303 See Other in 19ms (ActiveRecord: 1.2ms (6 queries, 0 cached) | GC: 0.2ms)
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------
+PageContentsControllerTest: test_should_get_edit
+------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962/edit" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by PageContentsController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/edit.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 0.9ms | GC: 0.1ms)
+  Rendered page_contents/edit.html.erb within layouts/application (Duration: 1.4ms | GC: 0.1ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | GC: 0.1ms)
+Completed 200 OK in 3ms (Views: 2.5ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.1ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_create_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started POST "/page_contents" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by PageContentsController#create as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPageContent Create (0.3ms)[0m  [1m[32mINSERT INTO "page_contents" ("content", "created_at", "key", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["content", "MyText"], ["created_at", "2026-08-07 03:38:12.938893"], ["key", "MyString"], ["title", "MyString"], ["updated_at", "2026-08-07 03:38:12.938893"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents/980190963
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" ORDER BY "page_contents"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------------
+PageContentsControllerTest: test_should_get_index
+-------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by PageContentsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents"[0m
+  Rendered page_contents/_page_content.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered page_contents/_page_content.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered page_contents/index.html.erb within layouts/application (Duration: 1.6ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.3ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.5ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+---------------------------------------------------------
+PageContentsControllerTest: test_should_show_page_content
+---------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by PageContentsController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/show.html.erb within layouts/application
+  Rendered page_contents/_page_content.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered page_contents/show.html.erb within layouts/application (Duration: 0.7ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.4ms | GC: 0.0ms)
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_update_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by OffersController#update as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/offers/980190962
+Completed 303 See Other in 2ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+OffersControllerTest: test_should_get_new
+-----------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/new" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by OffersController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/new.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 1.2ms | GC: 0.0ms)
+  Rendered offers/new.html.erb within layouts/application (Duration: 1.8ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.6ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+OffersControllerTest: test_should_destroy_offer
+-----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started DELETE "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by OffersController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Destroy (0.1ms)[0m  [1m[31mDELETE FROM "offers" WHERE "offers"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers
+Completed 303 See Other in 1ms (ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------
+OffersControllerTest: test_should_get_edit
+------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962/edit" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by OffersController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/edit.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered offers/edit.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_create_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started POST "/offers" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by OffersController#create as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Create (0.2ms)[0m  [1m[32mINSERT INTO "offers" ("created_at", "description", "price", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-08-07 03:38:12.977711"], ["description", "MyText"], ["price", 9.99], ["title", "MyString"], ["updated_at", "2026-08-07 03:38:12.977711"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers/980190963
+Completed 302 Found in 2ms (ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" ORDER BY "offers"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------
+OffersControllerTest: test_should_get_index
+-------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by OffersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/index.html.erb within layouts/application
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers"[0m
+  Rendered offers/_offer.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered offers/_offer.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered offers/index.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.3ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+--------------------------------------------
+OffersControllerTest: test_should_show_offer
+--------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by OffersController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/show.html.erb within layouts/application
+  Rendered offers/_offer.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered offers/show.html.erb within layouts/application (Duration: 0.7ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | GC: 0.1ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.1ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+HomeControllerTest: test_should_get_index
+-----------------------------------------
+Started GET "/home/index" for 127.0.0.1 at 2026-08-06 21:38:12 -0600
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_subtitle"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_subtitle"], ["LIMIT", 1]]
+  [1m[36mRoom Load (0.1ms)[0m  [1m[34mSELECT "rooms".* FROM "rooms" ORDER BY "rooms"."position" ASC, "rooms"."id" ASC[0m
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 298486374], ["record_type", "Room"], ["name", "photo"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "Room"], ["name", "photo"], ["LIMIT", 1]]
+  [1m[36mExperience Load (0.1ms)[0m  [1m[34mSELECT "experiences".* FROM "experiences" ORDER BY "experiences"."position" ASC, "experiences"."id" ASC[0m
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 298486374], ["record_type", "Experience"], ["name", "icon_image"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "Experience"], ["name", "icon_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_desc"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "address_line"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_phone"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_email"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "map_iframe_url"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_subtitle"], ["LIMIT", 1]]
+  Rendered home/index.html.erb within layouts/application (Duration: 10.5ms | GC: 0.1ms)
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 11.2ms | GC: 0.1ms)
+Completed 200 OK in 12ms (Views: 10.6ms | ActiveRecord: 1.1ms (21 queries, 2 cached) | GC: 0.1ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35m (0.3ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mFixtures Load (0.1ms)[0m  [1m[31mDELETE FROM "experiences";
+DELETE FROM "offers";
+DELETE FROM "page_contents";
+DELETE FROM "rooms";
+INSERT INTO "experiences" ("id", "created_at", "description", "icon", "position", "title", "updated_at") VALUES (980190962, '2026-08-07 03:45:10.219971', 'MyText', 'MyString', 1, 'MyString', '2026-08-07 03:45:10.219971'), (298486374, '2026-08-07 03:45:10.219971', 'MyText', 'MyString', 1, 'MyString', '2026-08-07 03:45:10.219971');
+INSERT INTO "offers" ("id", "created_at", "description", "price", "title", "updated_at") VALUES (980190962, '2026-08-07 03:45:10.221421', 'MyText', 9.99, 'MyString', '2026-08-07 03:45:10.221421'), (298486374, '2026-08-07 03:45:10.221421', 'MyText', 9.99, 'MyString', '2026-08-07 03:45:10.221421');
+INSERT INTO "page_contents" ("id", "content", "created_at", "key", "title", "updated_at") VALUES (980190962, 'MyText', '2026-08-07 03:45:10.222230', 'MyString', 'MyString', '2026-08-07 03:45:10.222230'), (298486374, 'MyText', '2026-08-07 03:45:10.222230', 'MyString', 'MyString', '2026-08-07 03:45:10.222230');
+INSERT INTO "rooms" ("id", "badge", "booking_url", "created_at", "description", "features", "name", "position", "price", "updated_at") VALUES (980190962, 'MyString', 'MyString', '2026-08-07 03:45:10.222979', 'MyText', 'MyText', 'MyString', 1, 'MyString', '2026-08-07 03:45:10.222979'), (298486374, 'MyString', 'MyString', '2026-08-07 03:45:10.222979', 'MyText', 'MyText', 'MyString', 1, 'MyString', '2026-08-07 03:45:10.222979')[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (12.9ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_key_check[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+HomeControllerTest: test_should_get_index
+-----------------------------------------
+Started GET "/home/index" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.2ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_hero_subtitle"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_features_subtitle"], ["LIMIT", 1]]
+  [1m[36mRoom Load (0.1ms)[0m  [1m[34mSELECT "rooms".* FROM "rooms" ORDER BY "rooms"."position" ASC, "rooms"."id" ASC[0m
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 298486374], ["record_type", "Room"], ["name", "photo"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "Room"], ["name", "photo"], ["LIMIT", 1]]
+  [1m[36mExperience Load (0.1ms)[0m  [1m[34mSELECT "experiences".* FROM "experiences" ORDER BY "experiences"."position" ASC, "experiences"."id" ASC[0m
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 298486374], ["record_type", "Experience"], ["name", "icon_image"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "Experience"], ["name", "icon_image"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "home_location_desc"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "address_line"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_phone"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "contact_email"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "map_iframe_url"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_title"], ["LIMIT", 1]]
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "cta_subtitle"], ["LIMIT", 1]]
+  Rendered home/index.html.erb within layouts/application (Duration: 21.7ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 135.2ms | GC: 34.6ms)
+Completed 200 OK in 182ms (Views: 136.7ms | ActiveRecord: 1.4ms (21 queries, 2 cached) | GC: 36.3ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+---------------------------------------------------------
+PageContentsControllerTest: test_should_show_page_content
+---------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by PageContentsController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/show.html.erb within layouts/application
+  Rendered page_contents/_page_content.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered page_contents/show.html.erb within layouts/application (Duration: 2.2ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 3.2ms | GC: 0.0ms)
+Completed 200 OK in 5ms (Views: 3.6ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------------------
+PageContentsControllerTest: test_should_destroy_page_content
+------------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started DELETE "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by PageContentsController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Attachment Load (0.3ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "images"]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "logo"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "favicon"], ["LIMIT", 1]]
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = ? AND "active_storage_attachments"."record_type" = ? AND "active_storage_attachments"."name" = ? LIMIT ?[0m  [["record_id", 980190962], ["record_type", "PageContent"], ["name", "app_icon"], ["LIMIT", 1]]
+  [1m[36mPageContent Destroy (0.1ms)[0m  [1m[31mDELETE FROM "page_contents" WHERE "page_contents"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents
+Completed 303 See Other in 6ms (ActiveRecord: 0.6ms (6 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_create_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+Started POST "/page_contents" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by PageContentsController#create as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPageContent Create (0.2ms)[0m  [1m[32mINSERT INTO "page_contents" ("content", "created_at", "key", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["content", "MyText"], ["created_at", "2026-08-07 03:45:10.551202"], ["key", "MyString"], ["title", "MyString"], ["updated_at", "2026-08-07 03:45:10.551202"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/page_contents/980190963
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mPageContent Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "page_contents"[0m
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" ORDER BY "page_contents"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------------
+PageContentsControllerTest: test_should_get_index
+-------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by PageContentsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents"[0m
+  Rendered page_contents/_page_content.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered page_contents/_page_content.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered page_contents/index.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.0ms)
+Completed 200 OK in 2ms (Views: 2.0ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+PageContentsControllerTest: test_should_get_new
+-----------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/new" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by PageContentsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/new.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 3.8ms | GC: 0.1ms)
+  Rendered page_contents/new.html.erb within layouts/application (Duration: 4.3ms | GC: 0.1ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 5.5ms | GC: 0.1ms)
+Completed 200 OK in 6ms (Views: 5.7ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 0.1ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------------
+PageContentsControllerTest: test_should_get_edit
+------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/page_contents/980190962/edit" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by PageContentsController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering page_contents/edit.html.erb within layouts/application
+  Rendered page_contents/_form.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered page_contents/edit.html.erb within layouts/application (Duration: 1.2ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.0ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.1ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------------------
+PageContentsControllerTest: test_should_update_page_content
+-----------------------------------------------------------
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/page_contents/980190962" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by PageContentsController#update as HTML
+  Parameters: {"page_content" => {"content" => "MyText", "key" => "MyString", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/page_contents/980190962
+Completed 303 See Other in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+--------------------------------------------
+OffersControllerTest: test_should_show_offer
+--------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by OffersController#show as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/show.html.erb within layouts/application
+  Rendered offers/_offer.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered offers/show.html.erb within layouts/application (Duration: 1.1ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 2.3ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.1ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------------
+OffersControllerTest: test_should_destroy_offer
+-----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started DELETE "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by OffersController#destroy as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Destroy (0.1ms)[0m  [1m[31mDELETE FROM "offers" WHERE "offers"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers
+Completed 303 See Other in 1ms (ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_create_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+Started POST "/offers" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by OffersController#create as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mOffer Create (0.3ms)[0m  [1m[32mINSERT INTO "offers" ("created_at", "description", "price", "title", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["created_at", "2026-08-07 03:45:10.594284"], ["description", "MyText"], ["price", 9.99], ["title", "MyString"], ["updated_at", "2026-08-07 03:45:10.594284"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/offers/980190963
+Completed 302 Found in 2ms (ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mOffer Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "offers"[0m
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" ORDER BY "offers"."id" DESC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-------------------------------------------
+OffersControllerTest: test_should_get_index
+-------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by OffersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/index.html.erb within layouts/application
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers"[0m
+  Rendered offers/_offer.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered offers/_offer.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered offers/index.html.erb within layouts/application (Duration: 1.7ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.8ms | GC: 0.0ms)
+Completed 200 OK in 4ms (Views: 2.9ms | ActiveRecord: 0.3ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+-----------------------------------------
+OffersControllerTest: test_should_get_new
+-----------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/new" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by OffersController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering offers/new.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 1.1ms | GC: 0.0ms)
+  Rendered offers/new.html.erb within layouts/application (Duration: 1.6ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.6ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.8ms | ActiveRecord: 0.1ms (3 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+------------------------------------------
+OffersControllerTest: test_should_get_edit
+------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/offers/980190962/edit" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by OffersController#edit as HTML
+  Parameters: {"id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering offers/edit.html.erb within layouts/application
+  Rendered offers/_form.html.erb (Duration: 0.9ms | GC: 0.0ms)
+  Rendered offers/edit.html.erb within layouts/application (Duration: 1.3ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = ? LIMIT ?[0m  [["key", "global"], ["LIMIT", 1]]
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | GC: 0.0ms)
+Completed 200 OK in 3ms (Views: 2.4ms | ActiveRecord: 0.2ms (4 queries, 2 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mBEGIN deferred TRANSACTION[0m
+----------------------------------------------
+OffersControllerTest: test_should_update_offer
+----------------------------------------------
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/offers/980190962" for 127.0.0.1 at 2026-08-06 21:45:10 -0600
+Processing by OffersController#update as HTML
+  Parameters: {"offer" => {"description" => "MyText", "price" => "9.99", "title" => "MyString"}, "id" => "980190962"}
+  [1m[36mOffer Load (0.1ms)[0m  [1m[34mSELECT "offers".* FROM "offers" WHERE "offers"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/offers/980190962
+Completed 303 See Other in 1ms (ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION[0m

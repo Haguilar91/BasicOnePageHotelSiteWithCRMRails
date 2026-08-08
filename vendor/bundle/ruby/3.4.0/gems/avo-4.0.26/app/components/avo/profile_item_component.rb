@@ -1,0 +1,22 @@
+# frozen_string_literal: true
+
+class Avo::ProfileItemComponent < Avo::BaseComponent
+  prop :label, reader: :public
+  prop :icon, reader: :public
+  prop :path, reader: :public
+  prop :active, default: :inclusive, reader: :public do |value|
+    value&.to_sym
+  end
+  prop :target, reader: :public do |value|
+    value&.to_sym
+  end
+  prop :title, reader: :public
+  prop :method, reader: :public
+  prop :disabled, reader: :public
+  prop :params, default: {}.freeze, reader: :public
+  prop :classes, default: "", reader: :public
+
+  def menu_item_classes
+    "sidebar-profile__menu-item #{classes}".strip
+  end
+end

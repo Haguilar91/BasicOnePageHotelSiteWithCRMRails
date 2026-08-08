@@ -1,0 +1,231 @@
+---
+pt-BR:
+  avo:
+    action_ran_successfully: Ação executada com sucesso!
+    actions: Ações
+    add_filter: Adicionar filtro
+    and_x_other_resources: e %{count} outros recursos
+    appearance:
+      accent_picker: Cor de Acento
+      accents: Acento
+      accents_list:
+        amber: Âmbar
+        blue: Azul
+        brand: Marca
+        cyan: Ciano
+        emerald: Esmeralda
+        fuchsia: Fúcsia
+        green: Verde
+        indigo: Índigo
+        lime: Limão
+        orange: Laranja
+        pink: Rosa
+        purple: Roxo
+        red: Vermelho
+        rose: Rosé
+        sky: Céu
+        teal: Verde-azulado
+        violet: Violeta
+        yellow: Amarelo
+      auto: Automático
+      auto_tooltip: Automático (preferência do sistema)
+      dark: Escuro
+      dark_tooltip: Modo Escuro
+      hide: Ocultar
+      light: Claro
+      light_tooltip: Modo Claro
+      neutrals: Tema
+      neutrals_list:
+        brand: Marca
+        gray: Cinza
+        mauve: Malva
+        mist: Névoa
+        neutral: Neutro
+        olive: Oliva
+        slate: Ardósia
+        stone: Pedra
+        taupe: Taupe
+        zinc: Zinco
+      neutrals_picker: Tema Neutro
+      schemes: Aparência
+      shortcut_badges: Badges de atalho
+      shortcut_badges_hide_tooltip: Ocultar badges de atalho do teclado
+      shortcut_badges_show_tooltip: Mostrar badges de atalho do teclado
+      show: Mostrar
+      title: Aparência
+    applied:
+      one: aplicado
+      other: aplicados
+    are_you_sure: Você tem certeza?
+    are_you_sure_detach_item: Você tem certeza que deseja separar este %{item}.
+    are_you_sure_you_want_to_run_this_option: Você tem certeza que deseja executar esta ação?
+    attach: Anexar
+    attach_and_attach_another: Anexar & anexar outro
+    attach_item: Anexar %{item}
+    attachment_class_attached: "%{attachment_class} anexado."
+    attachment_class_detached: "%{attachment_class} separado."
+    attachment_destroyed: Anexo destruído
+    attachment_failed: Não foi possível anexar %{attachment_class}
+    back_to_top: Voltar ao topo
+    cancel: Cancelar
+    checkbox_list:
+      hidden_selections:
+        one: 1 opção selecionada oculta pela pesquisa
+        other: "%{count} opções selecionadas ocultas pela pesquisa"
+    choose_a_country: Escolha um país
+    choose_an_option: Escolha uma opção
+    choose_item: Escolher %{item}
+    clear_value: Limpar valor
+    click_to_load: Clique para carregar
+    click_to_reveal_filters: Clique para revelar os filtros
+    close: Fechar
+    close_modal: Fechar modal
+    confirm: Confirmar
+    copy: Copiar
+    create_new_item: Criar novo %{item}
+    created_at: Criado em
+    created_at_timestamp: Criado em %{created_at}
+    dashboard: Painel
+    dashboards: Painéis
+    default_scope: Todos
+    delete: deletar
+    delete_file: Deletar arquivo
+    delete_item: Deletar %{item}
+    detach_item: separar %{item}
+    details: detalhe
+    download: Baixar
+    download_file: Baixar arquivo
+    download_item: Baixar %{item}
+    edit: editar
+    edit_item: editar %{item}
+    empty_dashboard_message: Adicionar cartões a este painel
+    failed: Falhou
+    failed_to_find_attachment: Falhou ao achar anexo
+    failed_to_load: Falha ao carregar
+    failed_to_load_item: Falha ao carregar %{item}
+    'false': Falso
+    file:
+      one: ficheiro
+      other: ficheiros
+    filter_by: Filtrar por
+    filters: Filtros
+    global_search:
+      empty_state:
+        no_results_for_query: Não conseguimos encontrar nada correspondente a "%{query}"
+        no_results_found: Nenhum resultado encontrado
+        start_typing: Comece a digitar para pesquisar
+        start_typing_with_resource_list: Você pode pesquisar em %{resources}
+        start_typing_with_resources: Você pode pesquisar em %{resources} %{other_resources}
+        try_adjusting_search: Tente ajustar seus termos de pesquisa ou verificar se há erros de digitação
+      go_to: Ir para
+      keyboard_hints:
+        close: Fechar
+        navigate: Navegar
+        press: Pressione
+        select: Selecionar
+      results:
+        count_of_total: "%{count} de %{total}"
+      show_all_results_for: Mostrar todos os resultados para
+    go_back: Voltar
+    grid_view: Visualização em grade
+    hide_content: Esconder conteúdo
+    home: Início
+    key_value_field:
+      add_row: Adicionar linha
+      delete_row: Remover linha
+      key: Chave
+      reorder_row: Reordenar linha
+      value: Valor
+    less_content: Menos conteúdo
+    list_is_empty: Lista vazia
+    load_item: Carregar %{item}
+    loading: Carregando
+    media_library:
+      title: Biblioteca de Mídia
+    more: Mais
+    more_content: Mais conteúdo
+    more_records_available: Existem mais registros disponíveis.
+    nested:
+      add_new_item: Adicionar novo %{item}
+    new: novo
+    next_page: Próxima página
+    no_cancel: Não, cancelar
+    no_cards_present: Nenhum cartão presente
+    no_item_found: Nenhum registro encontrado
+    no_options_available: Nenhuma opção disponível
+    no_related_item_found: Nenhum registro relacionado encontrado
+    not_authorized: Você não está autorizado à executar essa ação.
+    number_of_items:
+      one: um %{item}
+      other: "%{count} %{item}"
+      zero: sem %{item}
+    oops_nothing_found: Oops! Nada encontrado...
+    open_in_new_tab: Abrir em uma nova aba
+    open_in_your_editor: Abrir no seu editor
+    order:
+      higher: Mover registro um para cima
+      lower: Mover registro um para baixo
+      reorder_record: Reordenar registro
+      to_bottom: Mover registro para baixo
+      to_top: Mover registro para cima
+    pages: Páginas
+    per_page: Por página
+    prev_page: Página anterior
+    record:
+      one: registro
+      other: registros
+    records_selected_from_all_pages_html: Todos os registros de todas as páginas selecionados
+    reload: Recarregar
+    remove_selection: Remover seleção
+    reset: resetar
+    reset_filters: Limpar filtros
+    resize_sidebar: Redimensionar a barra lateral
+    resize_sidebar_hint: Arraste para redimensionar a barra lateral. Clique duas vezes para redefinir.
+    resource_created: Recurso criado
+    resource_destroyed: Recurso destruído
+    resource_updated: Recurso atualizado
+    resources: Recursos
+    retry: Tentar novamente
+    retry_item: Tentar novamente %{item}
+    reupload_file: Reupload %{item}
+    run: Executar
+    save: Salvar
+    search:
+      cancel_button: Cancelar
+      placeholder: Procurar
+    select_all: Selecionar tudo
+    select_all_matching: Selecione todas as correspondências
+    select_item: Selecionar item
+    show_content: Mostrar conteúdo
+    sign_out: sair
+    skip_to_content: Pular para o conteúdo
+    skip_to_sidebar: Pular para a barra lateral
+    sort_asc: Ordenar em ordem crescente
+    sort_desc: Ordenar em ordem decrescente
+    sort_reset: Redefinir ordenação
+    switch_to_view: Alterar para visão %{view_type}
+    table_view: Visualização em tabela
+    this_field_has_attachments_disabled: Este campo tem anexos desativados.
+    tools: Ferramentas
+    'true': Verdadeiro
+    type_to_search: Digite para buscar.
+    unauthorized: Não autorizado
+    undo: desfazer
+    updated_at: Atualizado em
+    updated_at_timestamp: Atualizado em %{updated_at}
+    view: Visualizar
+    view_item: visualizar %{item}
+    visit_record_on_external_path: Visitar registro através de link externo
+    was_successfully_created: foi criado com sucesso
+    was_successfully_updated: foi atualizado com sucesso
+    x_items_more:
+      one: mais um item
+      other: "%{count} mais items"
+      zero: mais nenhum item
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> registros selecionados nesta página de um total de <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> registros selecionados de todas as páginas
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> registros selecionados nesta página
+    yes_confirm: Sim, tenho certeza
+    you_cant_upload_new_resource: Você não pode fazer upload de imagens no editor Trix até salvar o recurso.
+    you_havent_set_attachment_key: Você precisa definir uma `attachment_key` para este campo Trix.
+    you_missed_something_check_form: Você pode ter esquecido algo. Por favor, cheque o formulário.

@@ -1,0 +1,212 @@
+/* Tabs Component - All Styles */
+@layer components {
+  /* ============================================
+     BASE STYLES (Common to both variants)
+     ============================================ */
+
+  /* Container - wraps by default; the `tabs-overflow` Stimulus controller
+     adds the `tabs--scrollable` modifier when wrapping is detected. */
+  .tabs {
+    @apply flex flex-wrap;
+  }
+
+  /* Scrollable modifier - single-row, horizontally scrollable with edge
+     shadows. Toggled on by the `tabs-overflow` controller. */
+  .tabs--scrollable {
+    /* overflow-y is clipped explicitly: `overflow-x: auto` alone computes
+       overflow-y to auto as well, and the active item's 1px underline
+       overlap (margin-bottom: -1px) would otherwise create a 1px vertical
+       scroll. */
+    @apply flex-nowrap overflow-x-auto overflow-y-hidden;
+    scrollbar-width: none;
+
+    /* Scroll shadows (Lea Verou's background-attachment: local technique).
+       Two solid-color "cover" blocks scroll with the content (local) and sit
+       on top of two radial "shadow" gradients that stay fixed (scroll). When
+       scrolled to an edge, the cover completely hides the shadow on that
+       side; as the user scrolls away, the cover moves with the content and
+       the shadow below is revealed. Covers are hard-edged (no fade through
+       `transparent`, which in CSS is rgba(0,0,0,0) and bleeds dark pixels). */
+    background-image:
+      linear-gradient(var(--color-primary), var(--color-primary)),
+      linear-gradient(var(--color-primary), var(--color-primary)),
+      radial-gradient(
+        farthest-side at 0 50%,
+        color-mix(in oklab, var(--color-foreground), transparent 80%),
+        rgb(0 0 0 / 0)
+      ),
+      radial-gradient(
+        farthest-side at 100% 50%,
+        color-mix(in oklab, var(--color-foreground), transparent 80%),
+        rgb(0 0 0 / 0)
+      );
+    background-position: 0 0, 100% 0, 0 0, 100% 0;
+    background-repeat: no-repeat;
+    background-size: 1rem 100%, 1rem 100%, 0.75rem 100%, 0.75rem 100%;
+    background-attachment: local, local, scroll, scroll;
+  }
+
+  .tabs--scrollable::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Base Item */
+  .tabs__item {
+    @apply inline-flex items-center mx-1 px-3 py-1 cursor-pointer text-sm font-medium leading-4 bg-transparent gap-2 rounded-md text-content;
+  }
+
+  /* Item Sub-elements */
+  .tabs__item-icon {
+    @apply size-4 text-content;
+  }
+
+  .tabs__item-label {
+    @apply whitespace-nowrap;
+  }
+
+  /* Item States - Shared */
+  .tabs__item--disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .tabs__item:hover:not(.tabs__item--disabled) {
+    @apply bg-secondary;
+  }
+
+  .tabs__item:focus-visible {
+    @apply bg-primary;
+  }
+
+  /* Wrapper */
+  .tabs__item-wrapper {
+    @apply inline-block py-2;
+  }
+
+  /* ============================================
+     GROUP VARIANT
+     ============================================ */
+  .tabs__item--group.tabs__item--active:hover,
+  .tabs__item--group.tabs__item--active {
+    background: color-mix(
+      in oklab,
+      var(--color-secondary),
+      var(--color-content) 5%
+    );
+  }
+
+  .tabs__item-wrapper--group {
+    @apply flex items-center justify-center;
+  }
+
+  /* ============================================
+     SWITCHER VARIANT
+     ============================================ */
+  .tabs--switcher {
+    @apply inline-flex items-center gap-0.5 p-0.5 rounded-md border;
+    background: color-mix(
+      in oklab,
+      var(--color-secondary),
+      var(--color-content) 3%
+    );
+    border-color: color-mix(
+      in oklab,
+      var(--color-tertiary),
+      var(--color-content) 5%
+    );
+  }
+
+  .tabs__item--switcher {
+    @apply relative mx-0 px-2.5 py-1 rounded-md text-xs font-medium text-content-secondary transition-colors duration-150;
+  }
+
+  .tabs__item--switcher:hover:not(.tabs__item--disabled):not(.tabs__item--active):not(:has(input:checked)) {
+    @apply bg-transparent text-content;
+  }
+
+  .tabs__item--switcher.tabs__item--active,
+  .tabs__item--switcher:has(input:checked) {
+    @apply bg-primary shadow-sm text-content;
+  }
+
+  .tabs__item--switcher.tabs__item--active:hover,
+  .tabs__item--switcher:has(input:checked):hover {
+    background: color-mix(
+      in oklab,
+      var(--color-primary),
+      var(--color-content) 2%
+    );
+  }
+
+  .tabs__item-wrapper--switcher {
+    @apply py-0;
+  }
+
+  /* ============================================
+    SCOPE VARIANT
+    ============================================ */
+  /* Full-width border on tabs container */
+  .tabs:has(.tabs__item-wrapper--scope) {
+    @apply border-b border-tertiary;
+  }
+
+  /* Remove default border from scope wrappers */
+  .tabs__item-wrapper--scope {
+    @apply relative border-b-0;
+  }
+
+  /* Active indicator - a dedicated element (not a border) so the view
+     transition can morph just the bar between tabs. Positioned to overlay
+     the container border, like the old border-b-2 + -1px margin did. */
+  .tabs__indicator {
+    @apply absolute inset-x-0 h-0.5 bg-accent;
+    bottom: -1px;
+  }
+
+  /* Tab Group Component */
+  /* Dashed border wraps both the tabs list and the active tab's content.
+     The element extends 5px past each side of its container so the border
+     sits outside the panel padding without requiring the parent to know
+     about it. Uses width + negative margin-inline (RTL-safe) instead of
+     left/right. */
+  .tab-group {
+    @apply relative border border-dashed border-1 border-tertiary hover:border-quaternary rounded-2xl;
+    --tab-group-modifier: 4;
+    --tab-group-padding: calc(var(--tab-group-modifier) - (var(--tab-group-modifier)/2));
+
+    width: calc(100% + calc(var(--spacing) * var(--tab-group-modifier)));
+    margin-inline: calc(var(--spacing) * var(--tab-group-padding) * -1);
+    padding: calc(var(--spacing) * var(--tab-group-padding));
+  }
+
+  @media (width > theme(--breakpoint-md)) {
+    .tab-group {
+      --tab-group-modifier: 8;
+    }
+  }
+
+  /* ============================================
+     ACTIVE INDICATOR VIEW TRANSITION
+     ============================================ */
+  /* The tabs controller names the outgoing and incoming active items
+     `tabs-active-item` for the duration of the swap, so the browser morphs
+     the indicator between the two rows. Only animate the named pair — the
+     root crossfade is disabled (scoped to our transition via the marker
+     class on <html>) so the rest of the page doesn't flash. */
+  html.tabs-view-transition::view-transition-old(root),
+  html.tabs-view-transition::view-transition-new(root) {
+    animation: none;
+  }
+
+  html.tabs-view-transition::view-transition-group(tabs-active-item),
+  html.tabs-view-transition::view-transition-group(tabs-group) {
+    animation-duration: 200ms;
+  }
+
+  /* The group container is named too so its box animates to the new
+     panel's height. Snapshots keep their natural height (UA default), so
+     clip the taller one instead of letting it hang out of the shrinking/
+     growing box. */
+  html.tabs-view-transition::view-transition-image-pair(tabs-group) {
+    overflow: clip;
+  }
+}

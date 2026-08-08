@@ -1,0 +1,108 @@
+class Avo::Resources::Items::Holder
+  attr_reader :tools, :from, :parent
+  attr_accessor :items
+  attr_accessor :invalid_fields
+
+  def initialize(from: nil, parent: nil)
+    @items = []
+    @items_index = 0
+    @invalid_fields = []
+    @from = from
+    @parent = parent
+  end
+
+  def collaboration_timeline(**args)
+    add_item Avo::Resources::Items::Collaboration.new(**args)
+  end
+
+  # Adds a field to the items_holder
+  def field(field_name, **args, &block)
+    # If the field is paresed inside a tab group, add it to the tab
+    # This will happen when the field is parsed inside a tab group from a resource method
+    if from.present? && from.instance_of?(Avo::Resources::Items::TabGroup::Builder)
+      return from.field(field_name, holder: self, **args, &block)
+    end
+
+    field_parser = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
+
+    if field_parser.invalid?
+      as = args.fetch(:as, nil)
+
+      message = "Invalid field configuration"
+      description = "Check your resource file for: <code>field :#{field_name}, as: :#{as}</code>"
+
+      return add_invalid_field({
+        name: field_name,
+        as:,
+        alert_type: :error,
+        message:,
+        description:
+      })
+    end
+
+    add_item field_parser.instance
+  end
+
+  def tabs(tab = nil, id: nil, title: nil, description: nil, **args, &block)
+    if tab.present?
+      add_item tab
+    else
+      add_item Avo::Resources::Items::TabGroup::Builder.parse_block(
+        parent: @parent,
+        id: id,
+        title: title,
+        description: description,
+        **args,
+        &block
+      )
+    end
+  end
+
+  def tab(title:, **args, &block)
+    add_item Avo::Resources::Items::Tab::Builder.parse_block(title: title, parent: @parent, **args, &block)
+  end
+
+  def tool(klass, **args)
+    add_item klass.new(**args, view: parent.view, parent: parent)
+  end
+
+  def panel(title: nil, **args, &block)
+    add_item Avo::Resources::Items::ItemGroup::Builder.parse_block(title: title, parent: @parent, **args, &block)
+  end
+
+  def card(title: nil, **args, &block)
+    add_item Avo::Resources::Items::Card::Builder.parse_block(title: title, parent: @parent, **args, &block)
+  end
+
+  def header(**args, &block)
+    add_item Avo::Resources::Items::Header.new(**args)
+  end
+
+  def sidebar(**args, &block)
+    check_sidebar_is_inside_a_panel
+
+    add_item Avo::Resources::Items::Sidebar::Builder.parse_block(parent: @parent, **args, &block)
+  end
+
+  def check_sidebar_is_inside_a_panel
+    unless @from.eql?(Avo::Resources::Items::Panel::Builder) || @from.eql?(Avo::Resources::Items::MainPanel::Builder)
+      raise "The sidebar must be inside a panel."
+    end
+  end
+
+  def add_item(instance)
+    @items << instance
+
+    increment_order_index
+  end
+
+  private
+
+  def add_invalid_field(payload, alert_type: :error)
+    invalid_fields << payload
+  end
+
+  def increment_order_index
+    @items_index += 1
+  end
+end

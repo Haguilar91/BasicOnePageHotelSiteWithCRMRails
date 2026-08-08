@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../javascript/late-registration.js"],
+  "sourcesContent": ["const application = window.Stimulus\n\n// This is going run last so it can regiser custom StimulusJS controllers from plugins.\nif (window.Avo.configuration.stimulus_controllers) {\n  window.Avo.configuration.stimulus_controllers.forEach(([name, controller]) => {\n    application.register(name, window[controller])\n  })\n}\n"],
+  "mappings": "MAAA,IAAMA,EAAc,OAAO,SAGvB,OAAO,IAAI,cAAc,sBAC3B,OAAO,IAAI,cAAc,qBAAqB,QAAQ,CAAC,CAACC,EAAMC,CAAU,IAAM,CAC5EF,EAAY,SAASC,EAAM,OAAOC,CAAU,CAAC,CAC/C,CAAC",
+  "names": ["application", "name", "controller"]
+}

@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Page contents" %>
+
+<h1>Page contents</h1>
+
+<div id="page_contents">
+  <% @page_contents.each do |page_content| %>
+    <%= render page_content %>
+    <p>
+      <%= link_to "Show this page content", page_content %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New page content", new_page_content_path %>

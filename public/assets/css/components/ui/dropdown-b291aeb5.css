@@ -1,0 +1,203 @@
+.dropdown {
+  @apply relative inline-flex;
+}
+
+/* Closed state - hidden by default */
+.dropdown-popover {
+  @apply absolute z-10 rounded-lg bg-primary top-full end-0 bottom-auto start-auto mt-2;
+  box-shadow: var(--box-shadow-card);
+}
+
+/* Backdrop - transparent for dropdown (no overlay) */
+.dropdown-popover::backdrop {
+  background-color: transparent;
+}
+
+/* Backdrop remains transparent when open */
+.dropdown-popover:open::backdrop {
+  background-color: transparent;
+}
+
+.dropdown-menu {
+  @apply flex flex-col w-full rounded-lg border border-tertiary bg-primary;
+}
+
+.dropdown-menu--scrollable {
+  @apply overflow-y-auto;
+}
+
+.dropdown-menu--standalone {
+  box-shadow: var(--box-shadow-card);
+}
+
+/* When the popover hosts a dropdown card, the card provides the visual
+   chrome — drop the surrounding background, border, and shadow so we don't
+   render two stacked cards. Mirrors the popover-menu equivalent. */
+.dropdown-popover:has(.dropdown-card) {
+  @apply bg-transparent;
+  box-shadow: none;
+}
+
+.dropdown-popover:has(.dropdown-card) .dropdown-menu {
+  @apply bg-transparent border-0 rounded-none overflow-visible;
+}
+
+.dropdown-popover:has(.dropdown-card) :is(.dropdown-menu__group, .dropdown-menu__list) {
+  @apply p-0;
+}
+
+/* ==========================================================================
+   List & Items
+
+   .menu__item--action is a modifier for action-type items (e.g. "+ Menu item").
+   It pairs with .dropdown-menu__item and only overrides what differs from the default style.
+   ========================================================================== */
+
+.dropdown-menu__group {
+  @apply flex flex-col items-start self-stretch py-1;
+}
+.dropdown-menu__list {
+  @apply flex flex-col items-start self-stretch px-1;
+}
+
+/* ==========================================================================
+   Inline search (DropdownComponent searchable:)
+   A filter input pinned above the list; the popover-menu controller hides
+   non-matching items and reveals the empty state.
+
+   Styled as a command-palette header row (the familiar Linear/Raycast shape):
+   full-bleed input, the bottom border is the only field chrome, and the icon,
+   text, and empty state sit on the same column grid as the menu items below.
+   ========================================================================== */
+
+.dropdown-menu__search {
+  @apply self-stretch border-b border-tertiary;
+  /* Line the search row up with the items: icon starts where item icons do
+     (list px + item px), same icon size, same icon-to-text gap. The
+     search-input prefix position and input padding both derive from these. */
+  --input-icon-offset: --spacing(3);
+  --input-icon-size: --spacing(4);
+  --input-icon-gap: --spacing(1.5);
+  min-inline-size: 14rem;
+}
+
+.dropdown-menu__search .search-input__input {
+  @apply w-full h-9 rounded-none border-none bg-transparent text-sm text-content;
+}
+
+.dropdown-menu__search .search-input__input::placeholder {
+  color: var(--color-content-secondary);
+}
+
+/* The input is auto-focused on open and the caret shows position — a boxy
+   ring around a full-bleed row reads as noise, not focus. */
+.dropdown-menu__search .search-input__input:focus-visible {
+  outline: none;
+}
+
+/* Forced-colors mode still needs a visible focus indicator. */
+@media (forced-colors: active) {
+  .dropdown-menu__search .search-input__input:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+/* Empty state text sits on the item-label column, under the input text. */
+.dropdown-menu__search-empty {
+  @apply m-0 py-2 text-sm text-content-secondary;
+  padding-inline: calc(--spacing(3) + --spacing(4) + --spacing(1.5)) --spacing(3);
+}
+
+/* Filtered-out items are hidden with the `hidden` attribute; the item rules
+   below apply `display: flex`, which would otherwise win over the UA style. */
+.dropdown-menu__list :is(a, button)[hidden] {
+  display: none;
+}
+
+/* The `a`/`button` selectors style real menu items, but a dropdown can also host
+   a `.dropdown-card` (see the `:has(.dropdown-card)` block above). Controls inside
+   that card — e.g. a footer action button — are not menu items, so exclude them and
+   let their own `.button` styles apply. */
+.dropdown-menu__item,
+.dropdown-menu__list a:not(.dropdown-card *),
+.dropdown-menu__list button:not(.dropdown-card *) {
+  @apply flex items-center w-full justify-start gap-1.5 px-2 py-1.5 min-h-8 rounded-md border-none bg-transparent overflow-hidden text-ellipsis whitespace-nowrap text-content font-medium text-sm cursor-pointer leading-5;
+
+  &.dropdown-menu__item--disabled {
+    @apply text-content-secondary cursor-not-allowed !bg-transparent;
+
+    &:hover {
+      @apply !text-content-secondary !bg-transparent;
+    }
+  }
+
+  &.menu__item--action {
+    @apply text-content-secondary gap-1.5;
+
+    &.dropdown-menu__item--disabled {
+      @apply opacity-60;
+    }
+  }
+
+  &:hover {
+    @apply bg-secondary text-content;
+  }
+}
+
+.dropdown-menu__list > :is(a, button):hover {
+  @apply bg-secondary;
+}
+
+.dropdown-menu__item--active {
+  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+}
+
+.dropdown-menu__item:focus-visible,
+.dropdown-menu__list > :is(a, button):focus-visible,
+.dropdown-menu__list form > :is(a, button):focus-visible {
+  @apply bg-primary;
+  outline-offset: var(--focus-outline-offset-inset);
+}
+
+/* ==========================================================================
+   Footer (DropdownComponent with_footer)
+   A row under the list, outside the scrollable group and the inline search's
+   filter scope — always visible. Items share the menu-item metrics but read
+   quieter, as footer actions rather than options.
+   ========================================================================== */
+
+.dropdown-menu__footer {
+  @apply flex flex-col self-stretch p-1 border-t border-tertiary;
+}
+
+.dropdown-menu__footer :is(a, button) {
+  @apply flex items-center w-full justify-start gap-1.5 px-2 py-1.5 min-h-8 rounded-md border-none bg-transparent whitespace-nowrap text-content-secondary font-normal text-sm cursor-pointer leading-5;
+
+  &:hover {
+    @apply bg-secondary text-content;
+  }
+
+  &:focus-visible {
+    @apply bg-primary;
+    outline-offset: var(--focus-outline-offset-inset);
+  }
+
+  svg {
+    @apply shrink-0 size-4 text-inherit;
+  }
+}
+
+.dropdown-menu__icon,
+.dropdown-menu__list > :is(a, button) svg {
+  @apply shrink-0 size-4 text-inherit;
+
+  &.menu__item__icon--action {
+    @apply p-0.5 box-content rounded-sm bg-secondary;
+
+    .dropdown-menu__item--active &,
+    .dropdown-menu__item:hover & {
+      @apply bg-inherit;
+    }
+  }
+}

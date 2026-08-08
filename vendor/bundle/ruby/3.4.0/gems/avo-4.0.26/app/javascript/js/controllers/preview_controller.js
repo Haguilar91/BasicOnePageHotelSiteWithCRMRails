@@ -1,0 +1,31 @@
+import { Controller } from '@hotwired/stimulus'
+import tippy from 'tippy.js'
+
+export default class extends Controller {
+  static values = {
+    url: String,
+  }
+
+  connect() {
+    const vm = this
+
+    this.tippyInstance = tippy(vm.context.element, {
+      content: "loading...",
+      allowHTML: true,
+      theme: 'preview',
+      maxWidth: 550,
+      async onShow(instance) {
+        const response = await fetch(vm.urlValue)
+        const content = await response.text()
+        instance.setContent(content)
+      },
+    })
+  }
+
+  disconnect() {
+    if (this.tippyInstance) {
+      this.tippyInstance.destroy()
+      this.tippyInstance = null
+    }
+  }
+}

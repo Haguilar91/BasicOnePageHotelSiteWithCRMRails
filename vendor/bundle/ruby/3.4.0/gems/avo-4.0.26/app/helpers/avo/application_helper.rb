@@ -1,0 +1,416 @@
+module Avo
+  module ApplicationHelper
+    include Avo::ResourcesHelper
+    include Avo::SummaryChartHelper
+
+    def ui = Avo::UIInstance
+
+    # The cookie name that remembers an opened manual frame. Derived from the
+    # frame's deferred URL (which already encodes resource + record + frame), so
+    # the memory is scoped per record + association/tab. Hashed to keep the name
+    # short and cookie-safe. The `manual-frame` Stimulus controller writes this
+    # same name client-side on a successful load (see manual_frame_controller.js).
+    def manual_frame_cookie_name(url)
+      "amf_#{Digest::MD5.hexdigest(url.to_s)}"
+    end
+
+    # Whether this manual frame was opened recently enough to skip the placeholder
+    # and render a real auto-loading `<turbo-frame src>` (so the Load button never
+    # appears). Presence-based: the cookie carries `max-age`, so the browser drops
+    # it when the window lapses — a present cookie means "still remembered".
+    #
+    # Sliding: every render that finds it remembered refreshes the cookie, so the
+    # window keeps moving forward as long as the user keeps coming back.
+    #
+    # Returns false (and touches nothing) for plain `loading: :manual` frames,
+    # which carry no `auto_load_for` window.
+    def manual_frame_remembered?(url, auto_load_for)
+      return false if auto_load_for.blank?
+
+      name = manual_frame_cookie_name(url)
+      return false if request.cookies[name].blank?
+
+      cookies[name] = {value: "1", path: "/", max_age: auto_load_for.to_i, same_site: :lax}
+      true
+    end
+
+    # Active Storage URL helpers raise UrlGenerationError when a blob's filename
+    # is blank (the route requires a :filename segment). Use a synthetic filename
+    # so attach mode and other callers still get a routable URL; return nil only
+    # when generation still fails for another reason.
+    def safe_blob_url(blob)
+      if blob.filename.to_s.blank?
+        main_app.rails_service_blob_url(blob.signed_id, routable_blob_filename(blob))
+      else
+        main_app.url_for(blob)
+      end
+    rescue ActionController::UrlGenerationError
+      nil
+    end
+
+    def safe_blob_path(blob)
+      if blob.filename.to_s.blank?
+        main_app.rails_service_blob_path(blob.signed_id, routable_blob_filename(blob))
+      else
+        main_app.rails_blob_path(blob)
+      end
+    rescue ActionController::UrlGenerationError
+      nil
+    end
+
+    def safe_blob_representation_url(representation)
+      blob = representation.blob
+
+      if blob.filename.to_s.blank?
+        main_app.rails_blob_representation_url(
+          blob.signed_id,
+          representation.variation.key,
+          routable_blob_filename(blob)
+        )
+      else
+        main_app.url_for(representation)
+      end
+    rescue ActionController::UrlGenerationError
+      nil
+    end
+
+    def render_license_warning(title: "", message: "", icon: "exclamation")
+      render partial: "avo/sidebar/license_warning", locals: {
+        title: title,
+        message: message,
+        icon: icon
+      }
+    end
+
+    def empty_state(**args)
+      render Avo::EmptyStateComponent.new(**args)
+    end
+
+    def a_button(**args, &block)
+      render Avo::ButtonComponent.new(is_link: false, **args) do
+        capture(&block) if block.present?
+      end
+    end
+
+    def a_link(path = nil, **args, &block)
+      render Avo::ButtonComponent.new(path, is_link: true, **args) do
+        capture(&block) if block.present?
+      end
+    end
+
+    def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md, active: false)
+      classes = "inline-flex grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded-sm transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
+
+      if color.present?
+        if variant.present? && (variant.to_sym == :outlined)
+          classes += " bg-white border"
+
+          classes += " hover:border-#{color}-700 border-#{color}-500 text-#{color}-600 hover:text-#{color}-700 disabled:border-gray-300 disabled:text-gray-600"
+        else
+          classes += " text-white bg-#{color}-500 hover:bg-#{color}-600 disabled:bg-#{color}-300"
+        end
+      else
+        classes += " text-gray-700 bg-white hover:bg-gray-100 disabled:bg-gray-300"
+      end
+
+      size = size.present? ? size.to_sym : :md
+      classes += case size
+      when :xs
+        " p-2 py-1"
+      when :sm
+        " py-1 px-4"
+      when :md
+        " py-2 px-4"
+      when :xl
+        " py-3 px-4"
+      else
+        " p-4"
+      end
+
+      classes
+    end
+
+    def input_classes(extra_classes = "", has_error: false, size: :md)
+      classes = ""
+      classes += "input--size-#{size}" if [:sm, :md, :lg].include?(size)
+      classes += " input-field--error" if has_error
+      classes += " #{extra_classes}"
+      classes.strip
+    end
+
+    def get_model_class(model)
+      if model.instance_of?(Class)
+        model
+      else
+        model.class
+      end
+    end
+
+    def root_path_without_url
+      "#{Avo.configuration.prefix_path}#{mount_path}"
+    rescue
+      Avo.configuration.root_path
+    end
+
+    def mount_path
+      Avo::Engine.routes.find_script_name(params.permit!.to_h.symbolize_keys)
+    end
+
+    def decode_filter_params(encoded_params)
+      Avo::Filters::BaseFilter.decode_filters(encoded_params)
+    end
+
+    def encode_filter_params(filter_params)
+      Avo::Filters::BaseFilter.encode_filters(filter_params)
+    end
+
+    def number_to_social(number, start_at: 10_000)
+      return number_with_delimiter(number) if number < start_at
+
+      number_to_human(number,
+        precision: 1,
+        significant: false,
+        round_mode: :down,
+        format: "%n%u",
+        units: {
+          thousand: "K",
+          million: "M",
+          billion: "B"
+        })
+    end
+
+    def frame_id(resource)
+      ["frame", resource.model_name.singular, resource.record_param].compact.join("-")
+    end
+
+    def chart_color(index)
+      colors = Avo.configuration.appearance.chart_colors
+      colors[index % colors.length]
+    end
+
+    def possibly_rails_authentication?
+      defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
+    end
+
+    def body_classes
+      os_class = request.user_agent.to_s.include?("Mac") ? "os-mac" : "os-pc"
+
+      view_class = if controller.class.superclass.to_s == "Avo::ResourcesController"
+        case action_name.to_sym
+        when :index
+          "resource-index-view"
+        when :show
+          "resource-show-view"
+        when :edit, :update
+          "resource-edit-view"
+        when :new, :create
+          "resource-new-view"
+        end
+      end
+
+      [os_class, view_class, *Array.wrap(Avo.configuration.body_classes)]
+    end
+
+    # Check if the current locale is RTL (Right-to-Left)
+    def rtl?
+      Avo.configuration.rtl?
+    end
+
+    # Returns "rtl" or "ltr" based on current locale
+    def text_direction
+      Avo.configuration.text_direction
+    end
+
+    def container_classes
+      return "container-#{container_width_css_suffix(@container_size.to_sym)}" if @container_size.present?
+
+      width = Avo.configuration.container_width.fetch(@view&.to_sym, :large)
+      "container-#{container_width_css_suffix(width)}"
+    end
+
+    # encode & encrypt params
+    def e(value)
+      encrypted = Avo::Services::EncryptionService.encrypt(message: value, purpose: :return_to, serializer: Marshal)
+      Base64.urlsafe_encode64(encrypted, padding: false)
+    end
+
+    # decrypt & decode params
+    def d(value)
+      decoded = Base64.urlsafe_decode64(value.to_s)
+      Avo::Services::EncryptionService.decrypt(message: decoded, purpose: :return_to, serializer: Marshal)
+    rescue
+      nil
+    end
+
+    def wrap_in_modal(content)
+      turbo_frame_tag Avo::MODAL_FRAME_ID do
+        render(Avo::ModalComponent.new(width: :xl, body_class: "bg-application")) do |c|
+          content
+        end
+      end
+    end
+
+    def editor_file_path(path)
+      editor_url(Object.const_source_location(path.class.to_s)&.first)
+    end
+
+    def editor_url(path)
+      Avo.configuration.default_editor_url.gsub("%{path}", path)
+    end
+
+    def render_header_menu_items
+      items = Avo.configuration.header_menu_items
+      return link_to(Avo.configuration.app_name, "/", target: :_blank) if items.blank?
+
+      safe_join(items.map { |item|
+        link_to(item.name, item.to_path,
+          target: item.target,
+          title: item.title,
+          data: item.method ? {turbo_method: item.method} : nil)
+      })
+    end
+
+    # Translates appearance UI strings with English fallback when the active locale
+    # omits Avo 4 appearance keys. Returns plain text safe for HTML attributes.
+    def avo_appearance_t(key, **options)
+      full_key = "avo.appearance.#{key}"
+      defaults = []
+      defaults << I18n.t(full_key, locale: :en, raise: false) if I18n.locale != :en
+      defaults << options[:default] if options.key?(:default)
+      I18n.t(full_key, **options.except(:default), default: defaults.presence)
+    end
+
+    def appearance_neutral_labels(neutrals)
+      neutrals.index_with { |theme| avo_appearance_t("neutrals_list.#{theme}", default: theme.capitalize) }
+    end
+
+    # Resizable-sidebar width bounds for the JS layer (window.Avo.configuration).
+    # Read the private_constant bounds via unqualified lexical lookup — the
+    # constants themselves stay non-public API (see lib/avo.rb).
+    def sidebar_width_min = SIDEBAR_WIDTH_MIN
+
+    def sidebar_width_max = SIDEBAR_WIDTH_MAX
+
+    # Already clamped into the bounds by Avo::Configuration.
+    def sidebar_width_default = Avo.configuration.sidebar[:default_width]
+
+    # nil when the host has not changed the starting width, so the pre-paint
+    # carrier emits nothing at all and the stylesheet's own --spacing(64)
+    # fallback stands — same discipline as `sidebar_width` returning nil for "no
+    # cookie". Keeps the CSP surface and the bytes at zero for everyone who never
+    # configures this.
+    def custom_sidebar_width_default
+      width = sidebar_width_default
+
+      width unless width == SIDEBAR_WIDTH_DEFAULT
+    end
+
+    private
+
+    # The signed_id is what Active Storage uses to locate the blob; the filename
+    # segment is only required for routing, so a placeholder is fine when blank.
+    def routable_blob_filename(blob)
+      return blob.filename if blob.filename.to_s.present?
+
+      extension = Rack::Mime::MIME_TYPES.invert[blob.content_type]
+      extension = ".#{extension}" if extension.present? && !extension.start_with?(".")
+      "attachment#{extension}"
+    end
+
+    def container_width_css_suffix(width)
+      (width == :full) ? "full-width" : width.to_s
+    end
+
+    def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)
+      if as.present?
+        id = type
+        type = as
+      end
+      field_klass = "Avo::Fields::#{type.to_s.camelize}Field".safe_constantize
+      field = field_klass.new id, form: form, view: view, **args, &block
+
+      # Add the form record to the field so all fields have access to it.
+      field.hydrate(record: form.object) if form.present?
+
+      render field.component_for_view(view).new field: field, form: form, **component_options
+    end
+
+    def avo_show_field(id, type = nil, view: :show, **args, &block)
+      avo_field(id, type, **args, view: view, &block)
+    end
+
+    def avo_edit_field(id, type = nil, view: :edit, **args, &block)
+      avo_field(id, type, **args, view: view, &block)
+    end
+
+    def html_theme_classes
+      classes = []
+      classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
+      classes << "accent-theme-#{current_accent}" if current_accent != "brand"
+
+      case current_scheme
+      when "dark" then classes << "dark" << "scheme-dark"
+      when "light" then classes << "scheme-light"
+      else classes << "scheme-auto"
+      end
+
+      classes
+    end
+
+    # Resizable sidebar (>= lg): the width the user dragged to, read from the
+    # persistent `avo.sidebar.width` cookie and validated to a pixel Integer
+    # within [SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX], or nil when the cookie is
+    # absent or invalid. The pre-paint carrier (_sidebar_width_override.html.erb)
+    # emits nothing when this is nil, so an existing user with no cookie keeps
+    # today's 256px default (R9).
+    #
+    # R17 trust boundary. The cookie is user-controlled input, and not only by
+    # the admin: a sibling subdomain, a plaintext MITM, or the host app can set
+    # it too. Every guard here is load-bearing:
+    #   - valid_encoding? — Rack can hand us a UTF-8-tagged String with invalid
+    #     bytes (e.g. `avo.sidebar.width=%C3%28`); blank?/presence/match? then
+    #     raise ArgumentError — a 500 on every admin page, settable remotely.
+    #   - \A..\z, not ^..$ — line anchors accept "200\n<script>…"; \Z would allow
+    #     a trailing newline too.
+    #   - bytesize guard caps the work before the regex.
+    # Deliberately NOT Integer(v, exception: false) (accepts "2_0_0", "+200",
+    # " 200 ") and NOT bare to_i (nil.to_i -> 0 -> clamp -> 200 would ship a
+    # 200px sidebar to every existing user; "٤٨٠".to_i is also 0).
+    #
+    # The invariant is a TYPE invariant: this returns an Integer or nil, never a
+    # String — so there is no injection path even into the carrier's JS.
+    def sidebar_width
+      value = cookies["#{Avo::COOKIES_KEY}.sidebar.width"].to_s
+      return nil if value.empty?
+      return nil unless value.valid_encoding?
+      return nil if value.bytesize > 4
+      return nil unless /\A\d+\z/.match?(value)
+
+      value.to_i.clamp(SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX)
+    end
+
+    def current_neutral
+      appearance = Avo.configuration.appearance
+      return appearance.neutral&.to_s || "brand" if appearance.neutral_locked?
+
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:neutral) : cookies[:theme]
+      value.presence || appearance.neutral&.to_s || "brand"
+    end
+
+    def current_accent
+      appearance = Avo.configuration.appearance
+      return appearance.accent&.to_s || "brand" if appearance.accent_locked?
+
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:accent) : cookies[:accent_color]
+      value.presence || appearance.accent&.to_s || "brand"
+    end
+
+    def current_scheme
+      appearance = Avo.configuration.appearance
+      return appearance.scheme.to_s if appearance.scheme_locked?
+
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:color_scheme) : cookies[:color_scheme]
+      value.presence || appearance.scheme.to_s
+    end
+  end
+end

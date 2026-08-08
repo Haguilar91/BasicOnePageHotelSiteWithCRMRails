@@ -1,0 +1,144 @@
+import { Controller } from '@hotwired/stimulus'
+import { first, isObject, merge } from 'lodash'
+import Tagify from '@yaireo/tagify'
+
+import URI from 'urijs'
+
+import { suggestionItemTemplate, tagTemplate } from './tags_field_helpers'
+import debouncePromise from '../../helpers/debounce_promise'
+import { tagifyAppendTarget, installTagifyTopLayerPositioning } from '../../helpers/tagify_top_layer'
+
+export default class extends Controller {
+  static targets = ['input', 'fakeInput']
+
+  static values = {
+    whitelistItems: { type: Array, default: [] },
+    disallowedItems: { type: Array, default: [] },
+    enforceSuggestions: { type: Boolean, default: false },
+    closeOnSelect: { type: Boolean, default: false },
+    delimiters: { type: Array, default: [] },
+    suggestionsMaxItems: { type: Number, default: 20 },
+    mode: String,
+    fetchValuesFrom: String,
+  }
+
+  tagify = null
+
+  searchDebounce = 500
+
+  debouncedFetch = debouncePromise(fetch, this.searchDebounce)
+
+  get suggestionsAreObjects() {
+    return isObject(first(this.whitelistItemsValue)) || this.fetchValuesFromValue
+  }
+
+  get tagifyOptions() {
+    let options = {
+      whitelist: this.whitelistItemsValue,
+      blacklist: this.disallowedItemsValue,
+      enforceWhitelist: this.enforceSuggestionsValue,
+      delimiters: this.delimitersValue.join('|'),
+      dropdown: {
+        maxItems: this.suggestionsMaxItemsValue,
+        enabled: 0,
+        searchKeys: [this.labelAttributeValue],
+        closeOnSelect: this.closeOnSelectValue,
+        // Default is <body>; mount the suggestions dropdown into a top-layer
+        // modal when the field is inside one, otherwise it paints underneath
+        // (see helpers/tagify_top_layer).
+        appendTarget: () => tagifyAppendTarget(this.element),
+      },
+    }
+
+    if (this.modeValue) {
+      options.mode = this.modeValue // null or "select"
+    }
+
+    if (this.suggestionsAreObjects) {
+      options = merge(options, {
+        tagTextProp: 'label',
+        dropdown: {
+          searchKeys: ['label'],
+          mapValueTo: 'value',
+        },
+        templates: {
+          tag: tagTemplate,
+          dropdownItem: suggestionItemTemplate,
+        },
+        originalInputValueFormat: (valuesArr) => valuesArr.map((item) => item.value),
+      })
+    } else {
+      options = merge(options, {
+        originalInputValueFormat: (valuesArr) => valuesArr.map((item) => item.value).join(this.delimitersValue[0]),
+      })
+    }
+
+    return options
+  }
+
+  connect() {
+    if (this.hasInputTarget) {
+      this.hideFakeInput()
+      this.showRealInput()
+      this.initTagify()
+    }
+  }
+
+  disconnect() {
+    if (this.tagify) {
+      this.tagify.destroy()
+      this.tagify = null
+    }
+  }
+
+  initTagify() {
+    this.tagify = new Tagify(this.inputTarget, this.tagifyOptions)
+    const that = this
+
+    // When the dropdown is appended into a top-layer modal, Tagify's document
+    // coordinates are off by the page scroll offset; correct for that.
+    installTagifyTopLayerPositioning(this.tagify)
+
+    function onInput(e) {
+      // Create the URL from which to fetch the values
+      const query = e.detail.value
+      const uri = new URI(that.fetchValuesFromValue)
+      uri.addSearch({
+        q: query,
+      })
+
+      // reset current whitelist
+      that.tagify.whitelist = null
+      // show the loader animation
+      that.tagify.loading(true)
+
+      // get new whitelist from a request
+      that.fetchResults(uri.toString())
+        .then((result) => {
+          that.tagify.settings.whitelist = result // add already-existing tags to the new whitelist array
+
+          that.tagify
+            .loading(false)
+            .dropdown.show(e.detail.value) // render the suggestions dropdown.
+        })
+        .catch(() => that.tagify.dropdown.hide())
+    }
+
+    if (this.fetchValuesFromValue) {
+      this.tagify.on('input', onInput)
+    }
+  }
+
+  fetchResults(endpoint) {
+    return this.debouncedFetch(endpoint)
+      .then((response) => response.json())
+  }
+
+  hideFakeInput() {
+    this.fakeInputTarget.classList.add('!hidden')
+  }
+
+  showRealInput() {
+    this.inputTarget.classList.remove('!hidden')
+  }
+}

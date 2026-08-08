@@ -1,0 +1,21 @@
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+/usr/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+make -j3 DESTDIR\= sitearchdir\=./.gem.20260802-3386477-8bagck sitelibdir\=./.gem.20260802-3386477-8bagck clean
+make: warning: -j3 forced in submake: resetting jobserver mode.
+
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+make -j3 DESTDIR\= sitearchdir\=./.gem.20260802-3386477-8bagck sitelibdir\=./.gem.20260802-3386477-8bagck
+make: warning: -j3 forced in submake: resetting jobserver mode.
+compiling cparse.c
+linking shared-object racc/cparse.so
+
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+make -j3 DESTDIR\= sitearchdir\=./.gem.20260802-3386477-8bagck sitelibdir\=./.gem.20260802-3386477-8bagck install
+make: warning: -j3 forced in submake: resetting jobserver mode.
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20260802-3386477-8bagck/racc
+
+current directory: /home/haguilar/Projects/Hotel/hotel_meson/vendor/bundle/ruby/3.4.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20260802-3386477-8bagck sitelibdir\=./.gem.20260802-3386477-8bagck clean

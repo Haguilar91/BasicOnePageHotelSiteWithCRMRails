@@ -1,0 +1,96 @@
+# frozen_string_literal: true
+
+# A button/link can have the following settings:
+# style: primary/outline/text
+# size: :sm, :md, :lg
+# padding: nil (default), :sm or :xs for tighter, equal padding
+# rounded: nil (default, uses the standard radius), :full for a pill shape
+# color: nil, :primary, :accent, :gray, :red, :green, :blue, or any other tailwind color
+# icon: "tabler/outline/paperclip" as specified in the docs (https://docs.avohq.io/4.0/icons.html)
+class Avo::ButtonComponent < Avo::BaseComponent
+  prop :path, kind: :positional
+  prop :size, default: :md
+  prop :padding
+  prop :style, default: :outline
+  prop :rounded
+  prop :color
+  prop :icon do |value|
+    value&.to_sym
+  end
+  prop :end_icon do |value|
+    value&.to_sym
+  end
+  prop :icon_class, default: ""
+  prop :is_link, default: false
+  prop :aria, default: {}.freeze
+  prop :args, kind: :**, default: {}.freeze
+  prop :class
+
+  def args
+    if @args[:loading]
+      @args[:"data-controller"] = "loading-button"
+      @args[:"data-action"] = "click->loading-button#attemptSubmit"
+    end
+
+    @args[:class] = button_classes
+    @args[:aria] = @aria
+
+    @args
+  end
+
+  def button_classes
+    base_classes = [
+      "button",
+      "button--size-#{@size}",
+      "button--style-#{@style}",
+      @class,
+      "button--color-#{@color}": @color.present?,
+      "button--padding-#{@padding}": @padding.present?,
+      "button--rounded-#{@rounded}": @rounded.present?
+    ]
+    base_classes << "button--loading" if @args[:loading]
+
+    class_names(*base_classes.compact)
+  end
+
+  def is_link?
+    @is_link
+  end
+
+  def call
+    if is_link?
+      output_link
+    else
+      output_button
+    end
+  end
+
+  def output_link
+    link_to @path, **args do
+      render_content
+    end
+  end
+
+  def output_button
+    if args.dig(:method).present? || args.dig(:data, :turbo_method).present?
+      button_to args[:url], **args do
+        render_content
+      end
+    else
+      button_tag(**args) do
+        render_content
+      end
+    end
+  end
+
+  private
+
+  def render_content
+    concat helpers.svg(@icon, class: class_names("button__icon", @icon_class)) if @icon.present?
+    # Wrap the label so CSS can distinguish icon-only buttons (no `.button__label`)
+    # from buttons with text, and tighten their padding automatically.
+    concat content_tag(:span, content, class: "button__label") if content.present?
+    concat helpers.svg(@end_icon, class: class_names("button__icon", @icon_class)) if @end_icon.present?
+    concat hotkey_badge(@args.dig(:data, :hotkey)) if @args.dig(:data, :hotkey) && @args.dig(:data, :show_hotkey_badge) != false
+  end
+end

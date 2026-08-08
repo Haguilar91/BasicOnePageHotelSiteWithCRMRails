@@ -1,0 +1,76 @@
+class Avo::Resources::Items::Tab
+  prepend Avo::Concerns::IsResourceItem
+
+  include Avo::Concerns::HasItems
+  include Avo::Concerns::HasItemType
+  include Avo::Concerns::VisibleItems
+  include Avo::Concerns::IsVisible
+  include Avo::Concerns::VisibleInDifferentViews
+  include Avo::Concerns::FrameLoadingMode
+  include Avo::Concerns::HasTranslatableTitle
+
+  delegate :items, :add_item, to: :items_holder
+
+  attr_accessor :description
+  attr_reader :lazy_load
+  attr_reader :loading
+  attr_reader :badge
+
+  def initialize(title: nil, description: nil, translation_key: nil, view: nil, **args)
+    @title = title
+    @description = description
+    @translation_key = translation_key
+    @items_holder = Avo::Resources::Items::Holder.new
+    @view = Avo::ViewInquirer.new view
+    @args = args
+    @visible = args[:visible]
+    @lazy_load = args[:lazy_load]
+    @loading = args[:loading]
+    @badge = args[:badge]
+
+    post_initialize if respond_to?(:post_initialize)
+  end
+
+  def id
+    title.to_s.parameterize
+  end
+  alias_method :to_param, :id
+
+  def turbo_frame_id(parent: nil)
+    digest_name = Digest::MD5.hexdigest(title)
+    id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{digest_name}".parameterize
+    return id if parent.nil?
+
+    "#{parent.turbo_frame_id} #{id}".parameterize
+  end
+
+  def get_items
+    items_with_standalone_fields_wrapped_in_cards
+  end
+
+  private
+
+  def title_translation_scope
+    "tabs"
+  end
+
+  class Builder
+    include Avo::Concerns::BorrowItemsHolder
+
+    delegate :field, to: :items_holder
+    delegate :tool, to: :items_holder
+    delegate :panel, to: :items_holder
+    delegate :items, to: :items_holder
+
+    def initialize(parent:, title: nil, **args)
+      @tab = Avo::Resources::Items::Tab.new(title: title, **args)
+      @items_holder = Avo::Resources::Items::Holder.new(parent: parent)
+    end
+
+    # Fetch the tab
+    def build
+      @tab.items_holder = @items_holder
+      @tab
+    end
+  end
+end

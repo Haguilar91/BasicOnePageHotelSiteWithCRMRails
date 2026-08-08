@@ -1,0 +1,24 @@
+# See https://ddnexus.github.io/pagy/resources/i18n
+
+hu:
+  pagy:
+    aria_label:
+      nav:
+        one: Oldal
+        other: Oldalak
+      next: Következő
+      previous: Előző
+    gap: "&hellip;"
+    info_tag:
+      multiple_pages: "%{from}-%{to}. %{item_name} megjelenítve %{count} közül"
+      no_count: "%{page}. oldal / %{pages}"
+      no_items: Nem található %{item_name}
+      single_page: "%{count} %{item_name} megjelenítve"
+    input_nav_js: "%{page_input}. oldal / %{pages}"
+    item_name:
+      one: tétel
+      other: tétel
+    limit_tag_js: "%{limit_input} %{item_name} oldalanként"
+    next: "&gt;"
+    p11n: OneOther
+    previous: "&lt;"
