@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Mesón del Bosque - Experiencia Inolvidable</title>
+   <!-- Dynamic Browser Tab Title from Avo -->
+    <title><%= PageContent.find_by(key: 'site_title')&.content || 'Hotel Boutique' %></title>
 
     <!-- Dynamic Favicon from Avo -->
     <% brand_settings = PageContent.find_by(key: 'global') %>
@@ -146,18 +147,20 @@
         <div class="flex justify-between items-center h-16">
             
             <!-- Brand / Logo Section -->
-            <a href="#inicio" class="flex items-center">
-                <% brand_settings = PageContent.find_by(key: 'global') %>
-                <% if brand_settings&.logo&.attached? %>
-                    <img src="<%= url_for(brand_settings.logo) %>" 
-                         alt="Hotel Mesón del Bosque" 
-                         class="h-11 w-11 mr-3 rounded-full object-contain border border-amber-500/30">
-                <% else %>
-                    <i class="fas fa-landmark text-amber-500 text-2xl mr-3"></i>
-                <% end %>
-                <span class="font-serif text-xl font-bold">Hotel Mesón <span class="gradient-text">del Bosque</span></span>
-            </a>
-
+<a href="#inicio" class="flex items-center inline-flex">
+    <!-- Logo image check... -->
+    <% brand_settings = PageContent.find_by(key: 'global') %>
+    <% if brand_settings&.logo&.attached? %>
+        <img src="<%= url_for(brand_settings.logo) %>" class="h-12 w-12 mr-3 rounded-full object-contain border border-amber-500/30 shadow-md">
+    <% else %>
+        <i class="fas fa-landmark text-amber-500 text-2xl mr-3"></i>
+    <% end %>
+    
+    <!-- Dynamic Brand Name from Avo -->
+    <span class="font-serif text-xl font-bold">
+        <%= PageContent.find_by(key: 'home_hero_title')&.content || 'Hotel Boutique' %>
+    </span>
+</a>
             <div class="hidden md:flex space-x-8">
                 <a href="#inicio" class="nav-link text-gray-300 hover:text-white transition">Inicio</a>
                 <a href="#habitaciones" class="nav-link text-gray-300 hover:text-white transition">Habitaciones</a>
@@ -177,7 +180,7 @@
            class="hero min-h-screen flex items-center justify-center"
            style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<%= hero_bg_url %>'); background-size: cover; background-position: center; background-attachment: fixed;">
       <div class="text-center px-4">
-          <p class="text-amber-500 tracking-widest mb-4 uppercase text-sm">Bienvenido al Hotel Mesón</p>
+          <p class="text-amber-500 tracking-widest mb-4 uppercase text-sm"><%= PageContent.find_by(key: 'home_welcome_title')&.content || 'Bienvenido al Hotel Mesón' %></p>
           
           <!-- Large Centered Hero Emblem -->
           <% brand_settings = PageContent.find_by(key: 'global') %>
