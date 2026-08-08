@@ -131253,3 +131253,383 @@ Processing by Avo::AnnouncementsController#index as HTML
 Completed 200 OK in 67ms (Views: 60.3ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
 
 
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
+Started GET "/avo/resources/announcements" for ::1 at 2026-08-08 16:56:59 -0600
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='HotelMeson'*/[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 4 ORDER BY "users"."id" ASC LIMIT 1 /*application='HotelMeson'*/[0m
+Processing by Avo::AnnouncementsController#index as HTML
+  Parameters: {"resource_name" => "announcements"}
+  [1m[36mAnnouncement Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "announcements" /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" ORDER BY announcements.created_at desc LIMIT 24 OFFSET 0 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  Rendering layout vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/layouts/avo/application.html.erb
+  Rendering vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/base/index.html.erb within layouts/avo/application
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sortable_component.html.erb (Duration: 1.2ms | GC: 0.1ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_table_header.html.erb (Duration: 3.0ms | GC: 0.1ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/base/index.html.erb within layouts/avo/application (Duration: 143.7ms | GC: 43.8ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_javascript.html.erb (Duration: 0.9ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_appearance.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_pre_head.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_head.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_color_theme_override.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_width_override.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_appearance_overrides.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_logo.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_header.html.erb (Duration: 3.9ms | GC: 0.5ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_switcher_inline.html.erb (Duration: 0.9ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_switcher_dropdown.html.erb (Duration: 10.0ms | GC: 1.1ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_color_scheme_switcher.html.erb (Duration: 12.2ms | GC: 1.1ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_navbar.html.erb (Duration: 21.6ms | GC: 2.7ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_extra.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_profile_menu_extra.html.erb (Duration: 0.5ms | GC: 0.2ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_resize_handle.html.erb (Duration: 0.9ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_profile_menu_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_custom_tools_alert.html.erb (Duration: 8.4ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_footer.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_all_alerts.html.erb (Duration: 2.9ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_alerts.html.erb (Duration: 3.5ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_scripts.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_confirm_dialog.html.erb (Duration: 1.0ms | GC: 0.0ms)
+  Rendered layout vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/layouts/avo/application.html.erb (Duration: 274.2ms | GC: 65.0ms)
+Completed 200 OK in 392ms (Views: 275.5ms | ActiveRecord: 0.6ms (2 queries, 0 cached) | GC: 91.1ms)
+
+
+Started GET "/avo/" for ::1 at 2026-08-08 16:58:18 -0600
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 4 ORDER BY "users"."id" ASC LIMIT 1 /*application='HotelMeson'*/[0m
+Processing by Avo::HomeController#index as HTML
+  Rendering layout vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/layouts/avo/application.html.erb
+  Rendering vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/index.html.erb within layouts/avo/application
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_resources.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_dashboards.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_filters.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_actions.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_docs.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/index.html.erb within layouts/avo/application (Duration: 6.4ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_javascript.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_appearance.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_pre_head.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_head.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_color_theme_override.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_width_override.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_appearance_overrides.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_logo.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_header.html.erb (Duration: 2.6ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_switcher_inline.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_switcher_dropdown.html.erb (Duration: 2.9ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_color_scheme_switcher.html.erb (Duration: 3.3ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_navbar.html.erb (Duration: 7.7ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_profile_menu_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_resize_handle.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_profile_menu_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_custom_tools_alert.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_footer.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_all_alerts.html.erb (Duration: 1.1ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_alerts.html.erb (Duration: 1.4ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_scripts.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_confirm_dialog.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/layouts/avo/application.html.erb (Duration: 42.7ms | GC: 0.0ms)
+Completed 200 OK in 47ms (Views: 43.4ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/avo/" for ::1 at 2026-08-08 16:58:21 -0600
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 4 ORDER BY "users"."id" ASC LIMIT 1 /*application='HotelMeson'*/[0m
+Processing by Avo::HomeController#index as HTML
+  Rendering layout vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/layouts/avo/application.html.erb
+  Rendering vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/index.html.erb within layouts/avo/application
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_resources.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_dashboards.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_filters.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_actions.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/_docs.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/home/index.html.erb within layouts/avo/application (Duration: 4.8ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_javascript.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_appearance.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_pre_head.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_head.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_color_theme_override.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_width_override.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_appearance_overrides.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_logo.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_header.html.erb (Duration: 2.6ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_switcher_inline.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_switcher_dropdown.html.erb (Duration: 2.6ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_color_scheme_switcher.html.erb (Duration: 3.1ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_navbar.html.erb (Duration: 7.2ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_profile_menu_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_resize_handle.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_sidebar_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_profile_menu_extra.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_custom_tools_alert.html.erb (Duration: 0.3ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_footer.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_all_alerts.html.erb (Duration: 0.7ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_alerts.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_scripts.html.erb (Duration: 0.0ms | GC: 0.0ms)
+  Rendered vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/avo/partials/_confirm_dialog.html.erb (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout vendor/bundle/ruby/3.4.0/gems/avo-4.0.26/app/views/layouts/avo/application.html.erb (Duration: 41.3ms | GC: 0.0ms)
+Completed 200 OK in 45ms (Views: 41.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/announcements" for ::1 at 2026-08-08 16:58:24 -0600
+Processing by AnnouncementsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering announcements/index.html.erb within layouts/application
+  [1m[36mAnnouncement Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/announcements/index.html.erb:21
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/announcements/index.html.erb:23
+  Rendered announcements/_announcement.html.erb (Duration: 0.5ms | GC: 0.0ms)
+  Rendered announcements/_announcement.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered announcements/index.html.erb within layouts/application (Duration: 5.7ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'site_title' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:10
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:22
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'favicon' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:23
+  [1m[36mActiveStorage::Blob Load (0.1ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 8 LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:26
+  [1m[36mAnnouncement Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:24.855641' AND end_date >= '2026-08-08 22:58:24.855711') LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:41
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:24.855641' AND end_date >= '2026-08-08 22:58:24.855711') /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:45:in 'Enumerable#map'
+  Rendered layout layouts/application.html.erb (Duration: 47.0ms | GC: 0.0ms)
+Completed 200 OK in 62ms (Views: 46.3ms | ActiveRecord: 2.2ms (8 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/announcements/1" for ::1 at 2026-08-08 16:58:26 -0600
+Processing by AnnouncementsController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" WHERE "announcements"."id" = 1 LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/controllers/announcements_controller.rb:51:in 'AnnouncementsController#set_announcement'
+  Rendering layout layouts/application.html.erb
+  Rendering announcements/show.html.erb within layouts/application
+  Rendered announcements/_announcement.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered announcements/show.html.erb within layouts/application (Duration: 1.6ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'site_title' LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:10
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:22
+  [1m[36mActiveStorage::Attachment Load (0.2ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'favicon' LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:23
+  [1m[36mActiveStorage::Blob Load (0.1ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 8 LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:26
+  [1m[36mAnnouncement Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:26.544184' AND end_date >= '2026-08-08 22:58:26.544215') LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:41
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:26.544184' AND end_date >= '2026-08-08 22:58:26.544215') /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:45:in 'Enumerable#map'
+  Rendered layout layouts/application.html.erb (Duration: 9.5ms | GC: 0.0ms)
+Completed 200 OK in 12ms (Views: 9.1ms | ActiveRecord: 0.9ms (7 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/announcements" for ::1 at 2026-08-08 16:58:30 -0600
+Processing by AnnouncementsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering announcements/index.html.erb within layouts/application
+  [1m[36mAnnouncement Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/announcements/index.html.erb:21
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/announcements/index.html.erb:23
+  Rendered announcements/_announcement.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered announcements/_announcement.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered announcements/index.html.erb within layouts/application (Duration: 2.3ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'site_title' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:10
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:22
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'favicon' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:23
+  [1m[36mActiveStorage::Blob Load (0.1ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 8 LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:26
+  [1m[36mAnnouncement Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:30.928520' AND end_date >= '2026-08-08 22:58:30.928550') LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:41
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:30.928520' AND end_date >= '2026-08-08 22:58:30.928550') /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:45:in 'Enumerable#map'
+  Rendered layout layouts/application.html.erb (Duration: 9.6ms | GC: 0.0ms)
+Completed 200 OK in 11ms (Views: 9.4ms | ActiveRecord: 0.6ms (8 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/announcements/2" for ::1 at 2026-08-08 16:58:32 -0600
+Processing by AnnouncementsController#show as HTML
+  Parameters: {"id" => "2"}
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" WHERE "announcements"."id" = 2 LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/controllers/announcements_controller.rb:51:in 'AnnouncementsController#set_announcement'
+  Rendering layout layouts/application.html.erb
+  Rendering announcements/show.html.erb within layouts/application
+  Rendered announcements/_announcement.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered announcements/show.html.erb within layouts/application (Duration: 1.0ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'site_title' LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:10
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:22
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'favicon' LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:23
+  [1m[36mActiveStorage::Blob Load (0.1ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 8 LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:26
+  [1m[36mAnnouncement Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:32.060169' AND end_date >= '2026-08-08 22:58:32.060200') LIMIT 1 /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:41
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:32.060169' AND end_date >= '2026-08-08 22:58:32.060200') /*action='show',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:45:in 'Enumerable#map'
+  Rendered layout layouts/application.html.erb (Duration: 7.9ms | GC: 0.0ms)
+Completed 200 OK in 10ms (Views: 7.8ms | ActiveRecord: 0.6ms (7 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/announcements" for ::1 at 2026-08-08 16:58:33 -0600
+Processing by AnnouncementsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering announcements/index.html.erb within layouts/application
+  [1m[36mAnnouncement Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/announcements/index.html.erb:21
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/announcements/index.html.erb:23
+  Rendered announcements/_announcement.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered announcements/_announcement.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered announcements/index.html.erb within layouts/application (Duration: 2.5ms | GC: 0.0ms)
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'site_title' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:10
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:22
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'favicon' LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:23
+  [1m[36mActiveStorage::Blob Load (0.1ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 8 LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:26
+  [1m[36mAnnouncement Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:33.772116' AND end_date >= '2026-08-08 22:58:33.772151') LIMIT 1 /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:41
+  [1m[36mAnnouncement Load (0.1ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:33.772116' AND end_date >= '2026-08-08 22:58:33.772151') /*action='index',application='HotelMeson',controller='announcements'*/[0m
+  ↳ app/views/layouts/application.html.erb:45:in 'Enumerable#map'
+  Rendered layout layouts/application.html.erb (Duration: 10.4ms | GC: 0.0ms)
+Completed 200 OK in 11ms (Views: 10.0ms | ActiveRecord: 0.8ms (8 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2026-08-08 16:58:37 -0600
+Processing by HomeController#index as HTML
+  [1m[36mHeroImage Load (0.1ms)[0m  [1m[34mSELECT "hero_images".* FROM "hero_images" ORDER BY "hero_images"."created_at" ASC LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:6:in 'HomeController#index'
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'site_title' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:8
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:11
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'favicon' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:12
+  [1m[36mActiveStorage::Blob Load (0.1ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 8 LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:13
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:153
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'logo' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:154
+  [1m[36mActiveStorage::Blob Load (0.1ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 9 LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:155
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_hero_title' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:162
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 2 AND "active_storage_attachments"."record_type" = 'HeroImage' AND "active_storage_attachments"."name" = 'image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:179
+  [1m[36mActiveStorage::Blob Load (0.1ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 5 LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:179
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_welcome_title' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:184
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:187
+  [1m[36mCACHE ActiveStorage::Attachment Load (0.0ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'logo' LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:188
+  [1m[36mCACHE ActiveStorage::Blob Load (0.0ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 9 LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:189
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_hero_title' LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:195
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_hero_subtitle' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:198
+  [1m[36mFeature Load (0.1ms)[0m  [1m[34mSELECT "features".* FROM "features" ORDER BY "features"."position" ASC, "features"."id" ASC /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:218
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_features_title' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:235
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_features_subtitle' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:236
+  [1m[36mRoom Load (0.1ms)[0m  [1m[34mSELECT "rooms".* FROM "rooms" ORDER BY "rooms"."position" ASC, "rooms"."id" ASC /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:241
+  [1m[36mActiveStorage::Attachment Load (0.2ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 7 AND "active_storage_attachments"."record_type" = 'Room' AND "active_storage_attachments"."name" = 'photo' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:244
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 10 AND "active_storage_attachments"."record_type" = 'Room' AND "active_storage_attachments"."name" = 'photo' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:244
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 8 AND "active_storage_attachments"."record_type" = 'Room' AND "active_storage_attachments"."name" = 'photo' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:244
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 11 AND "active_storage_attachments"."record_type" = 'Room' AND "active_storage_attachments"."name" = 'photo' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:244
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 9 AND "active_storage_attachments"."record_type" = 'Room' AND "active_storage_attachments"."name" = 'photo' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:244
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'Room' AND "active_storage_attachments"."name" = 'photo' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:244
+  [1m[36mExperience Load (0.1ms)[0m  [1m[34mSELECT "experiences".* FROM "experiences" ORDER BY "experiences"."position" ASC, "experiences"."id" ASC /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:299
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 5 AND "active_storage_attachments"."record_type" = 'Experience' AND "active_storage_attachments"."name" = 'icon_image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:301
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 9 AND "active_storage_attachments"."record_type" = 'Experience' AND "active_storage_attachments"."name" = 'icon_image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:301
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 6 AND "active_storage_attachments"."record_type" = 'Experience' AND "active_storage_attachments"."name" = 'icon_image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:301
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 10 AND "active_storage_attachments"."record_type" = 'Experience' AND "active_storage_attachments"."name" = 'icon_image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:301
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 7 AND "active_storage_attachments"."record_type" = 'Experience' AND "active_storage_attachments"."name" = 'icon_image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:301
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 11 AND "active_storage_attachments"."record_type" = 'Experience' AND "active_storage_attachments"."name" = 'icon_image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:301
+  [1m[36mActiveStorage::Attachment Load (0.3ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 8 AND "active_storage_attachments"."record_type" = 'Experience' AND "active_storage_attachments"."name" = 'icon_image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:301
+  [1m[36mActiveStorage::Attachment Load (0.1ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'Experience' AND "active_storage_attachments"."name" = 'icon_image' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:301
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_location_title' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:321
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_location_desc' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:323
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'address_line' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:330
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'contact_phone' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:337
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'contact_email' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:344
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'map_iframe_url' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:351
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'cta_title' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:367
+  [1m[36mPageContent Load (0.1ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'cta_subtitle' LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:369
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:390
+  [1m[36mCACHE ActiveStorage::Attachment Load (0.0ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'logo' LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:391
+  [1m[36mCACHE ActiveStorage::Blob Load (0.0ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 9 LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:392
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'home_hero_subtitle' LIMIT 1[0m
+  ↳ app/views/home/index.html.erb:401
+  Rendered home/index.html.erb within layouts/application (Duration: 77.0ms | GC: 21.9ms)
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'site_title' LIMIT 1[0m
+  ↳ app/views/layouts/application.html.erb:10
+  [1m[36mCACHE PageContent Load (0.0ms)[0m  [1m[34mSELECT "page_contents".* FROM "page_contents" WHERE "page_contents"."key" = 'global' LIMIT 1[0m
+  ↳ app/views/layouts/application.html.erb:22
+  [1m[36mCACHE ActiveStorage::Attachment Load (0.0ms)[0m  [1m[34mSELECT "active_storage_attachments".* FROM "active_storage_attachments" WHERE "active_storage_attachments"."record_id" = 12 AND "active_storage_attachments"."record_type" = 'PageContent' AND "active_storage_attachments"."name" = 'favicon' LIMIT 1[0m
+  ↳ app/views/layouts/application.html.erb:23
+  [1m[36mCACHE ActiveStorage::Blob Load (0.0ms)[0m  [1m[34mSELECT "active_storage_blobs".* FROM "active_storage_blobs" WHERE "active_storage_blobs"."id" = 8 LIMIT 1[0m
+  ↳ app/views/layouts/application.html.erb:26
+  [1m[36mAnnouncement Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:37.889927' AND end_date >= '2026-08-08 22:58:37.889981') LIMIT 1 /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/layouts/application.html.erb:41
+  [1m[36mAnnouncement Load (0.2ms)[0m  [1m[34mSELECT "announcements".* FROM "announcements" WHERE "announcements"."active" = TRUE AND (start_date <= '2026-08-08 22:58:37.889927' AND end_date >= '2026-08-08 22:58:37.889981') /*action='index',application='HotelMeson',controller='home'*/[0m
+  ↳ app/views/layouts/application.html.erb:45:in 'Enumerable#map'
+  Rendered layout layouts/application.html.erb (Duration: 84.4ms | GC: 21.9ms)
+Completed 200 OK in 94ms (Views: 81.0ms | ActiveRecord: 4.9ms (54 queries, 13 cached) | GC: 21.9ms)
+
+
+Started GET "/rails/active_storage/disk/eyJfcmFpbHMiOnsiZGF0YSI6eyJrZXkiOiJqaXhyYmJyc3B1bGt2YWd5YXBwa2VlYWd1a2ZvIiwiZGlzcG9zaXRpb24iOiJpbmxpbmU7IGZpbGVuYW1lPVwiRkFWSUNPTi5wbmdcIjsgZmlsZW5hbWUqPVVURi04JydGQVZJQ09OLnBuZyIsImNvbnRlbnRfdHlwZSI6ImltYWdlL3BuZyIsInNlcnZpY2VfbmFtZSI6ImxvY2FsIn0sImV4cCI6IjIwMjYtMDgtMDhUMjI6NTk6MTAuOTI0WiIsInB1ciI6ImJsb2Jfa2V5In19--308ed13af63c1d27667299ecaa7d494bb525c2b8/FAVICON.png" for ::1 at 2026-08-08 16:58:38 -0600
+Processing by ActiveStorage::DiskController#show as PNG
+  Parameters: {"encoded_key" => "[FILTERED]", "filename" => "FAVICON"}
+Completed 304 Not Modified in 1ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/rails/active_storage/disk/eyJfcmFpbHMiOnsiZGF0YSI6eyJrZXkiOiJlczcya3NxbHFya29wZ3d6YXRpenNzcHhrMDEzIiwiZGlzcG9zaXRpb24iOiJpbmxpbmU7IGZpbGVuYW1lPVwiR2VtaW5pX0dlbmVyYXRlZF9JbWFnZV8xbm56eWMxbm56eWMxbm56LnBuZ1wiOyBmaWxlbmFtZSo9VVRGLTgnJ0dlbWluaV9HZW5lcmF0ZWRfSW1hZ2VfMW5uenljMW5uenljMW5uei5wbmciLCJjb250ZW50X3R5cGUiOiJpbWFnZS9wbmciLCJzZXJ2aWNlX25hbWUiOiJsb2NhbCJ9LCJleHAiOiIyMDI2LTA4LTA4VDIyOjU5OjExLjA2NVoiLCJwdXIiOiJibG9iX2tleSJ9fQ==--2f2a08795d9f2f6eea0641a968998349f84347aa/Gemini_Generated_Image_1nnzyc1nnzyc1nnz.png" for ::1 at 2026-08-08 16:58:38 -0600
+Processing by ActiveStorage::DiskController#show as PNG
+  Parameters: {"encoded_key" => "[FILTERED]", "filename" => "Gemini_Generated_Image_1nnzyc1nnzyc1nnz"}
+Completed 304 Not Modified in 1ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Generating image variants require the image_processing gem. Please add `gem "image_processing", "~> 1.2"` to your Gemfile or set `config.active_storage.variant_processor = :disabled`.
