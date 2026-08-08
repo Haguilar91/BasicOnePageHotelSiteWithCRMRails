@@ -1,0 +1,300 @@
+diff --git a/app/assets/javascripts/announcements.js b/app/assets/javascripts/announcements.js
+index 6242b2b..51f83bc 100644
+--- a/app/assets/javascripts/announcements.js
++++ b/app/assets/javascripts/announcements.js
+@@ -1,48 +1,70 @@
+ // Infinite announcement ticker
++function escapeHtml(str) {
++  const div = document.createElement('div');
++  div.textContent = str;
++  return div.innerHTML;
++}
++
+ document.addEventListener('DOMContentLoaded', function() {
+   const announcement = document.getElementById('announcement-ticker');
+-  
++
+   if (announcement) {
+-    const text = announcement.getAttribute('data-text');
++    let items = [];
++    try {
++      items = JSON.parse(announcement.getAttribute('data-announcements') || '[]');
++    } catch (e) {
++      items = [];
++    }
+     const speed = parseInt(announcement.getAttribute('data-speed')) || 50;
+-    
++
++    if (!items.length) return;
++
++    // Build "Title: Description" for each announcement, title in bold,
++    // separated with a bullet so multiple announcements read cleanly.
++    const html = items
++      .map(item => `<strong>${escapeHtml(item.title)}</strong>: ${escapeHtml(item.description)}`)
++      .join('&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;');
++
+     // Create a clone for the animation
+     const ticker = document.createElement('div');
+     ticker.className = 'ticker-content';
+-    ticker.innerHTML = `<span>${text}</span>`;
++    ticker.innerHTML = `<span>${html}</span>`;
+     ticker.style.position = 'absolute';
+     ticker.style.whiteSpace = 'nowrap';
+     ticker.style.top = '0';
+     ticker.style.left = '0';
+-    
++
+     // Initialize
+     announcement.appendChild(ticker);
+     startInfiniteScroll(ticker, announcement, speed);
+   }
+ });
+ 
+ function startInfiniteScroll(element, container, speed) {
+-  let position = 0;
+   const content = element.querySelector('span');
+-  const containerWidth = container.offsetWidth;
++  let containerWidth = container.offsetWidth;
+   const contentWidth = content.offsetWidth;
+-  
++  // Start fully off-screen to the right so it sweeps across the whole ribbon
++  let position = containerWidth;
++  // "speed" is treated as pixels-per-second so the data-speed attribute has a visible effect
++  const pixelsPerFrame = speed / 60;
++
+   function animate() {
+-    position -= 1; // Scroll speed
+-    
++    position -= pixelsPerFrame;
++
+     if (position <= -contentWidth) {
+-      position = 0;
++      position = containerWidth;
+     }
+-    
++
+     element.style.transform = `translateX(${position}px)`;
+     requestAnimationFrame(animate);
+   }
+-  
++
+   animate();
+-  
++
+   // Handle window resize
+   window.addEventListener('resize', function() {
+-    // Reset when resizing to prevent misalignment
+-    position = 0;
++    containerWidth = container.offsetWidth;
++    position = containerWidth;
+   });
+ }
+\ No newline at end of file
+diff --git a/app/views/announcements/_announcement.html.erb b/app/views/announcements/_announcement.html.erb
+index e4e3b21..19aa8c4 100644
+--- a/app/views/announcements/_announcement.html.erb
++++ b/app/views/announcements/_announcement.html.erb
+@@ -1,27 +1,30 @@
+-<div id="<%= dom_id announcement %>">
+-  <div>
+-    <strong>Title:</strong>
+-    <%= announcement.title %>
+-  </div>
+-
+-  <div>
+-    <strong>Description:</strong>
+-    <%= announcement.description %>
+-  </div>
++<div id="<%= dom_id announcement %>" class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-100 overflow-hidden">
++  <div class="p-6">
++    <div class="flex items-start justify-between gap-4 mb-3">
++      <h2 class="text-xl font-bold text-slate-900"><%= announcement.title %></h2>
++      <% if announcement.active %>
++        <span class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
++          <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
++          Activo
++        </span>
++      <% else %>
++        <span class="shrink-0 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
++          Inactivo
++        </span>
++      <% end %>
++    </div>
+ 
+-  <div>
+-    <strong>Start Date:</strong>
+-    <%= announcement.start_date %>
+-  </div>
++    <p class="text-slate-600 leading-relaxed mb-4"><%= announcement.description %></p>
+ 
+-  <div>
+-    <strong>End Date:</strong>
+-    <%= announcement.end_date %>
++    <div class="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-slate-400 border-t border-slate-100 pt-4">
++      <div class="flex items-center gap-1.5">
++        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
++        <span>Desde <%= announcement.start_date.strftime("%d %b %Y") %></span>
++      </div>
++      <div class="flex items-center gap-1.5">
++        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
++        <span>Hasta <%= announcement.end_date.strftime("%d %b %Y") %></span>
++      </div>
++    </div>
+   </div>
+-
+-  <div>
+-    <strong>Active:</strong>
+-    <%= announcement.active %>
+-  </div>
+-
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/app/views/announcements/index.html.erb b/app/views/announcements/index.html.erb
+index c803ba6..c43e2db 100644
+--- a/app/views/announcements/index.html.erb
++++ b/app/views/announcements/index.html.erb
+@@ -1,16 +1,38 @@
+-<p style="color: green"><%= notice %></p>
++<% content_for :title, "Anuncios" %>
+ 
+-<% content_for :title, "Announcements" %>
++<div class="min-h-screen bg-slate-50">
++  <!-- Page header -->
++  <div class="bg-slate-900 pt-28 pb-16 px-6">
++    <div class="max-w-4xl mx-auto text-center">
++      <p class="text-amber-500 font-semibold tracking-wide uppercase text-sm mb-2">Hotel Mesón del Bosque</p>
++      <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-3">Anuncios y Promociones</h1>
++      <p class="text-slate-300 max-w-2xl mx-auto">Entérate de nuestras últimas ofertas, eventos y novedades.</p>
++    </div>
++  </div>
+ 
+-<h1>Announcements</h1>
++  <div class="max-w-4xl mx-auto px-6 -mt-10 pb-20">
++    <% if notice.present? %>
++      <div class="mb-6 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-sm">
++        <%= notice %>
++      </div>
++    <% end %>
+ 
+-<div id="announcements">
+-  <% @announcements.each do |announcement| %>
+-    <%= render announcement %>
+-    <p>
+-      <%= link_to "Show this announcement", announcement %>
+-    </p>
+-  <% end %>
+-</div>
++    <% if @announcements.any? %>
++      <div id="announcements" class="grid gap-6 sm:grid-cols-2">
++        <% @announcements.each do |announcement| %>
++          <%= link_to announcement, class: "block" do %>
++            <%= render announcement %>
++          <% end %>
++        <% end %>
++      </div>
++    <% else %>
++      <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-12 text-center">
++        <p class="text-slate-500">No hay anuncios disponibles por el momento.</p>
++      </div>
++    <% end %>
+ 
+-<%= link_to "New announcement", new_announcement_path %>
+\ No newline at end of file
++    <div class="mt-10 text-center">
++      <%= link_to "← Volver al inicio", root_path, class: "inline-flex items-center gap-2 text-slate-600 hover:text-amber-600 font-medium transition-colors" %>
++    </div>
++  </div>
++</div>
+diff --git a/app/views/announcements/show.html.erb b/app/views/announcements/show.html.erb
+index 5261874..214f62a 100644
+--- a/app/views/announcements/show.html.erb
++++ b/app/views/announcements/show.html.erb
+@@ -1,10 +1,29 @@
+-<p style="color: green"><%= notice %></p>
++<% content_for :title, @announcement.title %>
+ 
+-<%= render @announcement %>
++<div class="min-h-screen bg-slate-50">
++  <div class="bg-slate-900 pt-28 pb-16 px-6">
++    <div class="max-w-2xl mx-auto">
++      <%= link_to announcements_path, class: "inline-flex items-center gap-2 text-slate-300 hover:text-amber-500 text-sm font-medium mb-4 transition-colors" do %>
++        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
++        Todos los anuncios
++      <% end %>
++      <p class="text-amber-500 font-semibold tracking-wide uppercase text-sm mb-2">Anuncio</p>
++      <h1 class="text-3xl md:text-4xl font-serif font-bold text-white"><%= @announcement.title %></h1>
++    </div>
++  </div>
+ 
+-<div>
+-  <%= link_to "Edit this announcement", edit_announcement_path(@announcement) %> |
+-  <%= link_to "Back to announcements", announcements_path %>
++  <div class="max-w-2xl mx-auto px-6 -mt-10 pb-20">
++    <% if notice.present? %>
++      <div class="mb-6 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 text-sm">
++        <%= notice %>
++      </div>
++    <% end %>
+ 
+-  <%= button_to "Destroy this announcement", @announcement, method: :delete %>
+-</div>
+\ No newline at end of file
++    <%= render @announcement %>
++
++    <div class="mt-8 flex flex-wrap items-center gap-4">
++      <%= link_to "Editar", edit_announcement_path(@announcement), class: "inline-flex items-center rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition-colors" %>
++      <%= button_to "Eliminar", @announcement, method: :delete, class: "inline-flex items-center rounded-lg border border-red-200 bg-white px-5 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors", form: { data: { turbo_confirm: "¿Seguro que deseas eliminar este anuncio?" } } %>
++    </div>
++  </div>
++</div>
+diff --git a/app/views/layouts/application.html.erb b/app/views/layouts/application.html.erb
+index b2895dc..6b4e121 100644
+--- a/app/views/layouts/application.html.erb
++++ b/app/views/layouts/application.html.erb
+@@ -1,15 +1,17 @@
+ <!DOCTYPE html>
+ <html>
+   <head>
+   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+   <%= javascript_include_tag "announcements", "data-turbo-track": "reload", defer: true %>
++  <!-- Tailwind CSS (site-wide) -->
++  <script src="https://cdn.tailwindcss.com"></script>
+   <!-- Dynamic Browser Tab Title from Avo -->
+     <title><%= PageContent.find_by(key: 'site_title')&.content || 'Hotel Boutique' %></title>
+     <meta name="viewport" content="width=device-width,initial-scale=1">
+     <meta name="apple-mobile-web-app-capable" content="yes">
+     <meta name="application-name" content="Hotel Boutique">
+     <meta name="mobile-web-app-capable" content="yes">
+     
+     <%= csrf_meta_tags %>
+     <%= csp_meta_tag %>
+ 
+@@ -29,20 +31,22 @@
+ 
+     <%# Includes all stylesheet files in app/assets/stylesheets %>
+     <%= stylesheet_link_tag :app %>
+   </head>
+ 
+   <body>
+   
+     <%# Active Announcement Ticker %>
+     <% active_announcements = Announcement.where(active: true).where('start_date <= ? AND end_date >= ?', Time.current, Time.current) %>
+     <% if active_announcements.any? %>
+-      <div class="announcement-ribbon">
+-        <div class="ticker-wrapper">
+-          <div id="announcement-ticker" data-text="<%= active_announcements.first.description %>" data-speed="50"></div>
++      <%= link_to announcements_path, class: "block cursor-pointer" do %>
++        <div class="announcement-ribbon">
++          <div class="ticker-wrapper">
++            <div id="announcement-ticker" data-announcements="<%= active_announcements.map { |a| { title: a.title, description: a.description } }.to_json %>" data-speed="50"></div>
++          </div>
+         </div>
+-      </div>
++      <% end %>
+     <% end %>
+     
+     <%= yield %>
+   </body>
+ </html>
+\ No newline at end of file
