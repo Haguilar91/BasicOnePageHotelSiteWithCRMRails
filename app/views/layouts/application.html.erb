@@ -2,7 +2,10 @@
 <html>
   <head>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <!-- Dynamic Browser Tab Title from Avo -->
+  <%= javascript_include_tag "announcements", "data-turbo-track": "reload", defer: true %>
+  <!-- Tailwind CSS (site-wide) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Dynamic Browser Tab Title from Avo -->
     <title><%= PageContent.find_by(key: 'site_title')&.content || 'Hotel Boutique' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,6 +34,19 @@
   </head>
 
   <body>
+  
+    <%# Active Announcement Ticker %>
+    <% active_announcements = Announcement.where(active: true).where('start_date <= ? AND end_date >= ?', Time.current, Time.current) %>
+    <% if active_announcements.any? %>
+      <%= link_to announcements_path, class: "block cursor-pointer" do %>
+        <div class="announcement-ribbon">
+          <div class="ticker-wrapper">
+            <div id="announcement-ticker" data-announcements="<%= active_announcements.map { |a| { title: a.title, description: a.description } }.to_json %>" data-speed="50"></div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    
     <%= yield %>
   </body>
 </html>

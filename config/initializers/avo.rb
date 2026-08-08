@@ -20,6 +20,11 @@ Avo.configure do |config|
 
   ## == Authentication ==
   config.current_user_method = :current_user
+  
+  # Add a profile menu with a Logout link that calls Devise's sign_out route.
+# Avo evaluates this in the context of Avo controllers, so we use
+# Rails route helpers to ensure the path is available.
+
   # config.authenticate_with do
   # end
 
