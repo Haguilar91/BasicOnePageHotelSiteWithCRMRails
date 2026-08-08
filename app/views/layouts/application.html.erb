@@ -38,8 +38,7 @@
     <% if active_announcements.any? %>
       <div class="announcement-ribbon">
         <div class="ticker-wrapper">
-          <div id="announcement-ticker" data-text="<%= active_announcements.first.description %>" data-speed="50"></div>
-        </div>
+          <div id="announcement-ticker" data-announcements="<%= active_announcements.map { |a| { title: a.title, description: a.description } }.to_json %>" data-speed="50"></div>
       </div>
     <% end %>
     
