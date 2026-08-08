@@ -2,7 +2,8 @@
 <html>
   <head>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <!-- Dynamic Browser Tab Title from Avo -->
+  <%= javascript_include_tag "announcements", "data-turbo-track": "reload", defer: true %>
+  <!-- Dynamic Browser Tab Title from Avo -->
     <title><%= PageContent.find_by(key: 'site_title')&.content || 'Hotel Boutique' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,6 +32,7 @@
   </head>
 
   <body>
+  
     <%# Active Announcement Ticker %>
     <% active_announcements = Announcement.where(active: true).where('start_date <= ? AND end_date >= ?', Time.current, Time.current) %>
     <% if active_announcements.any? %>

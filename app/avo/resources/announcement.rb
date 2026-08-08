@@ -7,7 +7,7 @@ class Avo::Resources::Announcement < Avo::BaseResource
     field :title, as: :text
     field :description, as: :textarea
     field :start_date, as: :date
-    field :end_date, as: :datetime
+    field :end_date, as: :date_time
     field :active, as: :boolean
   end
 end
