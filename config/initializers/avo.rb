@@ -18,7 +18,7 @@ Avo.configure do |config|
   end
 
   ## == Authentication ==
-  # config.current_user_method = :current_user
+  config.current_user_method = :current_user
   # config.authenticate_with do
   # end
 
@@ -204,4 +204,9 @@ Avo.configure do |config|
   # config.profile_menu = -> {
   #   link "Profile", path: "/avo/profile", icon: "tabler/outline/user-circle"
   # }
+
+if defined?(Propshaft)
+  # Direct path targeting Avo 4's compiled build outputs
+  Rails.application.config.assets.paths << Avo::Engine.root.join("app", "assets", "builds")
+end
 end

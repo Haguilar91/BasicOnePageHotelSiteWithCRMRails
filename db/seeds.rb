@@ -153,3 +153,22 @@ PageContent.create(
     e.position = 4
   end
 
+# db/seeds.rb
+
+# Create a default user for Devise authentication
+User.find_or_create_by!(email: "admin@hotel.com") do |user|
+  user.password = "password123"
+  user.password_confirmation = "password123"
+  puts "Created default user: admin@hotel.com / password123"
+end
+
+# Ensure global brand settings / page contents exist
+PageContent.find_or_create_by!(key: 'global')
+PageContent.find_or_create_by!(key: 'site_title') do |p|
+  p.content = "Hotel Boutique"
+end
+PageContent.find_or_create_by!(key: 'home_welcome_title') do |p|
+  p.content = "Bienvenido a su refugio de lujo"
+end
+
+puts "Database seeded successfully!"

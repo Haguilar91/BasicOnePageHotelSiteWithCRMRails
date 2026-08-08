@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <!-- Dynamic Browser Tab Title from Avo -->
     <title><%= PageContent.find_by(key: 'site_title')&.content || 'Hotel Boutique' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">

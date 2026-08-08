@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :page_contents
-  mount_avo
+  # Only allow authenticated users to view Avo
+  authenticate :user do
+    mount Avo::Engine => '/avo'
+  end
   resources :offers
   get "home/index"
   post "update_hero_image", to: "home#update_hero_image" # Add this line
