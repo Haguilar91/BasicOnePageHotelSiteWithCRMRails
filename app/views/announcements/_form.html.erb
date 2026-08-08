@@ -1,0 +1,42 @@
+<%= form_with(model: announcement) do |form| %>
+  <% if announcement.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(announcement.errors.count, "error") %> prohibited this announcement from being saved:</h2>
+
+      <ul>
+        <% announcement.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.textarea :description %>
+  </div>
+
+  <div>
+    <%= form.label :start_date, style: "display: block" %>
+    <%= form.date_field :start_date %>
+  </div>
+
+  <div>
+    <%= form.label :end_date, style: "display: block" %>
+    <%= form.datetime_field :end_date %>
+  </div>
+
+  <div>
+    <%= form.check_box :active %>
+    <%= form.label :active %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

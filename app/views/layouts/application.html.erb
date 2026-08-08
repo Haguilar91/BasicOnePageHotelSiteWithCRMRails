@@ -31,6 +31,16 @@
   </head>
 
   <body>
+    <%# Active Announcement Ticker %>
+    <% active_announcements = Announcement.where(active: true).where('start_date <= ? AND end_date >= ?', Time.current, Time.current) %>
+    <% if active_announcements.any? %>
+      <div class="announcement-ribbon">
+        <div class="ticker-wrapper">
+          <div id="announcement-ticker" data-text="<%= active_announcements.first.description %>" data-speed="50"></div>
+        </div>
+      </div>
+    <% end %>
+    
     <%= yield %>
   </body>
 </html>

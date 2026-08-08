@@ -153,6 +153,23 @@ PageContent.create(
     e.position = 4
   end
 
+  # Sample Announcements
+  Announcement.create!(
+    title: '🎉 ¡Temporada de Verano!',
+    description: '¡20% de descuento en todas las habitaciones durante el mes de Julio!',
+    start_date: Date.today,
+    end_date: Date.today + 30,
+    active: true
+  )
+
+  Announcement.create!(
+    title: '🍷 Cena Incluida',
+    description: 'Reserva para fin de semana y disfruta de una cena gourmet incluida en tu estadía.',
+    start_date: Date.today - 5,
+    end_date: Date.today + 14,
+    active: true
+  )
+
 # db/seeds.rb
 
 # Create a default user for Devise authentication
