@@ -211,7 +211,7 @@
             <i class="fas fa-map-marker-alt text-lg mb-1"></i>
             <span class="text-[10px]">Contacto</span>
         </a>
-        <a href="#reservar" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-amber-500 transition" data-mobile-nav="reservar">
+        <a href="#reservar" class="mobile-nav-link flex flex-col items-center justify-center py-2  text-gray-400 transition" data-mobile-nav="reservar">
             <i class="fas fa-calendar-check text-lg mb-1"></i>
             <span class="text-[10px] font-semibold">Reservar</span>
         </a>
@@ -610,9 +610,9 @@
                 }
             });
         });
-
-        // Mobile bottom nav — highlight active section on scroll
+        
 // Mobile bottom nav — highlight active section on scroll
+const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 const sections = ['inicio', 'habitaciones', 'servicios', 'que-hacer', 'contacto', 'reservar']
     .map(id => document.getElementById(id))
     .filter(Boolean);
@@ -645,6 +645,5 @@ if (mobileNavLinks.length && sections.length) {
         window.requestAnimationFrame(updateActiveNav);
     }, { passive: true });
 }
-
     </script>
 </div>
