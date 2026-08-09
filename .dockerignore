@@ -12,6 +12,5 @@ tmp/*
 # Ignore version control and Docker files themselves
 .git
 .gitignore
-docker/
 compose.yaml
 .envrc
