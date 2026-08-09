@@ -15,5 +15,3 @@ tmp/*
 docker/
 compose.yaml
 .envrc
-
-#test
