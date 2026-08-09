@@ -1,9 +1,12 @@
 services:
   web:
-    build: ~/Sites/Hotel
+    build:
+      context: ~/Sites/Hotel
+      args:
+        - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
     container_name: hotel_app
     ports:
-      - "80:8443"
+      - "8443:80"
     volumes:
       - ~/Sites/Hotel:/home/app/webapp
     environment:
