@@ -30,4 +30,4 @@ RUN bundle exec rails assets:precompile && \
     mkdir -p storage log tmp/pids && \
     chown -R app:app /home/app/webapp
 
-EXPOSE 8443
+EXPOSE 80
