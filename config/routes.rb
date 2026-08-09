@@ -2,8 +2,6 @@
     devise_for :users
     resources :page_contents
     resources :announcements
-    resources :local_activities
-    
     # Only allow authenticated users to view Avo
     authenticate :user do
       mount Avo::Engine => '/avo'
