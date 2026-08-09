@@ -1,25 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <!-- Dynamic Browser Tab Title from Avo -->
-    <title><%= PageContent.find_by(key: 'site_title')&.content || 'Hotel Boutique' %></title>
-
-    <!-- Dynamic Favicon from Avo -->
-    <% brand_settings = PageContent.find_by(key: 'global') %>
-    <% if brand_settings&.favicon&.attached? %>
-      <link rel="icon" href="<%= url_for(brand_settings.favicon) %>">
-      <link rel="apple-touch-icon" href="<%= url_for(brand_settings.favicon) %>">
-    <% elsif brand_settings&.logo&.attached? %>
-      <!-- Fallback to the main brand logo if no separate favicon is uploaded -->
-      <link rel="icon" href="<%= url_for(brand_settings.logo) %>">
-      <link rel="apple-touch-icon" href="<%= url_for(brand_settings.logo) %>">
-    <% end %>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+<%# The <html>/<head>/<title>/favicon here are already provided by
+    app/views/layouts/application.html.erb (which this view is rendered
+    inside of). Previously this file also declared its own full
+    <!DOCTYPE html><html><head>...</head> document, which meant the page
+    contained two nested <html>/<head>/<body> structures. That's invalid
+    HTML and is why adding the Font Awesome <link> (and anything else in
+    this inner <head>) behaved unreliably. Everything that's genuinely
+    extra (Tailwind CDN, Google Fonts, Font Awesome, and the page's
+    <style> block) is now pushed into the layout's real <head> via
+    content_for(:head) instead. %>
+<% content_for :head do %>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,6 +47,22 @@
         
         .service-card:hover {
             transform: translateY(-5px);
+        }
+
+        .category-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 175, 55, 0.35);
+        }
+
+        .category-card h3 {
+            letter-spacing: 0.02em;
         }
         
         .room-card {
@@ -138,8 +143,9 @@
             background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
         }
     </style>
-</head>
-<body class="bg-slate-900 text-white">
+<% end %>
+
+<div class="bg-slate-900 text-white">
     
     <!-- Navigation -->
 <nav class="fixed top-10 w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
@@ -165,6 +171,7 @@
                 <a href="#inicio" class="nav-link text-gray-300 hover:text-white transition">Inicio</a>
                 <a href="#habitaciones" class="nav-link text-gray-300 hover:text-white transition">Habitaciones</a>
                 <a href="#servicios" class="nav-link text-gray-300 hover:text-white transition">Servicios</a>
+                <a href="#que-hacer" class="nav-link text-gray-300 hover:text-white transition">Qué hacer</a>
                 <a href="#contacto" class="nav-link text-gray-300 hover:text-white transition">Contacto</a>
             </div>
             <a href="#reservar" class="btn-gold text-slate-900 px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-amber-500/50 transition">
@@ -196,7 +203,6 @@
           <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
               <%= PageContent.find_by(key: 'home_hero_subtitle')&.content || 'Una experiencia de lujo en el corazón histórico de Querétaro' %>
           </p>
-            </a>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#habitaciones" class="btn-gold text-slate-900 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-amber-500/50 transition inline-flex items-center justify-center">
@@ -213,10 +219,11 @@
 <!-- Features -->
 <section class="py-20 bg-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- FIXED: Changed md:grid-cols-3 to md:grid-cols-2 lg:grid-cols-4 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <% @features.each do |feature| %>
               <div class="text-center p-6">
-                  <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-700 flex items-center justify-center">
+                  <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-700 flex items-center justify-center transition hover:scale-110 duration-300">
                       <i class="fas fa-<%= feature.icon.presence || 'star' %> text-amber-500 text-3xl"></i>
                   </div>
                   <h3 class="text-xl font-serif font-semibold mb-2"><%= feature.title %></h3>
@@ -226,7 +233,6 @@
         </div>
     </div>
 </section>
-
     <!-- Rooms Section -->
     <section id="habitaciones" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -286,7 +292,7 @@
         </div>
     </section>
 
-    <!-- Services Section (Experiencias Extraordinarias) -->
+<!-- Services Section (Experiencias Extraordinarias) -->
     <section id="servicios" class="py-20 bg-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
@@ -294,25 +300,90 @@
                 <h2 class="text-4xl md:text-5xl font-serif font-bold">Experiencias Extraordinarias</h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- FIXED: Constrained max-width to 4xl, centered with mx-auto, and reduced to max 2 columns -->
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
                 <% (@experiences.presence || Experience.order(:position, :id)).each_with_index do |exp, idx| %>
-                <div class="testimonial-card p-6 rounded-2xl text-center floating" style="animation-delay: <%= idx * 0.2 %>s;">
+                <div class="testimonial-card p-8 rounded-2xl text-center floating" style="animation-delay: <%= idx * 0.2 %>s;">
                     <% if exp.icon_image.attached? %>
-                      <img src="<%= url_for(exp.icon_image) %>" alt="<%= exp.title %>" class="w-12 h-12 mx-auto mb-4 object-contain">
+                      <img src="<%= url_for(exp.icon_image) %>" alt="<%= exp.title %>" class="w-16 h-16 mx-auto mb-6 object-contain">
                     <% else %>
-                      <i class="fas fa-<%= exp.icon.presence || 'star' %> text-4xl text-amber-500 mb-4"></i>
+                      <i class="fas fa-<%= exp.icon.presence || 'star' %> text-5xl text-amber-500 mb-6"></i>
                     <% end %>
-                    <h3 class="text-lg font-semibold mb-2"><%= exp.title %></h3>
-                    <p class="text-gray-400 text-sm"><%= exp.description %></p>
+                    <h3 class="text-xl font-semibold mb-3"><%= exp.title %></h3>
+                    <p class="text-gray-400"><%= exp.description %></p>
                 </div>
                 <% end %>
             </div>
         </div>
     </section>
 
+    <!-- Qué hacer Section -->
+    <section id="que-hacer" class="py-20 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm">Querétaro</p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= PageContent.find_by(key: 'home_activities_title')&.content || 'Qué hacer en Querétaro' %></h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto"><%= PageContent.find_by(key: 'home_activities_subtitle')&.content || 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.' %></p>
+            </div>
+
+            <% activities_by_category = @local_activities.group_by(&:category) %>
+            <div class="mb-10 fade-in">
+                <div class="flex justify-center">
+                    <div class="inline-flex rounded-full border border-slate-700 bg-slate-800 overflow-hidden">
+                        <% LocalActivity::CATEGORIES.each_with_index do |category, index| %>
+                            <button
+                                type="button"
+                                data-tab-button="<%= category.parameterize %>"
+                                class="px-6 py-3 text-sm font-semibold transition <%= index.zero? ? 'bg-amber-500 text-slate-900' : 'text-gray-300 hover:bg-slate-700 hover:text-white' %>">
+                                <%= category %>
+                            </button>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+
+            <% LocalActivity::CATEGORIES.each_with_index do |category, index| %>
+                <% activities = activities_by_category[category] || [] %>
+                <div data-tab-panel="<%= category.parameterize %>" class="<%= index.zero? ? '' : 'hidden' %>">
+                    <% if activities.any? %>
+                        <div class="grid gap-8 lg:grid-cols-2">
+                            <% activities.each do |activity| %>
+                                <div class="category-card rounded-3xl overflow-hidden bg-slate-800 shadow-xl fade-in">
+                                    <div class="relative h-72 overflow-hidden">
+                                        <% if activity.photo.attached? %>
+                                            <img src="<%= url_for(activity.photo) %>" alt="<%= activity.title %>" class="w-full h-full object-cover">
+                                        <% else %>
+                                            <img src="https://images.unsplash.com/featured/?<%= URI.encode_www_form_component(activity.title) %>&w=1200&q=80" alt="<%= activity.title %>" class="w-full h-full object-cover">
+                                        <% end %>
+                                    </div>
+                                    <div class="p-8">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div>
+                                                <h3 class="text-2xl font-serif font-semibold text-white"><%= activity.title %></h3>
+                                                <p class="text-gray-400 text-sm mt-2"><%= category %></p>
+                                            </div>
+                                            <i class="fas fa-<%= category == 'Restaurantes' ? 'utensils' : (category == 'Puntos de Interés' ? 'map-marker-alt' : 'route') %> text-amber-500 text-3xl"></i>
+                                        </div>
+                                        <p class="text-gray-300 mb-6"><%= activity.description %></p>
+                                        <a href="<%= activity.google_maps_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-amber-400">
+                                            <i class="fas fa-map-marked-alt mr-2"></i> Ver en Google Maps
+                                        </a>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    <% else %>
+                        <div class="rounded-3xl border border-slate-700 bg-slate-800 p-10 text-center text-gray-400 fade-in">
+                            No hay elementos disponibles en esta categoría todavía. Añade actividades en Avo.
+                        </div>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </section>
+
     <!-- Location Section -->
     <section id="contacto" class="py-20">
-    <section class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="fade-in">
@@ -323,21 +394,21 @@
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-start">
-                            <i class="fas map-marker-alt text-amber-500 mt-1 mr-4"></i>
+                            <i class="fas fa-map-marker-alt text-amber-500 mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Dirección</h4>
                                 <p class="text-gray-400"><%= PageContent.find_by(key: 'address_line')&.content || 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México' %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas phone text-amber-500 mt-1 mr-4"></i>
+                            <i class="fas fa-phone text-amber-500 mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Teléfono</h4>
                                 <p class="text-gray-400"><%= PageContent.find_by(key: 'contact_phone')&.content || '+52 442 212 3456' %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas envelope text-amber-500 mt-1 mr-4"></i>
+                            <i class="fas fa-envelope text-amber-500 mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Email</h4>
                                 <p class="text-gray-400"><%= PageContent.find_by(key: 'contact_email')&.content || 'info@hotelmeson.com' %></p>
@@ -369,10 +440,10 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="tel:+524422123456" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-amber-500/50 transition inline-flex items-center justify-center">
-                    <i class="fas phone-alt mr-2"></i> Llamar Ahora
+                    <i class="fas fa-phone-alt mr-2"></i> Llamar Ahora
                 </a>
                 <a href="mailto:info@hotelmeson.com" class="bg-slate-700 hover:bg-slate-600 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center">
-                    <i class="fas envelope mr-2"></i> Enviar Email
+                    <i class="fas fa-envelope mr-2"></i> Enviar Email
                 </a>
             </div>
         </div>
@@ -479,6 +550,29 @@
             }
         });
 
+        // Tab navigation for local activities
+        document.querySelectorAll('[data-tab-button]').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.tabButton;
+
+                document.querySelectorAll('[data-tab-button]').forEach(btn => {
+                    btn.classList.remove('bg-amber-500', 'text-slate-900');
+                    btn.classList.add('text-gray-300');
+                });
+
+                document.querySelectorAll('[data-tab-panel]').forEach(panel => {
+                    panel.classList.add('hidden');
+                });
+
+                button.classList.add('bg-amber-500', 'text-slate-900');
+                button.classList.remove('text-gray-300');
+
+                const activePanel = document.querySelector(`[data-tab-panel="${target}"]`);
+                if (activePanel) {
+                    activePanel.classList.remove('hidden');
+                }
+            });
+        });
+
     </script>
-</body>
-</html>
+</div>

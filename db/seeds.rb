@@ -28,6 +28,18 @@ PageContent.create(
 )
 
 PageContent.create(
+  key: 'home_activities_title',
+  title: 'Home Activities Title',
+  content: 'Qué hacer en Querétaro'
+)
+
+PageContent.create(
+  key: 'home_activities_subtitle',
+  title: 'Home Activities Subtitle',
+  content: 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.'
+)
+
+PageContent.create(
   key: 'home_location_title',
   title: 'Home Location Title',
   content: 'En el Corazón de Querétaro'
@@ -151,6 +163,70 @@ PageContent.create(
     e.description = 'Servicio de transporte privado disponible 24/7'
     e.icon = 'car'
     e.position = 4
+  end
+
+  # Default Local Activities
+  LocalActivity.find_or_create_by!(title: 'Restaurante 1810') do |activity|
+    activity.category = 'Restaurantes'
+    activity.description = 'Alta cocina mexicana con inspiración de recetas queretanas, ubicado junto a la Plaza de Armas.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Restaurante+1810+Quer%C3%A9taro'
+    activity.position = 1
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Cocina de Doña Esthela') do |activity|
+    activity.category = 'Restaurantes'
+    activity.description = 'Famosa por su cocina tradicional, chiles en nogada y platillos caseros.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Cocina+de+Do%C3%B1a+Esthela+Quer%C3%A9taro'
+    activity.position = 2
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Hacienda La Laborcilla') do |activity|
+    activity.category = 'Restaurantes'
+    activity.description = 'Cena elegante en una antigua hacienda con jardines y cocina de autor.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Hacienda+La+Laborcilla+Quer%C3%A9taro'
+    activity.position = 3
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Plaza de Armas') do |activity|
+    activity.category = 'Puntos de Interés'
+    activity.description = 'Ep icentro del centro histórico con su catedral, cafés y arquitectura colonial.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Plaza+de+Armas+Quer%C3%A9taro'
+    activity.position = 1
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Acueducto de Querétaro') do |activity|
+    activity.category = 'Puntos de Interés'
+    activity.description = 'Imponente acueducto de 74 arcos y símbolo de la ciudad.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Acueducto+de+Quer%C3%A9taro'
+    activity.position = 2
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Teatro de la República') do |activity|
+    activity.category = 'Puntos de Interés'
+    activity.description = 'Teatro histórico donde se firmó la Constitución de 1917.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Teatro+de+la+Rep%C3%BAblica+Quer%C3%A9taro'
+    activity.position = 3
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Tour Peatonal Centro Histórico') do |activity|
+    activity.category = 'Tours'
+    activity.description = 'Recorrido guiado por plazas, iglesias y calles coloniales del centro.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Centro+Hist%C3%B3rico+de+Quer%C3%A9taro'
+    activity.position = 1
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Ruta del Queso y Vino') do |activity|
+    activity.category = 'Tours'
+    activity.description = 'Degustación de quesos artesanales y vinos regionales en Querétaro.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Ruta+del+Queso+y+Vino+Quer%C3%A9taro'
+    activity.position = 2
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Viñedos La Redonda') do |activity|
+    activity.category = 'Tours'
+    activity.description = 'Cata de vinos y visita a una de las bodegas más reconocidas de la región.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Vi%C3%B1edos+La+Redonda+Quer%C3%A9taro'
+    activity.position = 3
   end
 
   # Sample Announcements

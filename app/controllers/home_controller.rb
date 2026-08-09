@@ -3,6 +3,7 @@ class HomeController < ApplicationController
     @rooms = Room.order(:position, :id)
     @experiences = Experience.order(:position, :id)
     @features = Feature.order(:position, :id)
+    @local_activities = LocalActivity.order(:category, :position)
     @hero_image = HeroImage.order(:created_at).first
   end
   def update_hero_image

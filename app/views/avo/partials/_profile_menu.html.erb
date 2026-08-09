@@ -1,0 +1,6 @@
+<% if defined?(current_user) && current_user %>
+  <div class="flex items-center gap-4 px-4">
+    <%= link_to "Profile", "/avo/profile", class: "text-blue-600 font-medium no-underline hover:underline" %>
+    <%= link_to "Logout", Rails.application.routes.url_helpers.destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "text-red-500 font-medium no-underline hover:underline" %>
+  </div>
+<% end %>

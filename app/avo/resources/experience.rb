@@ -1,5 +1,6 @@
 class Avo::Resources::Experience < Avo::BaseResource
   self.title = :title
+  self.icon = "heroicons/outline/table-cells"
   self.includes = [:icon_image_attachment]
   self.search = {
     query: -> { query.ransack(title_cont: q, description_cont: q).result(distinct: false) }

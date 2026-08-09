@@ -1,5 +1,6 @@
 class Avo::Resources::PageContent < Avo::BaseResource
   self.title = :title
+  self.icon = "heroicons/outline/book-open"
   self.includes = [:logo_attachment, :favicon_attachment, :app_icon_attachment, :images_attachments]
   self.search = {
     query: -> { query.ransack(title_cont: q, key_cont: q, content_cont: q).result(distinct: false) }
@@ -7,9 +8,12 @@ class Avo::Resources::PageContent < Avo::BaseResource
 
   def fields
     field :id, as: :id, readonly: true
-    field :key, as: :text, help: 'Identificador único (ej: home_hero_title, contact_email)'
+
+    field "Contenido Editable", as: :heading
+
+    field :key, as: :text, readonly: -> { record.present? }, help: 'Identificador único (ej: home_hero_title, contact_email). No se puede cambiar después de crear.'
     field :title, as: :text, help: 'Título descriptivo para el panel de administración'
-    field :content, as: :textarea, show_on: :all, help: 'Contenido principal o valor del texto'
+    field :content, as: :textarea, show_on: :all, help: 'Contenido principal o valor del texto para esta clave.'
 
     field "Archivos e Imágenes Adjuntas", as: :heading
 

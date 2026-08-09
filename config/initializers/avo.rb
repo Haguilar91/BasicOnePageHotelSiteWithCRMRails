@@ -193,20 +193,6 @@ Avo.configure do |config|
   #   add_breadcrumb title: "Home", path: '/avo'
   # end
 
-  ## == Menus ==
-  # config.main_menu = -> {
-  #   section "Dashboards", icon: "tabler/outline/layout-dashboard" do
-  #     all_dashboards
-  #   end
-
-  #   section "Resources", icon: "tabler/outline/chart-bar-popular" do
-  #     all_resources
-  #   end
-
-  #   section "Tools", icon: "tabler/outline/tool" do
-  #     all_tools
-  #   end
-  # }
   # config.profile_menu = -> {
   #   link "Profile", path: "/avo/profile", icon: "tabler/outline/user-circle"
   # }
