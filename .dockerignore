@@ -1,0 +1,17 @@
+# Ignore local bundles and caches
+vendor/bundle
+.bundle
+
+# Ignore temporary files, logs, and databases
+storage/*.sqlite3
+storage/*.sqlite3-journal
+storage/*.sqlite3-wal
+log/*
+tmp/*
+
+# Ignore version control and Docker files themselves
+.git
+.gitignore
+docker/
+compose.yaml
+.envrc
