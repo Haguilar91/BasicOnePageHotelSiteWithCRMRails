@@ -1,11 +1,7 @@
 class Avo::Resources::LocalActivity < Avo::BaseResource
   self.title = :title
-  self.icon = "fas fa-map-marker-alt"
+  self.icon = "heroicons-outline/location-marker"
   self.includes = [:photo_attachment]
-
-  def self.navigation_label
-    "Actividades"
-  end
 
   def fields
     field :id, as: :id, readonly: true

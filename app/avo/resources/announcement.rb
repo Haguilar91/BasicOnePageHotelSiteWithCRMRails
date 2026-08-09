@@ -1,11 +1,6 @@
 # app/avo/resources/announcement.rb
 class Avo::Resources::Announcement < Avo::BaseResource
   self.title = :title
-  self.icon = "fas fa-bullhorn"
-
-  def self.navigation_label
-    "Anuncios"
-  end
 
   def fields
     field :id, as: :id

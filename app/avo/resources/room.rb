@@ -1,11 +1,6 @@
 class Avo::Resources::Room < Avo::BaseResource
   self.title = :name
-  self.icon = "fas fa-bed"
   self.includes = [:photo_attachment]
-
-  def self.navigation_label
-    "Habitaciones"
-  end
   self.search = {
     query: -> { query.ransack(name_cont: q, description_cont: q).result(distinct: false) }
   }

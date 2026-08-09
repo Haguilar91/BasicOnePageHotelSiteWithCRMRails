@@ -1,0 +1,134 @@
+diff --git a/app/views/home/index.html.erb b/app/views/home/index.html.erb
+index 9f3c4d7..57d29bf 100644
+--- a/app/views/home/index.html.erb
++++ b/app/views/home/index.html.erb
+@@ -1,25 +1,14 @@
+-<!DOCTYPE html>
+-<html lang="es">
+-<head>
+-    <meta charset="UTF-8">
+-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-   <!-- Dynamic Browser Tab Title from Avo -->
+-    <title><%= PageContent.find_by(key: 'site_title')&.content || 'Hotel Boutique' %></title>
+-
+-    <!-- Dynamic Favicon from Avo -->
+-    <% brand_settings = PageContent.find_by(key: 'global') %>
+-    <% if brand_settings&.favicon&.attached? %>
+-      <link rel="icon" href="<%= url_for(brand_settings.favicon) %>">
+-      <link rel="apple-touch-icon" href="<%= url_for(brand_settings.favicon) %>">
+-    <% elsif brand_settings&.logo&.attached? %>
+-      <!-- Fallback to the main brand logo if no separate favicon is uploaded -->
+-      <link rel="icon" href="<%= url_for(brand_settings.logo) %>">
+-      <link rel="apple-touch-icon" href="<%= url_for(brand_settings.logo) %>">
+-    <% end %>
+-    
+-    <!-- Tailwind CSS -->
+-    <script src="https://cdn.tailwindcss.com"></script>
+-    
++<%# The <html>/<head>/<title>/favicon here are already provided by
++    app/views/layouts/application.html.erb (which this view is rendered
++    inside of). Previously this file also declared its own full
++    <!DOCTYPE html><html><head>...</head> document, which meant the page
++    contained two nested <html>/<head>/<body> structures. That's invalid
++    HTML and is why adding the Font Awesome <link> (and anything else in
++    this inner <head>) behaved unreliably. Everything that's genuinely
++    extra (Tailwind CDN, Google Fonts, Font Awesome, and the page's
++    <style> block) is now pushed into the layout's real <head> via
++    content_for(:head) instead. %>
++<% content_for :head do %>
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+@@ -154,8 +143,9 @@
+             background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+         }
+     </style>
+-</head>
+-<body class="bg-slate-900 text-white">
++<% end %>
++
++<div class="bg-slate-900 text-white">
+     
+     <!-- Navigation -->
+ <nav class="fixed top-10 w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+@@ -403,21 +393,21 @@
+                     </p>
+                     <div class="space-y-4">
+                         <div class="flex items-start">
+-                            <i class="fas map-marker-alt text-amber-500 mt-1 mr-4"></i>
++                            <i class="fas fa-map-marker-alt text-amber-500 mt-1 mr-4"></i>
+                             <div>
+                                 <h4 class="font-semibold">Dirección</h4>
+                                 <p class="text-gray-400"><%= PageContent.find_by(key: 'address_line')&.content || 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México' %></p>
+                             </div>
+                         </div>
+                         <div class="flex items-start">
+-                            <i class="fas phone text-amber-500 mt-1 mr-4"></i>
++                            <i class="fas fa-phone text-amber-500 mt-1 mr-4"></i>
+                             <div>
+                                 <h4 class="font-semibold">Teléfono</h4>
+                                 <p class="text-gray-400"><%= PageContent.find_by(key: 'contact_phone')&.content || '+52 442 212 3456' %></p>
+                             </div>
+                         </div>
+                         <div class="flex items-start">
+-                            <i class="fas envelope text-amber-500 mt-1 mr-4"></i>
++                            <i class="fas fa-envelope text-amber-500 mt-1 mr-4"></i>
+                             <div>
+                                 <h4 class="font-semibold">Email</h4>
+                                 <p class="text-gray-400"><%= PageContent.find_by(key: 'contact_email')&.content || 'info@hotelmeson.com' %></p>
+@@ -449,10 +439,10 @@
+             </p>
+             <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                 <a href="tel:+524422123456" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-amber-500/50 transition inline-flex items-center justify-center">
+-                    <i class="fas phone-alt mr-2"></i> Llamar Ahora
++                    <i class="fas fa-phone-alt mr-2"></i> Llamar Ahora
+                 </a>
+                 <a href="mailto:info@hotelmeson.com" class="bg-slate-700 hover:bg-slate-600 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center">
+-                    <i class="fas envelope mr-2"></i> Enviar Email
++                    <i class="fas fa-envelope mr-2"></i> Enviar Email
+                 </a>
+             </div>
+         </div>
+@@ -584,5 +574,4 @@
+         });
+ 
+     </script>
+-</body>
+-</html>
+\ No newline at end of file
++</div>
+\ No newline at end of file
+diff --git a/app/views/layouts/avo/application.html.erb b/app/views/layouts/avo/application.html.erb
+index b256221..da41f62 100644
+--- a/app/views/layouts/avo/application.html.erb
++++ b/app/views/layouts/avo/application.html.erb
+@@ -1,7 +1,19 @@
+ <!DOCTYPE html>
+-<html>
++<html lang="<%= I18n.locale %>" dir="<%= text_direction %>" class="<%= class_names(*html_theme_classes) %>">
+   <head>
+     <meta charset="utf-8">
++    <%# Avo's own JS (avo/application.js, late-registration.js, and the inline
++        Avo.configuration.stimulus_controllers script below) all expect a global
++        `window.Avo` object to already exist. Stock Avo layouts set that up via
++        this partial (see avo-4.0.26/app/views/avo/partials/_javascript.html.erb).
++        This custom layout previously never rendered it, so every one of those
++        scripts threw "Avo is not defined" and Avo's Stimulus/theme JS never ran
++        — which is why the page rendered with none of Avo's styling applied. %>
++    <%= render partial: "avo/partials/javascript" %>
++    <%# Loaded here because config/initializers/avo_fontawesome_icons.rb lets
++        Avo icon/menu helpers render Font Awesome <i class="fa..."> tags
++        directly; without this stylesheet those glyphs have no CSS to draw them. %>
++    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <%= stylesheet_link_tag "avo/dependencies", "data-turbo-track": "reload", as: "style" %>
+ <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
+ <%= stylesheet_link_tag "avo/application", "data-turbo-track": "reload", as: "style" %>
+@@ -19,7 +31,7 @@
+     <%= yield :head %>
+   </head>
+ 
+-  <body>
++  <body class="<%= class_names("bg-background", *body_classes) %>">
+     <header style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; background: #fff;">
+       <div style="max-width: 1100px; margin: 0 auto; display:flex; justify-content:flex-end; gap:12px; align-items:center;">
+         <% if defined?(current_user) && current_user %>

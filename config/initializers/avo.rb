@@ -194,19 +194,18 @@ Avo.configure do |config|
   # end
 
   ## == Menus ==
-  # Let Avo build the sidebar from resources instead of using a custom menu.
-  # Remove `config.main_menu` to allow resource-driven navigation.
-  # config.main_menu = -> {
-  #   section "Contenido", icon: "fas fa-book-open" do
-  #     link "Editor de Contenido", path: "/avo/page_contents", icon: "fas fa-book-open"
-  #   end
-  #
-  #   section "Recursos", icon: "fas fa-chart-bar" do
-  #     all_resources
-  #   end
-  # }
+  config.main_menu = -> {
+    section "Contenido", icon: "heroicons-outline/book-open" do
+      link "Editor de Contenido", path: "/avo/page_contents", icon: "heroicons-outline/book-open"
+    end
+
+    section "Recursos", icon: "tabler/outline/chart-bar-popular" do
+      all_resources
+    end
+  }
   # config.profile_menu = -> {
   #   link "Profile", path: "/avo/profile", icon: "tabler/outline/user-circle"
   # }
+
 
 end

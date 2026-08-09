@@ -166,76 +166,67 @@ PageContent.create(
   end
 
   # Default Local Activities
-  local_activities = [
-    {
-      title: 'Restaurante 1810',
-      category: 'Restaurantes',
-      description: 'Alta cocina mexicana con inspiración de recetas queretanas, ubicado junto a la Plaza de Armas.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Restaurante+1810+Quer%C3%A9taro',
-      position: 1
-    },
-    {
-      title: 'Cocina de Doña Esthela',
-      category: 'Restaurantes',
-      description: 'Famosa por su cocina tradicional, chiles en nogada y platillos caseros.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Cocina+de+Do%C3%B1a+Esthela+Quer%C3%A9taro',
-      position: 2
-    },
-    {
-      title: 'Hacienda La Laborcilla',
-      category: 'Restaurantes',
-      description: 'Cena elegante en una antigua hacienda con jardines y cocina de autor.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Hacienda+La+Laborcilla+Quer%C3%A9taro',
-      position: 3
-    },
-    {
-      title: 'Plaza de Armas',
-      category: 'Puntos de Interés',
-      description: 'Epicentro del centro histórico con su catedral, cafés y arquitectura colonial.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Plaza+de+Armas+Quer%C3%A9taro',
-      position: 4
-    },
-    {
-      title: 'Acueducto de Querétaro',
-      category: 'Puntos de Interés',
-      description: 'Imponente acueducto de 74 arcos y símbolo de la ciudad.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Acueducto+de+Quer%C3%A9taro',
-      position: 5
-    },
-    {
-      title: 'Teatro de la República',
-      category: 'Puntos de Interés',
-      description: 'Teatro histórico donde se firmó la Constitución de 1917.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Teatro+de+la+Rep%C3%BAblica+Quer%C3%A9taro',
-      position: 6
-    },
-    {
-      title: 'Tour Peatonal Centro Histórico',
-      category: 'Tours',
-      description: 'Recorrido guiado por plazas, iglesias y calles coloniales del centro.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Centro+Hist%C3%B3rico+de+Quer%C3%A9taro',
-      position: 7
-    },
-    {
-      title: 'Ruta del Queso y Vino',
-      category: 'Tours',
-      description: 'Degustación de quesos artesanales y vinos regionales en Querétaro.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Ruta+del+Queso+y+Vino+Quer%C3%A9taro',
-      position: 8
-    },
-    {
-      title: 'Viñedos La Redonda',
-      category: 'Tours',
-      description: 'Cata de vinos y visita a una de las bodegas más reconocidas de la región.',
-      google_maps_url: 'https://www.google.com/maps/search/?api=1&query=Vi%C3%B1edos+La+Redonda+Quer%C3%A9taro',
-      position: 9
-    }
-  ]
+  LocalActivity.find_or_create_by!(title: 'Restaurante 1810') do |activity|
+    activity.category = 'Restaurantes'
+    activity.description = 'Alta cocina mexicana con inspiración de recetas queretanas, ubicado junto a la Plaza de Armas.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Restaurante+1810+Quer%C3%A9taro'
+    activity.position = 1
+  end
 
-  local_activities.each do |attrs|
-    activity = LocalActivity.find_or_initialize_by(title: attrs[:title])
-    activity.assign_attributes(attrs.except(:title))
-    activity.save!
+  LocalActivity.find_or_create_by!(title: 'Cocina de Doña Esthela') do |activity|
+    activity.category = 'Restaurantes'
+    activity.description = 'Famosa por su cocina tradicional, chiles en nogada y platillos caseros.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Cocina+de+Do%C3%B1a+Esthela+Quer%C3%A9taro'
+    activity.position = 2
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Hacienda La Laborcilla') do |activity|
+    activity.category = 'Restaurantes'
+    activity.description = 'Cena elegante en una antigua hacienda con jardines y cocina de autor.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Hacienda+La+Laborcilla+Quer%C3%A9taro'
+    activity.position = 3
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Plaza de Armas') do |activity|
+    activity.category = 'Puntos de Interés'
+    activity.description = 'Ep icentro del centro histórico con su catedral, cafés y arquitectura colonial.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Plaza+de+Armas+Quer%C3%A9taro'
+    activity.position = 1
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Acueducto de Querétaro') do |activity|
+    activity.category = 'Puntos de Interés'
+    activity.description = 'Imponente acueducto de 74 arcos y símbolo de la ciudad.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Acueducto+de+Quer%C3%A9taro'
+    activity.position = 2
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Teatro de la República') do |activity|
+    activity.category = 'Puntos de Interés'
+    activity.description = 'Teatro histórico donde se firmó la Constitución de 1917.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Teatro+de+la+Rep%C3%BAblica+Quer%C3%A9taro'
+    activity.position = 3
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Tour Peatonal Centro Histórico') do |activity|
+    activity.category = 'Tours'
+    activity.description = 'Recorrido guiado por plazas, iglesias y calles coloniales del centro.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Centro+Hist%C3%B3rico+de+Quer%C3%A9taro'
+    activity.position = 1
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Ruta del Queso y Vino') do |activity|
+    activity.category = 'Tours'
+    activity.description = 'Degustación de quesos artesanales y vinos regionales en Querétaro.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Ruta+del+Queso+y+Vino+Quer%C3%A9taro'
+    activity.position = 2
+  end
+
+  LocalActivity.find_or_create_by!(title: 'Viñedos La Redonda') do |activity|
+    activity.category = 'Tours'
+    activity.description = 'Cata de vinos y visita a una de las bodegas más reconocidas de la región.'
+    activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Vi%C3%B1edos+La+Redonda+Quer%C3%A9taro'
+    activity.position = 3
   end
 
   # Sample Announcements

@@ -1,10 +1,5 @@
 class Avo::Resources::User < Avo::BaseResource
   self.icon = "fas fa-users"
-
-  def self.navigation_label
-    "Usuarios"
-  end
-
   # self.avatar = {
   #   source: :avatar
   # }
