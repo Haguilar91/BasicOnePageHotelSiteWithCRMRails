@@ -131,6 +131,14 @@
         .nav-link:hover::after {
             width: 100%;
         }
+
+        .mobile-bottom-nav {
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+
+        .mobile-nav-link.active {
+            color: #d4af37;
+        }
         
         .gradient-text {
             background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 50%, #d4af37 100%);
@@ -145,8 +153,7 @@
     </style>
 <% end %>
 
-<div class="bg-slate-900 text-white">
-    
+<div class="bg-slate-900 text-white pb-20 md:pb-0">    
     <!-- Navigation -->
 <nav class="fixed top-10 w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -178,6 +185,36 @@
                 Reservar Ahora
             </a>
         </div>
+    </div>
+</nav>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav md:hidden fixed bottom-0 inset-x-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-800">
+    <div class="grid grid-cols-6">
+        <a href="#inicio" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="inicio">
+            <i class="fas fa-home text-lg mb-1"></i>
+            <span class="text-[10px]">Inicio</span>
+        </a>
+        <a href="#habitaciones" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="habitaciones">
+            <i class="fas fa-bed text-lg mb-1"></i>
+            <span class="text-[10px]">Habit.</span>
+        </a>
+        <a href="#servicios" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="servicios">
+            <i class="fas fa-concierge-bell text-lg mb-1"></i>
+            <span class="text-[10px]">Servicios</span>
+        </a>
+        <a href="#que-hacer" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="que-hacer">
+        <i class="fas fa-map-marked-alt text-lg mb-1"></i>
+        <span class="text-[10px]">Lugares</span>
+       </a>
+        <a href="#contacto" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="contacto">
+            <i class="fas fa-map-marker-alt text-lg mb-1"></i>
+            <span class="text-[10px]">Contacto</span>
+        </a>
+        <a href="#reservar" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-amber-500 transition" data-mobile-nav="reservar">
+            <i class="fas fa-calendar-check text-lg mb-1"></i>
+            <span class="text-[10px] font-semibold">Reservar</span>
+        </a>
     </div>
 </nav>
 
@@ -573,6 +610,32 @@
                 }
             });
         });
+
+        // Mobile bottom nav — highlight active section on scroll
+const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+const navSections = ['inicio', 'habitaciones', 'servicios', 'que-hacer', 'contacto', 'reservar']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+if (mobileNavLinks.length && navSections.length) {
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                mobileNavLinks.forEach(link => {
+                    link.classList.remove('active', 'text-amber-500');
+                    link.classList.add('text-gray-400');
+                });
+                const activeLink = document.querySelector(`.mobile-nav-link[data-mobile-nav="${entry.target.id}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active', 'text-amber-500');
+                    activeLink.classList.remove('text-gray-400');
+                }
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+
+    navSections.forEach(section => navObserver.observe(section));
+}
 
     </script>
 </div>
