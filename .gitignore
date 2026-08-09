@@ -72,4 +72,3 @@ yarn-debug.log*
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
-compose.yaml
