@@ -1,6 +1,6 @@
 class Avo::Resources::LocalActivity < Avo::BaseResource
   self.title = :title
-  self.icon = "heroicons-outline/location-marker"
+  self.icon = "heroicons/outline/location-marker"
   self.includes = [:photo_attachment]
 
   def fields

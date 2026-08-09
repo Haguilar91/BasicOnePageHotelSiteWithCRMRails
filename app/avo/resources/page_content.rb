@@ -1,6 +1,6 @@
 class Avo::Resources::PageContent < Avo::BaseResource
   self.title = :title
-  self.icon = "heroicons-outline/book-open"
+  self.icon = "heroicons/outline/book-open"
   self.includes = [:logo_attachment, :favicon_attachment, :app_icon_attachment, :images_attachments]
   self.search = {
     query: -> { query.ransack(title_cont: q, key_cont: q, content_cont: q).result(distinct: false) }

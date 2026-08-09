@@ -1,5 +1,6 @@
 class Avo::Resources::Room < Avo::BaseResource
   self.title = :name
+  self.icon = "heroicons/outline/key"
   self.includes = [:photo_attachment]
   self.search = {
     query: -> { query.ransack(name_cont: q, description_cont: q).result(distinct: false) }

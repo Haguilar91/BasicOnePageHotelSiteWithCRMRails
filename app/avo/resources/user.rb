@@ -1,5 +1,5 @@
 class Avo::Resources::User < Avo::BaseResource
-  self.icon = "fas fa-users"
+  self.icon = "heroicons/outline/users"
   # self.avatar = {
   #   source: :avatar
   # }

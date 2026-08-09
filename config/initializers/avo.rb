@@ -193,16 +193,6 @@ Avo.configure do |config|
   #   add_breadcrumb title: "Home", path: '/avo'
   # end
 
-  ## == Menus ==
-  config.main_menu = -> {
-    section "Contenido", icon: "heroicons-outline/book-open" do
-      link "Editor de Contenido", path: "/avo/page_contents", icon: "heroicons-outline/book-open"
-    end
-
-    section "Recursos", icon: "tabler/outline/chart-bar-popular" do
-      all_resources
-    end
-  }
   # config.profile_menu = -> {
   #   link "Profile", path: "/avo/profile", icon: "tabler/outline/user-circle"
   # }

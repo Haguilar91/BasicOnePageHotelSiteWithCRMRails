@@ -1,7 +1,7 @@
 # app/avo/resources/feature.rb
 class Avo::Resources::Feature < Avo::BaseResource
   self.title = :title
-
+  self.icon = "heroicons/outline/star"
   def fields
     field :id, as: :id
     field :title, as: :text

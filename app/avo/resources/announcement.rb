@@ -1,7 +1,7 @@
 # app/avo/resources/announcement.rb
 class Avo::Resources::Announcement < Avo::BaseResource
   self.title = :title
-
+  self.icon = "heroicons/outline/speakerphone"
   def fields
     field :id, as: :id
     field :title, as: :text
