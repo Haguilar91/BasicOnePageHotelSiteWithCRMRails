@@ -612,29 +612,38 @@
         });
 
         // Mobile bottom nav — highlight active section on scroll
-const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-const navSections = ['inicio', 'habitaciones', 'servicios', 'que-hacer', 'contacto', 'reservar']
+// Mobile bottom nav — highlight active section on scroll
+const sections = ['inicio', 'habitaciones', 'servicios', 'que-hacer', 'contacto', 'reservar']
     .map(id => document.getElementById(id))
     .filter(Boolean);
 
-if (mobileNavLinks.length && navSections.length) {
-    const navObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                mobileNavLinks.forEach(link => {
-                    link.classList.remove('active', 'text-amber-500');
-                    link.classList.add('text-gray-400');
-                });
-                const activeLink = document.querySelector(`.mobile-nav-link[data-mobile-nav="${entry.target.id}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active', 'text-amber-500');
-                    activeLink.classList.remove('text-gray-400');
-                }
-            }
-        });
-    }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+function updateActiveNav() {
+    const scrollPos = window.scrollY + window.innerHeight * 0.35;
+    let currentSection = sections[0];
 
-    navSections.forEach(section => navObserver.observe(section));
+    sections.forEach(section => {
+        if (section.offsetTop <= scrollPos) {
+            currentSection = section;
+        }
+    });
+
+    mobileNavLinks.forEach(link => {
+        link.classList.remove('active', 'text-amber-500');
+        link.classList.add('text-gray-400');
+    });
+
+    const activeLink = document.querySelector(`.mobile-nav-link[data-mobile-nav="${currentSection.id}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active', 'text-amber-500');
+        activeLink.classList.remove('text-gray-400');
+    }
+}
+
+if (mobileNavLinks.length && sections.length) {
+    updateActiveNav();
+    window.addEventListener('scroll', () => {
+        window.requestAnimationFrame(updateActiveNav);
+    }, { passive: true });
 }
 
     </script>
