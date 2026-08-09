@@ -3,7 +3,11 @@ FROM phusion/passenger-ruby34:latest
 # Set correct environment variables
 ENV RAILS_ENV=production
 ENV BUNDLE_WITHOUT="development:test"
-    
+
+# Accept the master key as a build argument
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+
 # Enable Nginx and Passenger
 RUN rm -f /etc/service/nginx/down
 
