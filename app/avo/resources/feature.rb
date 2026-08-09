@@ -1,6 +1,11 @@
 # app/avo/resources/feature.rb
 class Avo::Resources::Feature < Avo::BaseResource
   self.title = :title
+  self.icon = "fas fa-star"
+
+  def self.navigation_label
+    "Características"
+  end
 
   def fields
     field :id, as: :id

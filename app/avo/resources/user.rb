@@ -1,5 +1,10 @@
 class Avo::Resources::User < Avo::BaseResource
-  self.icon = "tabler/outline/users"
+  self.icon = "fas fa-users"
+
+  def self.navigation_label
+    "Usuarios"
+  end
+
   # self.avatar = {
   #   source: :avatar
   # }

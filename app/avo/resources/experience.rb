@@ -1,6 +1,11 @@
 class Avo::Resources::Experience < Avo::BaseResource
   self.title = :title
+  self.icon = "fas fa-heart"
   self.includes = [:icon_image_attachment]
+
+  def self.navigation_label
+    "Experiencias"
+  end
   self.search = {
     query: -> { query.ransack(title_cont: q, description_cont: q).result(distinct: false) }
   }

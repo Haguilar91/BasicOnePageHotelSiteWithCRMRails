@@ -59,6 +59,22 @@
         .service-card:hover {
             transform: translateY(-5px);
         }
+
+        .category-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 175, 55, 0.35);
+        }
+
+        .category-card h3 {
+            letter-spacing: 0.02em;
+        }
         
         .room-card {
             transition: all 0.4s ease;
@@ -165,6 +181,7 @@
                 <a href="#inicio" class="nav-link text-gray-300 hover:text-white transition">Inicio</a>
                 <a href="#habitaciones" class="nav-link text-gray-300 hover:text-white transition">Habitaciones</a>
                 <a href="#servicios" class="nav-link text-gray-300 hover:text-white transition">Servicios</a>
+                <a href="#que-hacer" class="nav-link text-gray-300 hover:text-white transition">Qué hacer</a>
                 <a href="#contacto" class="nav-link text-gray-300 hover:text-white transition">Contacto</a>
             </div>
             <a href="#reservar" class="btn-gold text-slate-900 px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-amber-500/50 transition">
@@ -196,7 +213,6 @@
           <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
               <%= PageContent.find_by(key: 'home_hero_subtitle')&.content || 'Una experiencia de lujo en el corazón histórico de Querétaro' %>
           </p>
-            </a>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#habitaciones" class="btn-gold text-slate-900 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-amber-500/50 transition inline-flex items-center justify-center">
@@ -310,9 +326,73 @@
         </div>
     </section>
 
+    <!-- Qué hacer Section -->
+    <section id="que-hacer" class="py-20 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 fade-in">
+                <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm">Querétaro</p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= PageContent.find_by(key: 'home_activities_title')&.content || 'Qué hacer en Querétaro' %></h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto"><%= PageContent.find_by(key: 'home_activities_subtitle')&.content || 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.' %></p>
+            </div>
+
+            <% activities_by_category = @local_activities.group_by(&:category) %>
+            <div class="mb-10 fade-in">
+                <div class="flex justify-center">
+                    <div class="inline-flex rounded-full border border-slate-700 bg-slate-800 overflow-hidden">
+                        <% LocalActivity::CATEGORIES.each_with_index do |category, index| %>
+                            <button
+                                type="button"
+                                data-tab-button="<%= category.parameterize %>"
+                                class="px-6 py-3 text-sm font-semibold transition <%= index.zero? ? 'bg-amber-500 text-slate-900' : 'text-gray-300 hover:bg-slate-700 hover:text-white' %>">
+                                <%= category %>
+                            </button>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+
+            <% LocalActivity::CATEGORIES.each_with_index do |category, index| %>
+                <% activities = activities_by_category[category] || [] %>
+                <div data-tab-panel="<%= category.parameterize %>" class="<%= index.zero? ? '' : 'hidden' %>">
+                    <% if activities.any? %>
+                        <div class="grid gap-8 lg:grid-cols-2">
+                            <% activities.each do |activity| %>
+                                <div class="category-card rounded-3xl overflow-hidden bg-slate-800 shadow-xl fade-in">
+                                    <div class="relative h-72 overflow-hidden">
+                                        <% if activity.photo.attached? %>
+                                            <img src="<%= url_for(activity.photo) %>" alt="<%= activity.title %>" class="w-full h-full object-cover">
+                                        <% else %>
+                                            <img src="https://images.unsplash.com/featured/?<%= URI.encode_www_form_component(activity.title) %>&w=1200&q=80" alt="<%= activity.title %>" class="w-full h-full object-cover">
+                                        <% end %>
+                                    </div>
+                                    <div class="p-8">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div>
+                                                <h3 class="text-2xl font-serif font-semibold text-white"><%= activity.title %></h3>
+                                                <p class="text-gray-400 text-sm mt-2"><%= category %></p>
+                                            </div>
+                                            <i class="fas fa-<%= category == 'Restaurantes' ? 'utensils' : (category == 'Puntos de Interés' ? 'map-marker-alt' : 'route') %> text-amber-500 text-3xl"></i>
+                                        </div>
+                                        <p class="text-gray-300 mb-6"><%= activity.description %></p>
+                                        <a href="<%= activity.google_maps_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-amber-400">
+                                            <i class="fas fa-map-marked-alt mr-2"></i> Ver en Google Maps
+                                        </a>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    <% else %>
+                        <div class="rounded-3xl border border-slate-700 bg-slate-800 p-10 text-center text-gray-400 fade-in">
+                            No hay elementos disponibles en esta categoría todavía. Añade actividades en Avo.
+                        </div>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </section>
+
     <!-- Location Section -->
     <section id="contacto" class="py-20">
-    <section class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="fade-in">
@@ -477,6 +557,30 @@
             } else {
                 nav.classList.remove('bg-slate-900/95');
             }
+        });
+
+        // Tab navigation for local activities
+        document.querySelectorAll('[data-tab-button]').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.tabButton;
+
+                document.querySelectorAll('[data-tab-button]').forEach(btn => {
+                    btn.classList.remove('bg-amber-500', 'text-slate-900');
+                    btn.classList.add('text-gray-300');
+                });
+
+                document.querySelectorAll('[data-tab-panel]').forEach(panel => {
+                    panel.classList.add('hidden');
+                });
+
+                button.classList.add('bg-amber-500', 'text-slate-900');
+                button.classList.remove('text-gray-300');
+
+                const activePanel = document.querySelector(`[data-tab-panel="${target}"]`);
+                if (activePanel) {
+                    activePanel.classList.remove('hidden');
+                }
+            });
         });
 
     </script>
