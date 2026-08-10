@@ -9,7 +9,6 @@ Avo.configure do |config|
   #config.favicon = "/"
   # Where should the user be redirected when visiting the `/avo` url
   # config.home_path = nil
-
   ## == Licensing ==
   # config.license_key = ENV['AVO_LICENSE_KEY']
 
@@ -25,8 +24,12 @@ Avo.configure do |config|
 # Avo evaluates this in the context of Avo controllers, so we use
 # Rails route helpers to ensure the path is available.
 
-  # config.authenticate_with do
-  # end
+
+config.authenticate_with do
+  redirect_to main_app.new_user_session_path unless current_user
+end
+
+config.is_admin_method = :admin?
 
   ## == Authorization ==
   # config.is_admin_method = :is_admin
@@ -42,7 +45,8 @@ Avo.configure do |config|
   #   search: 'search?',
   # }
   # config.raise_error_on_missing_policy = false
-  config.authorization_client = nil
+  config.is_admin_method = :admin?
+  config.authorization_client = :pundit
   # config.explicit_authorization = true
 
 

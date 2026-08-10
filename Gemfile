@@ -13,6 +13,7 @@ gem "image_processing", "~> 1.2"
 gem "devise"
 gem 'simple_form'
 
+gem 'pundit'
 # Admin panel gem
 gem "avo"
 
