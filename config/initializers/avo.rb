@@ -29,10 +29,9 @@ config.authenticate_with do
   redirect_to main_app.new_user_session_path unless current_user
 end
 
-config.is_admin_method = :admin?
 
   ## == Authorization ==
-  # config.is_admin_method = :is_admin
+  config.is_admin_method = :admin?
   # config.is_developer_method = :is_developer
   # config.authorization_methods = {
   #   index: 'index?',
@@ -45,7 +44,7 @@ config.is_admin_method = :admin?
   #   search: 'search?',
   # }
   # config.raise_error_on_missing_policy = false
-  config.is_admin_method = :admin?
+
   config.authorization_client = :pundit
   # config.explicit_authorization = true
 
