@@ -1,6 +1,9 @@
 class Avo::Resources::User < Avo::BaseResource
   self.icon = "heroicons/outline/users"
 
+  self.visible_on_sidebar = -> { context[:current_user]&.admin? }
+
+
   def fields
     field :id, as: :id
     field :email, as: :text

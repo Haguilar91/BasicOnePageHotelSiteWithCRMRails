@@ -31,7 +31,7 @@ end
 
 
   ## == Authorization ==
-  config.is_admin_method = :admin?
+  #config.is_admin_method = :admin?
   # config.is_developer_method = :is_developer
   # config.authorization_methods = {
   #   index: 'index?',
@@ -45,7 +45,7 @@ end
   # }
   # config.raise_error_on_missing_policy = false
 
-  config.authorization_client = :pundit
+  #config.authorization_client = :pundit
   # config.explicit_authorization = true
 
 
