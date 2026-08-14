@@ -1,14 +1,17 @@
   Rails.application.routes.draw do
     devise_for :users, skip: [:registration]
-    resources :page_contents
-    resources :announcements
-    # Only allow authenticated users to view Avo
+
+    # Public read-only pages (promos visitors can browse). All writes for
+    # these records happen through Avo, which is why only index/show are
+    # exposed here.
+    resources :announcements, only: [:index, :show]
+
+    # Everything that can change site content lives behind login.
     authenticate :user do
       mount Avo::Engine => '/avo'
     end
-    resources :offers
+
     get "home/index"
-    post "update_hero_image", to: "home#update_hero_image" # Add this line
     # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
     # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
     # Can be used by load balancers and uptime monitors to verify that the app is live.

@@ -8,20 +8,9 @@ class Avo::Resources::Feature < Avo::BaseResource
     field :description, as: :textarea
     field :position, as: :number
 
-    # Dropdown con íconos recomendados para las Features
-    field :icon, as: :select, options: {
-      "Centro Histórico (landmark)" => "landmark",
-      "Spa & Wellness (spa)" => "spa",
-      "Gastronomía / Bar (glass-cheers)" => "glass-cheers",
-      "Estacionamiento (car)" => "car",
-      "Wi-Fi / Internet (wifi)" => "wifi",
-      "Ambiente Familiar (users)" => "users",
-      "Recepción 24/7 (concierge-bell)" => "concierge-bell",
-      "Habitaciones / Confort (bed)" => "bed",
-      "Restaurante (utensils)" => "utensils",
-      "Piscina / Alberca (swimming-pool)" => "swimming-pool",
-      "Seguridad (shield-alt)" => "shield-alt",
-      "Estrella / General (star)" => "star"
-    }, default: "landmark"
+    # Dropdown con todos los íconos de Font Awesome 6 (solid); los recomendados
+    # para hotel/turismo aparecen primero en su propio grupo.
+    field :icon, as: :select, grouped_options: FontAwesomeIcons.grouped_select_options, default: "landmark",
+      help: "Ícono mostrado en esta característica."
   end
 end

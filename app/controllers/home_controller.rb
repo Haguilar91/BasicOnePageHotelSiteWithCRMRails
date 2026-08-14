@@ -4,17 +4,10 @@ class HomeController < ApplicationController
     @experiences = Experience.order(:position, :id)
     @features = Feature.order(:position, :id)
     @local_activities = LocalActivity.order(:category, :position)
+    @offers = Offer.visible.ordered.includes(:room)
+    # Keyed by room so the room cards can show their discount without a query
+    # per room. First match wins when a room has more than one active offer.
+    @room_offers = Offer.visible.ordered.room_kind.group_by(&:room_id).transform_values(&:first)
     @hero_image = HeroImage.order(:created_at).first
-  end
-  def update_hero_image
-    @hero_image = HeroImage.first_or_create
-    if params[:hero_image]
-      @hero_image.image.attach(params[:hero_image])
-      if @hero_image.save
-        redirect_to root_path, notice: 'Hero image updated successfully'
-      else
-        redirect_to root_path, alert: 'Failed to upload image'
-      end
-    end
   end
 end

@@ -14,6 +14,12 @@ class Avo::Resources::Room < Avo::BaseResource
     field :description, as: :textarea, show_on: :all, help: "Descripción detallada de la habitación"
     field :features, as: :textarea, show_on: :all, help: "Características incluidas (escribe una por línea, ej: Cama King Size, Jacuzzi, Balcón)"
     field :booking_url, as: :text, help: "Enlace directo para reservar en Booking.com, Airbnb, WhatsApp o motor propio"
+    field :booking_platform,
+      as: :select,
+      options: Room::BOOKING_PLATFORMS.transform_values { |meta| meta[:label] }.invert,
+      default: "custom",
+      help: "Elige una plataforma para mostrar su ícono junto al botón de reserva."
+    field :button_name, as: :text, placeholder: "Reservar", help: "Texto del botón de reserva. Déjalo en blanco para usar el texto predeterminado de la plataforma elegida (ej. 'Reservar en Airbnb')."
     field :photo, as: :file, is_image: true, help: "Fotografía principal de la habitación"
     field :position, as: :number, help: "Orden de aparición en la página principal (1, 2, 3...)"
   end

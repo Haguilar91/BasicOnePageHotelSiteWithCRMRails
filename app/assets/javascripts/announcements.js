@@ -19,10 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!items.length) return;
 
-    // Build "Title: Description" for each announcement, title in bold,
-    // separated with a bullet so multiple announcements read cleanly.
+    // Build "Title: Description" for each item, title in bold, separated with
+    // a bullet so multiple announcements read cleanly.
     const html = items
-      .map(item => `<strong>${escapeHtml(item.title)}</strong>: ${escapeHtml(item.description)}`)
+      .map(item => {
+        const title = `<strong>${escapeHtml(item.title)}</strong>`;
+        return item.description ? `${title}: ${escapeHtml(item.description)}` : title;
+      })
       .join('&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;');
 
     // Create a clone for the animation
@@ -43,12 +46,20 @@ document.addEventListener('DOMContentLoaded', function() {
 function startInfiniteScroll(element, container, speed) {
   const content = element.querySelector('span');
   let containerWidth = container.offsetWidth;
-  const contentWidth = content.offsetWidth;
+  let contentWidth = content.offsetWidth;
   let position = containerWidth;
-  const pixelsPerFrame = speed / 60;
+  let lastTimestamp = null;
 
-  function animate() {
-    position -= pixelsPerFrame;
+  function animate(timestamp) {
+    // Advance by elapsed time rather than a fixed per-frame step, so the
+    // scroll runs at the same speed on 60Hz and 120Hz displays. The delta is
+    // clamped because backgrounding the tab pauses rAF, and the first frame
+    // after returning would otherwise jump the ticker far off-screen.
+    if (lastTimestamp === null) lastTimestamp = timestamp;
+    const elapsed = Math.min(timestamp - lastTimestamp, 100);
+    lastTimestamp = timestamp;
+
+    position -= (speed * elapsed) / 1000;
 
     if (position <= -contentWidth) {
       position = containerWidth;
@@ -58,10 +69,18 @@ function startInfiniteScroll(element, container, speed) {
     requestAnimationFrame(animate);
   }
 
-  animate();
+  requestAnimationFrame(animate);
 
+  // Only react to genuine width changes. On mobile, scrolling shows/hides the
+  // browser chrome, which fires `resize` with a new viewport *height* — and
+  // restarting the ticker on those events is what made it jump back to the
+  // start whenever the page was scrolled.
   window.addEventListener('resize', function() {
-    containerWidth = container.offsetWidth;
-    position = containerWidth;
+    const newContainerWidth = container.offsetWidth;
+    if (newContainerWidth === containerWidth) return;
+
+    containerWidth = newContainerWidth;
+    contentWidth = content.offsetWidth;
+    if (position > containerWidth) position = containerWidth;
   });
 }

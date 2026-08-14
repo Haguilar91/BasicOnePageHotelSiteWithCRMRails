@@ -140,29 +140,50 @@ PageContent.create(
     r.position = 3
   end
 
+  # Amenities as published by the hotel on hotelmesondelbosque.com.mx.
+  # "Admite Mascotas" comes from the hotel's listings (Booking/Hotels.com)
+  # rather than its own site — confirm before relying on it.
+  Feature.find_or_create_by!(title: 'Estacionamiento Gratuito') do |f|
+    f.description = 'Amplio estacionamiento gratuito exclusivo para huéspedes, a su servicio las 24 horas del día.'
+    f.icon = 'square-parking'
+    f.position = 1
+  end
+
+  Feature.find_or_create_by!(title: 'Wi-Fi de Banda Ancha') do |f|
+    f.description = 'Internet de banda ancha en todas las habitaciones, para su entretenimiento o su negocio.'
+    f.icon = 'wifi'
+    f.position = 2
+  end
+
+  Feature.find_or_create_by!(title: 'Atención 24 Horas') do |f|
+    f.description = 'Recepción y personal a su servicio las 24 horas del día, todos los días del año.'
+    f.icon = 'bell-concierge'
+    f.position = 3
+  end
+
+  Feature.find_or_create_by!(title: 'Admite Mascotas') do |f|
+    f.description = 'Viaje con su mascota: son bienvenidas en el hotel.'
+    f.icon = 'paw'
+    f.position = 4
+  end
+
   # Default Experiences
-  Experience.find_or_create_by!(title: 'Restaurante') do |e|
-    e.description = 'Gastronomía local e internacional con ingredientes frescos'
-    e.icon = 'utensils'
+  Experience.find_or_create_by!(title: 'Ambiente Familiar') do |e|
+    e.description = 'Ambiente familiar y atención personalizada para que se sienta como en casa durante toda su estancia.'
+    e.icon = 'users'
     e.position = 1
   end
 
-  Experience.find_or_create_by!(title: 'Piscina') do |e|
-    e.description = 'Piscina al aire libre con vistas panorámicas'
-    e.icon = 'swimmer'
+  Experience.find_or_create_by!(title: 'Centro Histórico') do |e|
+    e.description = 'En el corazón del Centro, a pasos del Jardín Zenea, la Catedral y el Teatro de la República.'
+    e.icon = 'landmark'
     e.position = 2
   end
 
-  Experience.find_or_create_by!(title: 'Gimnasio') do |e|
-    e.description = 'Equipo moderno para mantener tu rutina'
-    e.icon = 'dumbbell'
+  Experience.find_or_create_by!(title: 'Negocios o Placer') do |e|
+    e.description = 'El lugar ideal para su viaje de negocios o de placer, en la mejor zona de la ciudad.'
+    e.icon = 'briefcase'
     e.position = 3
-  end
-
-  Experience.find_or_create_by!(title: 'Transporte') do |e|
-    e.description = 'Servicio de transporte privado disponible 24/7'
-    e.icon = 'car'
-    e.position = 4
   end
 
   # Default Local Activities
@@ -248,6 +269,23 @@ PageContent.create(
 
 # db/seeds.rb
 
+# Sample Offers
+Offer.find_or_create_by!(title: 'Escapada de Fin de Semana') do |o|
+  o.description = '2 noches en Habitación Deluxe con desayuno incluido para dos personas.'
+  o.price = 4500
+  o.badge = '15% DESCUENTO'
+  o.position = 1
+  o.active = true
+end
+
+Offer.find_or_create_by!(title: 'Luna de Miel Colonial') do |o|
+  o.description = 'Suite Presidencial, cena romántica y botella de vino de bienvenida.'
+  o.price = 8900
+  o.badge = 'ROMÁNTICO'
+  o.position = 2
+  o.active = true
+end
+
 # Create a default user for Devise authentication
 User.find_or_create_by!(email: "admin@hotel.com") do |user|
   user.password = "password123"
@@ -263,6 +301,26 @@ end
 PageContent.find_or_create_by!(key: 'home_welcome_title') do |p|
   p.content = "Bienvenido a su refugio de lujo"
 end
+
+# Additional editable text that used to be hardcoded in the homepage view
+PageContent.find_or_create_by!(key: 'home_rooms_tagline') do |p|
+  p.title = "Rooms Section Tagline"
+  p.content = "Diseñadas para brindarte la máxima comodidad y tranquilidad"
+end
+PageContent.find_or_create_by!(key: 'services_title') do |p|
+  p.title = "Services Section Title"
+  p.content = "Nuestros Servicios"
+end
+PageContent.find_or_create_by!(key: 'services_subtitle') do |p|
+  p.title = "Services Section Subtitle"
+  p.content = "Experiencias Extraordinarias"
+end
+
+# Social media links — footer icons only render when these are filled in
+PageContent.find_or_create_by!(key: 'social_facebook') { |p| p.title = "Facebook URL" }
+PageContent.find_or_create_by!(key: 'social_instagram') { |p| p.title = "Instagram URL" }
+PageContent.find_or_create_by!(key: 'social_twitter') { |p| p.title = "Twitter/X URL" }
+PageContent.find_or_create_by!(key: 'social_tiktok') { |p| p.title = "TikTok URL" }
 
 # Theme presets — manageable from Avo under "Themes". Only one is ever active;
 # the site reads the active one and falls back to "Dorado Colonial" if none is.

@@ -171,12 +171,15 @@
     
     <!-- Dynamic Brand Name from Avo -->
     <span class="font-serif text-xl font-bold">
-        <%= PageContent.find_by(key: 'home_hero_title')&.content || 'Hotel Boutique' %>
+        <%= page_content('home_hero_title', 'Hotel Boutique') %>
     </span>
 </a>
             <div class="hidden md:flex space-x-8">
                 <a href="#inicio" class="nav-link text-white/80 hover:text-white transition">Inicio</a>
                 <a href="#habitaciones" class="nav-link text-white/80 hover:text-white transition">Habitaciones</a>
+                <% if @offers.present? %>
+                  <a href="#ofertas" class="nav-link text-white/80 hover:text-white transition">Ofertas</a>
+                <% end %>
                 <a href="#servicios" class="nav-link text-white/80 hover:text-white transition">Servicios</a>
                 <a href="#que-hacer" class="nav-link text-white/80 hover:text-white transition">Qué hacer</a>
                 <a href="#contacto" class="nav-link text-white/80 hover:text-white transition">Contacto</a>
@@ -224,7 +227,7 @@
            class="hero min-h-screen flex items-center justify-center"
            style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<%= hero_bg_url %>'); background-size: cover; background-position: center; background-attachment: fixed;">
       <div class="text-center px-4">
-          <p class="text-[var(--color-accent)] tracking-widest mb-4 uppercase text-sm"><%= PageContent.find_by(key: 'home_welcome_title')&.content || 'Bienvenido al Hotel Mesón' %></p>
+          <p class="text-[var(--color-accent)] tracking-widest mb-4 uppercase text-sm"><%= page_content('home_welcome_title', 'Bienvenido al Hotel Mesón') %></p>
           
           <!-- Large Centered Hero Emblem -->
           <% brand_settings = PageContent.find_by(key: 'global') %>
@@ -235,10 +238,10 @@
           <% end %>
 
           <h1 class="text-5xl md:text-7xl font-bold mb-6">
-              <%= raw(PageContent.find_by(key: 'home_hero_title')&.content || 'Hotel Mesón') %>
+              <%= raw(page_content('home_hero_title', 'Hotel Mesón')) %>
           </h1>
           <p class="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
-              <%= PageContent.find_by(key: 'home_hero_subtitle')&.content || 'Una experiencia de lujo en el corazón histórico de Querétaro' %>
+              <%= page_content('home_hero_subtitle', 'Una experiencia de lujo en el corazón histórico de Querétaro') %>
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -274,9 +277,9 @@
     <section id="habitaciones" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
-                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= PageContent.find_by(key: 'home_features_title')&.content || 'Nuestras Habitaciones' %></p>
-                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= PageContent.find_by(key: 'home_features_subtitle')&.content || 'Habitaciones Premium' %></h2>
-                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto">Diseñadas para brindarte la máxima comodidad y tranquilidad</p>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= page_content('home_features_title', 'Nuestras Habitaciones') %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= page_content('home_features_subtitle', 'Habitaciones Premium') %></h2>
+                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= page_content('home_rooms_tagline', 'Diseñadas para brindarte la máxima comodidad y tranquilidad') %></p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -292,14 +295,22 @@
                                alt="<%= room.name %>" 
                                class="w-full h-full object-cover">
                         <% end %>
-                        <% if room.price.present? %>
+                        <% room_offer = @room_offers[room.id] %>
+                        <% room_discounted = room_offer&.discounted_price %>
+                        <% if room_discounted.present? %>
+                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold flex items-baseline gap-2">
+                              <span class="line-through opacity-60 font-normal text-xs"><%= room.price %></span>
+                              <span><%= room_discounted %></span>
+                          </div>
+                        <% elsif room.price.present? %>
                           <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
                               <%= room.price %>
                           </div>
                         <% end %>
-                        <% if room.badge.present? %>
+                        <% room_badge = room_offer&.display_badge.presence || room.badge %>
+                        <% if room_badge.present? %>
                           <div class="absolute top-4 left-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
-                              <%= room.badge %>
+                              <%= room_badge %>
                           </div>
                         <% end %>
                     </div>
@@ -315,11 +326,11 @@
                         <% end %>
                         <% if room.booking_url.present? %>
                           <a href="<%= room.booking_url %>" target="_blank" rel="noopener" class="block text-center <%= room.badge.present? ? 'bg-[var(--color-accent)] text-slate-900 hover:brightness-90 font-semibold' : 'bg-[var(--color-bg-tertiary)] hover:brightness-125' %> py-3 rounded-lg transition">
-                              Reservar en <%= room.booking_url.include?('booking') ? 'Booking.com' : (room.booking_url.include?('airbnb') ? 'Airbnb' : 'Línea') %>
+                              <i class="<%= room.booking_button_icon %> mr-2"></i><%= room.booking_button_label %>
                           </a>
                         <% else %>
                           <a href="#reservar" class="block text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
-                              Reservar
+                              <i class="fa-solid fa-calendar-check mr-2"></i><%= room.booking_button_label %>
                           </a>
                         <% end %>
                     </div>
@@ -329,12 +340,86 @@
         </div>
     </section>
 
+    <!-- Offers Section -->
+    <% if @offers.present? %>
+    <section id="ofertas" class="py-20 bg-[var(--color-bg-primary)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Promociones</p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold">Ofertas Especiales</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <% @offers.each do |offer| %>
+                <% offer_photo = offer.display_photo %>
+                <% offer_badge = offer.display_badge %>
+                <% booking_link = offer.booking_url.presence || (offer.room&.booking_url if offer.room_offer?) %>
+                <div class="room-card bg-[var(--color-bg-secondary)] rounded-2xl overflow-hidden shadow-xl <%= 'border-2 border-[var(--color-accent)]/30' if offer_badge.present? %> fade-in">
+                    <div class="relative h-64 overflow-hidden">
+                        <% if offer_photo.present? %>
+                          <img src="<%= url_for(offer_photo) %>"
+                               alt="<%= offer.display_title %>"
+                               class="w-full h-full object-cover">
+                        <% else %>
+                          <img src="https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&q=80"
+                               alt="<%= offer.display_title %>"
+                               class="w-full h-full object-cover">
+                        <% end %>
+                        <% if offer.room_offer? %>
+                          <% if offer.discounted_price.present? %>
+                            <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold flex items-baseline gap-2">
+                                <span class="line-through opacity-60 font-normal text-xs"><%= offer.original_price %></span>
+                                <span><%= offer.discounted_price %></span>
+                            </div>
+                          <% elsif offer.original_price.present? %>
+                            <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
+                                <%= offer.original_price %>
+                            </div>
+                          <% end %>
+                        <% elsif offer.price.present? %>
+                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
+                              <%= number_to_currency(offer.price) %>
+                          </div>
+                        <% end %>
+                        <% if offer_badge.present? %>
+                          <div class="absolute top-4 left-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
+                              <%= offer_badge %>
+                          </div>
+                        <% end %>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-serif font-semibold mb-2"><%= offer.display_title %></h3>
+                        <% if offer.display_description.present? %>
+                          <p class="text-[var(--color-text-muted)] mb-2"><%= offer.display_description %></p>
+                        <% end %>
+                        <% if offer.validity_label.present? %>
+                          <p class="text-sm text-[var(--color-accent)] mb-4">
+                              <i class="fa-solid fa-clock mr-1"></i> <%= offer.validity_label %>
+                          </p>
+                        <% end %>
+                        <% if booking_link.present? %>
+                          <a href="<%= booking_link %>" target="_blank" rel="noopener" class="block text-center bg-[var(--color-accent)] text-slate-900 hover:brightness-90 font-semibold py-3 rounded-lg transition">
+                              <i class="fa-solid fa-calendar-check mr-2"></i>Reservar esta oferta
+                          </a>
+                        <% else %>
+                          <a href="#reservar" class="block text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
+                              <i class="fa-solid fa-calendar-check mr-2"></i>Reservar esta oferta
+                          </a>
+                        <% end %>
+                    </div>
+                </div>
+                <% end %>
+            </div>
+        </div>
+    </section>
+    <% end %>
+
 <!-- Services Section (Experiencias Extraordinarias) -->
     <section id="servicios" class="py-20 bg-[var(--color-bg-secondary)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
-                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Nuestros Servicios</p>
-                <h2 class="text-4xl md:text-5xl font-serif font-bold">Experiencias Extraordinarias</h2>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= page_content('services_title', 'Nuestros Servicios') %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= page_content('services_subtitle', 'Experiencias Extraordinarias') %></h2>
             </div>
             
             <!-- FIXED: Constrained max-width to 4xl, centered with mx-auto, and reduced to max 2 columns -->
@@ -359,8 +444,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 fade-in">
                 <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Querétaro</p>
-                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= PageContent.find_by(key: 'home_activities_title')&.content || 'Qué hacer en Querétaro' %></h2>
-                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= PageContent.find_by(key: 'home_activities_subtitle')&.content || 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.' %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= page_content('home_activities_title', 'Qué hacer en Querétaro') %></h2>
+                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= page_content('home_activities_subtitle', 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.') %></p>
             </div>
 
             <% activities_by_category = @local_activities.group_by(&:category) %>
@@ -425,37 +510,37 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="fade-in">
                     <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Ubicación</p>
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= PageContent.find_by(key: 'home_location_title')&.content || 'En el Corazón de Querétaro' %></h2>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= page_content('home_location_title', 'En el Corazón de Querétaro') %></h2>
                     <p class="text-white/80 mb-6">
-                        <%= PageContent.find_by(key: 'home_location_desc')&.content || 'Nuestra ubicación privilegiada en el centro histórico de Querétaro te permite disfrutar de la historia, la cultura y el colonialismo en un solo lugar.' %>
+                        <%= page_content('home_location_desc', 'Nuestra ubicación privilegiada en el centro histórico de Querétaro te permite disfrutar de la historia, la cultura y el colonialismo en un solo lugar.') %>
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-start">
                             <i class="fas fa-map-marker-alt text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Dirección</h4>
-                                <p class="text-[var(--color-text-muted)]"><%= PageContent.find_by(key: 'address_line')&.content || 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México' %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= page_content('address_line', 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México') %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <i class="fas fa-phone text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Teléfono</h4>
-                                <p class="text-[var(--color-text-muted)]"><%= PageContent.find_by(key: 'contact_phone')&.content || '+52 442 212 3456' %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= page_content('contact_phone', '+52 442 212 3456') %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <i class="fas fa-envelope text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Email</h4>
-                                <p class="text-[var(--color-text-muted)]"><%= PageContent.find_by(key: 'contact_email')&.content || 'info@hotelmeson.com' %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= page_content('contact_email', 'info@hotelmeson.com') %></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="rounded-2xl overflow-hidden shadow-2xl fade-in">
 <iframe 
-  src="<%= PageContent.find_by(key: 'map_iframe_url')&.content || 'https://maps.google.com/maps?q=Calle+Ignacio+Allende+Norte+82,+Centro+Historico,+Queretaro,+Mexico&t=&z=16&ie=UTF8&iwloc=&output=embed' %>" 
+  src="<%= page_content('map_iframe_url', 'https://maps.google.com/maps?q=Calle+Ignacio+Allende+Norte+82,+Centro+Historico,+Queretaro,+Mexico&t=&z=16&ie=UTF8&iwloc=&output=embed') %>" 
   width="100%" 
   height="400" 
   style="border:0;" 
@@ -471,15 +556,17 @@
     <section id="reservar" class="py-20 relative overflow-hidden">
         <div class="absolute inset-0 bg-[var(--color-accent)]/10"></div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center fade-in">
-            <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= PageContent.find_by(key: 'cta_title')&.content || '¡Listo para una experiencia inolvidable?' %></h2>
+            <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= page_content('cta_title', '¡Listo para una experiencia inolvidable?') %></h2>
             <p class="text-xl text-white/80 mb-8">
-                <%= PageContent.find_by(key: 'cta_subtitle')&.content || 'Reserva ahora y disfruta de las mejores tarifas de temporada' %>
+                <%= page_content('cta_subtitle', 'Reserva ahora y disfruta de las mejores tarifas de temporada') %>
             </p>
+            <% cta_phone = page_content('contact_phone', '+52 442 212 3456') %>
+            <% cta_email = page_content('contact_email', 'info@hotelmeson.com') %>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="tel:+524422123456" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
+                <a href="tel:<%= cta_phone.gsub(/[^\d+]/, '') %>" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
                     <i class="fas fa-phone-alt mr-2"></i> Llamar Ahora
                 </a>
-                <a href="mailto:info@hotelmeson.com" class="bg-[var(--color-bg-tertiary)] hover:brightness-125 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center">
+                <a href="mailto:<%= cta_email %>" class="bg-[var(--color-bg-tertiary)] hover:brightness-125 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center">
                     <i class="fas fa-envelope mr-2"></i> Enviar Email
                 </a>
             </div>
@@ -505,7 +592,7 @@
                         <span class="font-serif text-xl font-bold">Hotel Mesón <span class="gradient-text">del Bosque</span></span>
                     </a>
                     <p class="text-[var(--color-text-muted)]">
-                        <%= PageContent.find_by(key: 'home_hero_subtitle')&.content || 'Su mejor descanso en Querétaro, Qro.' %>
+                        <%= page_content('home_hero_subtitle', 'Su mejor descanso en Querétaro, Qro.') %>
                     </p>
                 </div>
                 
@@ -518,26 +605,27 @@
                         <li><a href="#contacto" class="hover:text-[var(--color-accent)] transition">Contacto</a></li>
                     </ul>
                 </div>
+                <% social_links = {
+                     "facebook-f" => page_content('social_facebook'),
+                     "instagram" => page_content('social_instagram'),
+                     "twitter" => page_content('social_twitter'),
+                     "tiktok" => page_content('social_tiktok')
+                   }.select { |_, url| url.present? } %>
+                <% if social_links.present? %>
                 <div>
                     <h4 class="font-semibold mb-4">Síguenos</h4>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
+                        <% social_links.each do |icon, url| %>
+                          <a href="<%= url %>" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
+                              <i class="fab fa-<%= icon %>"></i>
+                          </a>
+                        <% end %>
                     </div>
                 </div>
+                <% end %>
             </div>
             <div class="border-t border-white/10 mt-8 pt-8 text-center text-[var(--color-text-muted)]">
-                <p>&copy; 2024 Hotel Mesón del Bosque. Todos los derechos reservados.</p>
+                <p>&copy; <%= Date.current.year %> <%= strip_tags(page_content('home_hero_title', 'Hotel Mesón del Bosque')) %>. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>

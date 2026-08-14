@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_14_045131) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_14_062835) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -86,11 +86,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_045131) do
   end
 
   create_table "offers", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.string "badge"
+    t.string "booking_url"
     t.datetime "created_at", null: false
     t.text "description"
+    t.integer "discount_percent"
+    t.string "kind", default: "package", null: false
+    t.integer "position"
     t.decimal "price"
+    t.integer "room_id"
+    t.boolean "show_on_ticker", default: false, null: false
+    t.text "ticker_description"
     t.string "title"
     t.datetime "updated_at", null: false
+    t.date "valid_from"
+    t.date "valid_until"
+    t.index ["kind"], name: "index_offers_on_kind"
+    t.index ["room_id"], name: "index_offers_on_room_id"
+    t.index ["show_on_ticker"], name: "index_offers_on_show_on_ticker"
   end
 
   create_table "page_contents", force: :cascade do |t|
@@ -103,7 +117,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_045131) do
 
   create_table "rooms", force: :cascade do |t|
     t.string "badge"
+    t.string "booking_platform", default: "custom", null: false
     t.string "booking_url"
+    t.string "button_name"
     t.datetime "created_at", null: false
     t.text "description"
     t.text "features"
@@ -146,4 +162,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_045131) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "offers", "rooms"
 end
