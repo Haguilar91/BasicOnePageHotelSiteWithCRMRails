@@ -1,13 +1,13 @@
 <% content_for :title, @announcement.title %>
 
 <div class="min-h-screen bg-slate-50">
-  <div class="bg-slate-900 pt-28 pb-16 px-6">
+  <div class="bg-[var(--color-bg-primary)] pt-28 pb-16 px-6">
     <div class="max-w-2xl mx-auto">
-      <%= link_to announcements_path, class: "inline-flex items-center gap-2 text-slate-300 hover:text-amber-500 text-sm font-medium mb-4 transition-colors" do %>
+      <%= link_to announcements_path, class: "inline-flex items-center gap-2 text-white/80 hover:text-[var(--color-accent)] text-sm font-medium mb-4 transition-colors" do %>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
         Todos los anuncios
       <% end %>
-      <p class="text-amber-500 font-semibold tracking-wide uppercase text-sm mb-2">Anuncio</p>
+      <p class="text-[var(--color-accent)] font-semibold tracking-wide uppercase text-sm mb-2">Anuncio</p>
       <h1 class="text-3xl md:text-4xl font-serif font-bold text-white"><%= @announcement.title %></h1>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <%= render @announcement %>
 
     <div class="mt-8 flex flex-wrap items-center gap-4">
-      <%= link_to "Editar", edit_announcement_path(@announcement), class: "inline-flex items-center rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition-colors" %>
+      <%= link_to "Editar", edit_announcement_path(@announcement), class: "inline-flex items-center rounded-lg bg-[var(--color-bg-primary)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-bg-secondary)] transition-colors" %>
       <%= button_to "Eliminar", @announcement, method: :delete, class: "inline-flex items-center rounded-lg border border-red-200 bg-white px-5 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors", form: { data: { turbo_confirm: "¿Seguro que deseas eliminar este anuncio?" } } %>
     </div>
   </div>

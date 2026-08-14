@@ -264,4 +264,33 @@ PageContent.find_or_create_by!(key: 'home_welcome_title') do |p|
   p.content = "Bienvenido a su refugio de lujo"
 end
 
+# Theme presets — manageable from Avo under "Themes". Only one is ever active;
+# the site reads the active one and falls back to "Dorado Colonial" if none is.
+[
+  {
+    name: "Dorado Colonial", position: 1, active: true,
+    bg_primary: "#0f172a", bg_secondary: "#1e293b", bg_tertiary: "#334155",
+    accent: "#d4af37", accent_soft: "#f4e4bc", text_muted: "#9ca3af"
+  },
+  {
+    name: "Cantera Rosa", position: 2, active: false,
+    bg_primary: "#221420", bg_secondary: "#34202f", bg_tertiary: "#4a2c42",
+    accent: "#dc93ac", accent_soft: "#f3d3de", text_muted: "#c3aebe"
+  },
+  {
+    name: "Talavera Azul", position: 3, active: false,
+    bg_primary: "#0c1f33", bg_secondary: "#15304c", bg_tertiary: "#1f4468",
+    accent: "#5b9bd5", accent_soft: "#bfe0f5", text_muted: "#9fb8cc"
+  },
+  {
+    name: "Cantera Terracota", position: 4, active: false,
+    bg_primary: "#231810", bg_secondary: "#33231a", bg_tertiary: "#4a3324",
+    accent: "#c9834f", accent_soft: "#f0cfa8", text_muted: "#c7b29e"
+  }
+].each do |attrs|
+  Theme.find_or_create_by!(name: attrs[:name]) do |theme|
+    theme.assign_attributes(attrs)
+  end
+end
+
 puts "Database seeded successfully!"

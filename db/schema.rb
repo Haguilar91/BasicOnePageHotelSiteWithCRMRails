@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_10_054327) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_14_045131) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -111,6 +111,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_10_054327) do
     t.integer "position"
     t.string "price"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "themes", force: :cascade do |t|
+    t.string "accent", null: false
+    t.string "accent_soft", null: false
+    t.boolean "active", default: false, null: false
+    t.string "bg_primary", null: false
+    t.string "bg_secondary", null: false
+    t.string "bg_tertiary", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.integer "position"
+    t.string "slug", null: false
+    t.string "text_muted", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_themes_on_active"
+    t.index ["slug"], name: "index_themes_on_slug", unique: true
   end
 
   create_table "users", force: :cascade do |t|

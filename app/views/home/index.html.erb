@@ -20,7 +20,7 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: #0f172a;
+            background: var(--color-bg-primary);
         }
         
         h1, h2, h3, .font-serif {
@@ -50,15 +50,15 @@
         }
 
         .category-card {
-            background: rgba(15, 23, 42, 0.95);
+            background: color-mix(in srgb, var(--color-bg-primary) 95%, transparent);
             border: 1px solid rgba(148, 163, 184, 0.15);
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+            box-shadow: 0 20px 40px color-mix(in srgb, var(--color-bg-primary) 25%, transparent);
             transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
         .category-card:hover {
             transform: translateY(-8px);
-            border-color: rgba(212, 175, 55, 0.35);
+            border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
         }
 
         .category-card h3 {
@@ -82,7 +82,7 @@
         }
         
         .btn-gold {
-            background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 50%, #d4af37 100%);
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-soft) 50%, var(--color-accent) 100%);
             background-size: 200% 200%;
             animation: shine 3s ease infinite;
         }
@@ -124,7 +124,7 @@
             height: 2px;
             bottom: -4px;
             left: 0;
-            background-color: #d4af37;
+            background-color: var(--color-accent);
             transition: width 0.3s ease;
         }
         
@@ -137,25 +137,25 @@
         }
 
         .mobile-nav-link.active {
-            color: #d4af37;
+            color: var(--color-accent);
         }
         
         .gradient-text {
-            background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 50%, #d4af37 100%);
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-soft) 50%, var(--color-accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
         .testimonial-card {
-            background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(145deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
         }
     </style>
 <% end %>
 
-<div class="bg-slate-900 text-white pb-20 md:pb-0">    
+<div class="bg-[var(--color-bg-primary)] text-white pb-20 md:pb-0">    
     <!-- Navigation -->
-<nav class="fixed top-10 w-full z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+<nav class="fixed top-10 w-full z-50 bg-[var(--color-bg-primary)]/90 backdrop-blur-md border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             
@@ -164,9 +164,9 @@
     <!-- Logo image check... -->
     <% brand_settings = PageContent.find_by(key: 'global') %>
     <% if brand_settings&.logo&.attached? %>
-        <img src="<%= url_for(brand_settings.logo) %>" class="h-12 w-12 mr-3 rounded-full object-contain border border-amber-500/30 shadow-md">
+        <img src="<%= url_for(brand_settings.logo) %>" class="h-12 w-12 mr-3 rounded-full object-contain border border-[var(--color-accent)]/30 shadow-md">
     <% else %>
-        <i class="fas fa-landmark text-amber-500 text-2xl mr-3"></i>
+        <i class="fas fa-landmark text-[var(--color-accent)] text-2xl mr-3"></i>
     <% end %>
     
     <!-- Dynamic Brand Name from Avo -->
@@ -175,13 +175,13 @@
     </span>
 </a>
             <div class="hidden md:flex space-x-8">
-                <a href="#inicio" class="nav-link text-gray-300 hover:text-white transition">Inicio</a>
-                <a href="#habitaciones" class="nav-link text-gray-300 hover:text-white transition">Habitaciones</a>
-                <a href="#servicios" class="nav-link text-gray-300 hover:text-white transition">Servicios</a>
-                <a href="#que-hacer" class="nav-link text-gray-300 hover:text-white transition">Qué hacer</a>
-                <a href="#contacto" class="nav-link text-gray-300 hover:text-white transition">Contacto</a>
+                <a href="#inicio" class="nav-link text-white/80 hover:text-white transition">Inicio</a>
+                <a href="#habitaciones" class="nav-link text-white/80 hover:text-white transition">Habitaciones</a>
+                <a href="#servicios" class="nav-link text-white/80 hover:text-white transition">Servicios</a>
+                <a href="#que-hacer" class="nav-link text-white/80 hover:text-white transition">Qué hacer</a>
+                <a href="#contacto" class="nav-link text-white/80 hover:text-white transition">Contacto</a>
             </div>
-            <a href="#reservar" class="btn-gold text-slate-900 px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-amber-500/50 transition">
+            <a href="#reservar" class="btn-gold text-slate-900 px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-accent)]/50 transition">
                 Reservar Ahora
             </a>
         </div>
@@ -189,29 +189,29 @@
 </nav>
 
 <!-- Mobile Bottom Nav -->
-<nav class="mobile-bottom-nav md:hidden fixed bottom-0 inset-x-0 z-50 bg-slate-900/95 backdrop-blur-md border-t border-slate-800">
+<nav class="mobile-bottom-nav md:hidden fixed bottom-0 inset-x-0 z-50 bg-[var(--color-bg-primary)]/95 backdrop-blur-md border-t border-white/10">
     <div class="grid grid-cols-6">
-        <a href="#inicio" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="inicio">
+        <a href="#inicio" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="inicio">
             <i class="fas fa-home text-lg mb-1"></i>
             <span class="text-[10px]">Inicio</span>
         </a>
-        <a href="#habitaciones" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="habitaciones">
+        <a href="#habitaciones" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="habitaciones">
             <i class="fas fa-bed text-lg mb-1"></i>
             <span class="text-[10px]">Habit.</span>
         </a>
-        <a href="#servicios" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="servicios">
+        <a href="#servicios" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="servicios">
             <i class="fas fa-concierge-bell text-lg mb-1"></i>
             <span class="text-[10px]">Servicios</span>
         </a>
-        <a href="#que-hacer" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="que-hacer">
+        <a href="#que-hacer" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="que-hacer">
         <i class="fas fa-map-marked-alt text-lg mb-1"></i>
         <span class="text-[10px]">Lugares</span>
        </a>
-        <a href="#contacto" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-gray-400 transition" data-mobile-nav="contacto">
+        <a href="#contacto" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="contacto">
             <i class="fas fa-map-marker-alt text-lg mb-1"></i>
             <span class="text-[10px]">Contacto</span>
         </a>
-        <a href="#reservar" class="mobile-nav-link flex flex-col items-center justify-center py-2  text-gray-400 transition" data-mobile-nav="reservar">
+        <a href="#reservar" class="mobile-nav-link flex flex-col items-center justify-center py-2  text-[var(--color-text-muted)] transition" data-mobile-nav="reservar">
             <i class="fas fa-calendar-check text-lg mb-1"></i>
             <span class="text-[10px] font-semibold">Reservar</span>
         </a>
@@ -224,25 +224,25 @@
            class="hero min-h-screen flex items-center justify-center"
            style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<%= hero_bg_url %>'); background-size: cover; background-position: center; background-attachment: fixed;">
       <div class="text-center px-4">
-          <p class="text-amber-500 tracking-widest mb-4 uppercase text-sm"><%= PageContent.find_by(key: 'home_welcome_title')&.content || 'Bienvenido al Hotel Mesón' %></p>
+          <p class="text-[var(--color-accent)] tracking-widest mb-4 uppercase text-sm"><%= PageContent.find_by(key: 'home_welcome_title')&.content || 'Bienvenido al Hotel Mesón' %></p>
           
           <!-- Large Centered Hero Emblem -->
           <% brand_settings = PageContent.find_by(key: 'global') %>
           <% if brand_settings&.logo&.attached? %>
               <img src="<%= url_for(brand_settings.logo) %>" 
                    alt="Hotel Mesón del Bosque" 
-                   class="w-32 h-32 mx-auto mb-6 rounded-full object-contain border-2 border-amber-500/50 shadow-2xl">
+                   class="w-32 h-32 mx-auto mb-6 rounded-full object-contain border-2 border-[var(--color-accent)]/50 shadow-2xl">
           <% end %>
 
           <h1 class="text-5xl md:text-7xl font-bold mb-6">
               <%= raw(PageContent.find_by(key: 'home_hero_title')&.content || 'Hotel Mesón') %>
           </h1>
-          <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p class="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
               <%= PageContent.find_by(key: 'home_hero_subtitle')&.content || 'Una experiencia de lujo en el corazón histórico de Querétaro' %>
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#habitaciones" class="btn-gold text-slate-900 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-amber-500/50 transition inline-flex items-center justify-center">
+              <a href="#habitaciones" class="btn-gold text-slate-900 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
                   <i class="fas fa-bed mr-2"></i> Ver Habitaciones
               </a>
               <a href="#reservar" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-slate-900 transition inline-flex items-center justify-center">
@@ -254,17 +254,17 @@
 
 
 <!-- Features -->
-<section class="py-20 bg-slate-800">
+<section class="py-20 bg-[var(--color-bg-secondary)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- FIXED: Changed md:grid-cols-3 to md:grid-cols-2 lg:grid-cols-4 -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <% @features.each do |feature| %>
               <div class="text-center p-6">
-                  <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-700 flex items-center justify-center transition hover:scale-110 duration-300">
-                      <i class="fas fa-<%= feature.icon.presence || 'star' %> text-amber-500 text-3xl"></i>
+                  <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-[var(--color-bg-tertiary)] flex items-center justify-center transition hover:scale-110 duration-300">
+                      <i class="fas fa-<%= feature.icon.presence || 'star' %> text-[var(--color-accent)] text-3xl"></i>
                   </div>
                   <h3 class="text-xl font-serif font-semibold mb-2"><%= feature.title %></h3>
-                  <p class="text-gray-400"><%= feature.description %></p>
+                  <p class="text-[var(--color-text-muted)]"><%= feature.description %></p>
               </div>
             <% end %>
         </div>
@@ -274,14 +274,14 @@
     <section id="habitaciones" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
-                <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm"><%= PageContent.find_by(key: 'home_features_title')&.content || 'Nuestras Habitaciones' %></p>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= PageContent.find_by(key: 'home_features_title')&.content || 'Nuestras Habitaciones' %></p>
                 <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= PageContent.find_by(key: 'home_features_subtitle')&.content || 'Habitaciones Premium' %></h2>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Diseñadas para brindarte la máxima comodidad y tranquilidad</p>
+                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto">Diseñadas para brindarte la máxima comodidad y tranquilidad</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <% (@rooms.presence || Room.order(:position, :id)).each do |room| %>
-                <div class="room-card bg-slate-800 rounded-2xl overflow-hidden shadow-xl <%= 'border-2 border-amber-500/30' if room.badge.present? %> fade-in">
+                <div class="room-card bg-[var(--color-bg-secondary)] rounded-2xl overflow-hidden shadow-xl <%= 'border-2 border-[var(--color-accent)]/30' if room.badge.present? %> fade-in">
                     <div class="relative h-64 overflow-hidden">
                         <% if room.photo.attached? %>
                           <img src="<%= url_for(room.photo) %>" 
@@ -293,32 +293,32 @@
                                class="w-full h-full object-cover">
                         <% end %>
                         <% if room.price.present? %>
-                          <div class="absolute top-4 right-4 bg-amber-500 text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
+                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
                               <%= room.price %>
                           </div>
                         <% end %>
                         <% if room.badge.present? %>
-                          <div class="absolute top-4 left-4 bg-amber-500 text-slate-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
+                          <div class="absolute top-4 left-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
                               <%= room.badge %>
                           </div>
                         <% end %>
                     </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-serif font-semibold mb-2"><%= room.name %></h3>
-                        <p class="text-gray-400 mb-4"><%= room.description %></p>
+                        <p class="text-[var(--color-text-muted)] mb-4"><%= room.description %></p>
                         <% if room.features.present? %>
-                          <ul class="text-sm text-gray-300 space-y-2 mb-6">
+                          <ul class="text-sm text-white/80 space-y-2 mb-6">
                             <% room.features.split("\n").map(&:strip).reject(&:empty?).each do |feature| %>
-                              <li><i class="fas fa-check text-amber-500 mr-2"></i> <%= feature %></li>
+                              <li><i class="fas fa-check text-[var(--color-accent)] mr-2"></i> <%= feature %></li>
                             <% end %>
                           </ul>
                         <% end %>
                         <% if room.booking_url.present? %>
-                          <a href="<%= room.booking_url %>" target="_blank" rel="noopener" class="block text-center <%= room.badge.present? ? 'bg-amber-500 text-slate-900 hover:bg-amber-600 font-semibold' : 'bg-slate-700 hover:bg-slate-600' %> py-3 rounded-lg transition">
+                          <a href="<%= room.booking_url %>" target="_blank" rel="noopener" class="block text-center <%= room.badge.present? ? 'bg-[var(--color-accent)] text-slate-900 hover:brightness-90 font-semibold' : 'bg-[var(--color-bg-tertiary)] hover:brightness-125' %> py-3 rounded-lg transition">
                               Reservar en <%= room.booking_url.include?('booking') ? 'Booking.com' : (room.booking_url.include?('airbnb') ? 'Airbnb' : 'Línea') %>
                           </a>
                         <% else %>
-                          <a href="#reservar" class="block text-center bg-slate-700 hover:bg-slate-600 py-3 rounded-lg transition">
+                          <a href="#reservar" class="block text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
                               Reservar
                           </a>
                         <% end %>
@@ -330,10 +330,10 @@
     </section>
 
 <!-- Services Section (Experiencias Extraordinarias) -->
-    <section id="servicios" class="py-20 bg-slate-800">
+    <section id="servicios" class="py-20 bg-[var(--color-bg-secondary)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
-                <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm">Nuestros Servicios</p>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Nuestros Servicios</p>
                 <h2 class="text-4xl md:text-5xl font-serif font-bold">Experiencias Extraordinarias</h2>
             </div>
             
@@ -344,10 +344,10 @@
                     <% if exp.icon_image.attached? %>
                       <img src="<%= url_for(exp.icon_image) %>" alt="<%= exp.title %>" class="w-16 h-16 mx-auto mb-6 object-contain">
                     <% else %>
-                      <i class="fas fa-<%= exp.icon.presence || 'star' %> text-5xl text-amber-500 mb-6"></i>
+                      <i class="fas fa-<%= exp.icon.presence || 'star' %> text-5xl text-[var(--color-accent)] mb-6"></i>
                     <% end %>
                     <h3 class="text-xl font-semibold mb-3"><%= exp.title %></h3>
-                    <p class="text-gray-400"><%= exp.description %></p>
+                    <p class="text-[var(--color-text-muted)]"><%= exp.description %></p>
                 </div>
                 <% end %>
             </div>
@@ -355,23 +355,23 @@
     </section>
 
     <!-- Qué hacer Section -->
-    <section id="que-hacer" class="py-20 bg-slate-900">
+    <section id="que-hacer" class="py-20 bg-[var(--color-bg-primary)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 fade-in">
-                <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm">Querétaro</p>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Querétaro</p>
                 <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= PageContent.find_by(key: 'home_activities_title')&.content || 'Qué hacer en Querétaro' %></h2>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto"><%= PageContent.find_by(key: 'home_activities_subtitle')&.content || 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.' %></p>
+                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= PageContent.find_by(key: 'home_activities_subtitle')&.content || 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.' %></p>
             </div>
 
             <% activities_by_category = @local_activities.group_by(&:category) %>
             <div class="mb-10 fade-in">
                 <div class="flex justify-center">
-                    <div class="inline-flex rounded-full border border-slate-700 bg-slate-800 overflow-hidden">
+                    <div class="inline-flex rounded-full border border-white/10 bg-[var(--color-bg-secondary)] overflow-hidden">
                         <% LocalActivity::CATEGORIES.each_with_index do |category, index| %>
                             <button
                                 type="button"
                                 data-tab-button="<%= category.parameterize %>"
-                                class="px-6 py-3 text-sm font-semibold transition <%= index.zero? ? 'bg-amber-500 text-slate-900' : 'text-gray-300 hover:bg-slate-700 hover:text-white' %>">
+                                class="px-6 py-3 text-sm font-semibold transition <%= index.zero? ? 'bg-[var(--color-accent)] text-slate-900' : 'text-white/80 hover:bg-[var(--color-bg-tertiary)] hover:text-white' %>">
                                 <%= category %>
                             </button>
                         <% end %>
@@ -385,7 +385,7 @@
                     <% if activities.any? %>
                         <div class="grid gap-8 lg:grid-cols-2">
                             <% activities.each do |activity| %>
-                                <div class="category-card rounded-3xl overflow-hidden bg-slate-800 shadow-xl fade-in">
+                                <div class="category-card rounded-3xl overflow-hidden bg-[var(--color-bg-secondary)] shadow-xl fade-in">
                                     <div class="relative h-72 overflow-hidden">
                                         <% if activity.photo.attached? %>
                                             <img src="<%= url_for(activity.photo) %>" alt="<%= activity.title %>" class="w-full h-full object-cover">
@@ -397,12 +397,12 @@
                                         <div class="flex items-center justify-between mb-4">
                                             <div>
                                                 <h3 class="text-2xl font-serif font-semibold text-white"><%= activity.title %></h3>
-                                                <p class="text-gray-400 text-sm mt-2"><%= category %></p>
+                                                <p class="text-[var(--color-text-muted)] text-sm mt-2"><%= category %></p>
                                             </div>
-                                            <i class="fas fa-<%= category == 'Restaurantes' ? 'utensils' : (category == 'Puntos de Interés' ? 'map-marker-alt' : 'route') %> text-amber-500 text-3xl"></i>
+                                            <i class="fas fa-<%= category == 'Restaurantes' ? 'utensils' : (category == 'Puntos de Interés' ? 'map-marker-alt' : 'route') %> text-[var(--color-accent)] text-3xl"></i>
                                         </div>
-                                        <p class="text-gray-300 mb-6"><%= activity.description %></p>
-                                        <a href="<%= activity.google_maps_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-amber-400">
+                                        <p class="text-white/80 mb-6"><%= activity.description %></p>
+                                        <a href="<%= activity.google_maps_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-slate-900 transition hover:brightness-110">
                                             <i class="fas fa-map-marked-alt mr-2"></i> Ver en Google Maps
                                         </a>
                                     </div>
@@ -410,7 +410,7 @@
                             <% end %>
                         </div>
                     <% else %>
-                        <div class="rounded-3xl border border-slate-700 bg-slate-800 p-10 text-center text-gray-400 fade-in">
+                        <div class="rounded-3xl border border-white/10 bg-[var(--color-bg-secondary)] p-10 text-center text-[var(--color-text-muted)] fade-in">
                             No hay elementos disponibles en esta categoría todavía. Añade actividades en Avo.
                         </div>
                     <% end %>
@@ -424,31 +424,31 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="fade-in">
-                    <p class="text-amber-500 tracking-widest mb-2 uppercase text-sm">Ubicación</p>
+                    <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Ubicación</p>
                     <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= PageContent.find_by(key: 'home_location_title')&.content || 'En el Corazón de Querétaro' %></h2>
-                    <p class="text-gray-300 mb-6">
+                    <p class="text-white/80 mb-6">
                         <%= PageContent.find_by(key: 'home_location_desc')&.content || 'Nuestra ubicación privilegiada en el centro histórico de Querétaro te permite disfrutar de la historia, la cultura y el colonialismo en un solo lugar.' %>
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-start">
-                            <i class="fas fa-map-marker-alt text-amber-500 mt-1 mr-4"></i>
+                            <i class="fas fa-map-marker-alt text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Dirección</h4>
-                                <p class="text-gray-400"><%= PageContent.find_by(key: 'address_line')&.content || 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México' %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= PageContent.find_by(key: 'address_line')&.content || 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México' %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas fa-phone text-amber-500 mt-1 mr-4"></i>
+                            <i class="fas fa-phone text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Teléfono</h4>
-                                <p class="text-gray-400"><%= PageContent.find_by(key: 'contact_phone')&.content || '+52 442 212 3456' %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= PageContent.find_by(key: 'contact_phone')&.content || '+52 442 212 3456' %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <i class="fas fa-envelope text-amber-500 mt-1 mr-4"></i>
+                            <i class="fas fa-envelope text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold">Email</h4>
-                                <p class="text-gray-400"><%= PageContent.find_by(key: 'contact_email')&.content || 'info@hotelmeson.com' %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= PageContent.find_by(key: 'contact_email')&.content || 'info@hotelmeson.com' %></p>
                             </div>
                         </div>
                     </div>
@@ -469,17 +469,17 @@
 
     <!-- CTA Section -->
     <section id="reservar" class="py-20 relative overflow-hidden">
-        <div class="absolute inset-0 bg-amber-500/10"></div>
+        <div class="absolute inset-0 bg-[var(--color-accent)]/10"></div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center fade-in">
             <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= PageContent.find_by(key: 'cta_title')&.content || '¡Listo para una experiencia inolvidable?' %></h2>
-            <p class="text-xl text-gray-300 mb-8">
+            <p class="text-xl text-white/80 mb-8">
                 <%= PageContent.find_by(key: 'cta_subtitle')&.content || 'Reserva ahora y disfruta de las mejores tarifas de temporada' %>
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="tel:+524422123456" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-amber-500/50 transition inline-flex items-center justify-center">
+                <a href="tel:+524422123456" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
                     <i class="fas fa-phone-alt mr-2"></i> Llamar Ahora
                 </a>
-                <a href="mailto:info@hotelmeson.com" class="bg-slate-700 hover:bg-slate-600 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center">
+                <a href="mailto:info@hotelmeson.com" class="bg-[var(--color-bg-tertiary)] hover:brightness-125 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center">
                     <i class="fas fa-envelope mr-2"></i> Enviar Email
                 </a>
             </div>
@@ -487,7 +487,7 @@
     </section>
 
 <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-slate-800 py-12">
+    <footer class="bg-[var(--color-bg-primary)] border-t border-white/10 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 
@@ -498,45 +498,45 @@
                         <% if brand_settings&.logo&.attached? %>
                             <img src="<%= url_for(brand_settings.logo) %>" 
                                  alt="Hotel Mesón del Bosque" 
-                                 class="h-12 w-12 mr-3 rounded-full object-contain border border-amber-500/30 shadow-md">
+                                 class="h-12 w-12 mr-3 rounded-full object-contain border border-[var(--color-accent)]/30 shadow-md">
                         <% else %>
-                            <i class="fas fa-landmark text-amber-500 text-2xl mr-3"></i>
+                            <i class="fas fa-landmark text-[var(--color-accent)] text-2xl mr-3"></i>
                         <% end %>
                         <span class="font-serif text-xl font-bold">Hotel Mesón <span class="gradient-text">del Bosque</span></span>
                     </a>
-                    <p class="text-gray-400">
+                    <p class="text-[var(--color-text-muted)]">
                         <%= PageContent.find_by(key: 'home_hero_subtitle')&.content || 'Su mejor descanso en Querétaro, Qro.' %>
                     </p>
                 </div>
                 
                 <div>
                     <h4 class="font-semibold mb-4">Enlaces Rápidos</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#inicio" class="hover:text-amber-500 transition">Inicio</a></li>
-                        <li><a href="#habitaciones" class="hover:text-amber-500 transition">Habitaciones</a></li>
-                        <li><a href="#servicios" class="hover:text-amber-500 transition">Servicios</a></li>
-                        <li><a href="#contacto" class="hover:text-amber-500 transition">Contacto</a></li>
+                    <ul class="space-y-2 text-[var(--color-text-muted)]">
+                        <li><a href="#inicio" class="hover:text-[var(--color-accent)] transition">Inicio</a></li>
+                        <li><a href="#habitaciones" class="hover:text-[var(--color-accent)] transition">Habitaciones</a></li>
+                        <li><a href="#servicios" class="hover:text-[var(--color-accent)] transition">Servicios</a></li>
+                        <li><a href="#contacto" class="hover:text-[var(--color-accent)] transition">Contacto</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">Síguenos</h4>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition">
+                        <a href="#" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition">
+                        <a href="#" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition">
+                        <a href="#" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-amber-500 hover:text-slate-900 transition">
+                        <a href="#" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
                             <i class="fab fa-tiktok"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-gray-400">
+            <div class="border-t border-white/10 mt-8 pt-8 text-center text-[var(--color-text-muted)]">
                 <p>&copy; 2024 Hotel Mesón del Bosque. Todos los derechos reservados.</p>
             </div>
         </div>
@@ -581,9 +581,9 @@
         const nav = document.querySelector('nav');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 100) {
-                nav.classList.add('bg-slate-900/95');
+                nav.classList.add('bg-[var(--color-bg-primary)]/95');
             } else {
-                nav.classList.remove('bg-slate-900/95');
+                nav.classList.remove('bg-[var(--color-bg-primary)]/95');
             }
         });
 
@@ -593,16 +593,16 @@
                 const target = button.dataset.tabButton;
 
                 document.querySelectorAll('[data-tab-button]').forEach(btn => {
-                    btn.classList.remove('bg-amber-500', 'text-slate-900');
-                    btn.classList.add('text-gray-300');
+                    btn.classList.remove('bg-[var(--color-accent)]', 'text-slate-900');
+                    btn.classList.add('text-white/80');
                 });
 
                 document.querySelectorAll('[data-tab-panel]').forEach(panel => {
                     panel.classList.add('hidden');
                 });
 
-                button.classList.add('bg-amber-500', 'text-slate-900');
-                button.classList.remove('text-gray-300');
+                button.classList.add('bg-[var(--color-accent)]', 'text-slate-900');
+                button.classList.remove('text-white/80');
 
                 const activePanel = document.querySelector(`[data-tab-panel="${target}"]`);
                 if (activePanel) {
@@ -628,14 +628,14 @@ function updateActiveNav() {
     });
 
     mobileNavLinks.forEach(link => {
-        link.classList.remove('active', 'text-amber-500');
-        link.classList.add('text-gray-400');
+        link.classList.remove('active', 'text-[var(--color-accent)]');
+        link.classList.add('text-[var(--color-text-muted)]');
     });
 
     const activeLink = document.querySelector(`.mobile-nav-link[data-mobile-nav="${currentSection.id}"]`);
     if (activeLink) {
-        activeLink.classList.add('active', 'text-amber-500');
-        activeLink.classList.remove('text-gray-400');
+        activeLink.classList.add('active', 'text-[var(--color-accent)]');
+        activeLink.classList.remove('text-[var(--color-text-muted)]');
     }
 }
 

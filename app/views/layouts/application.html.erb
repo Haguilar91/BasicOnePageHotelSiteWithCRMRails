@@ -15,6 +15,19 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%# Active color theme, managed from Avo > Themes %>
+    <% theme = Theme.current %>
+    <style>
+      :root {
+        --color-bg-primary: <%= theme.bg_primary %>;
+        --color-bg-secondary: <%= theme.bg_secondary %>;
+        --color-bg-tertiary: <%= theme.bg_tertiary %>;
+        --color-accent: <%= theme.accent %>;
+        --color-accent-soft: <%= theme.accent_soft %>;
+        --color-text-muted: <%= theme.text_muted %>;
+      }
+    </style>
+
     <%= yield :head %>
 
     <%# Dynamic Favicon & Apple Touch Icon from Avo Database %>
