@@ -67,3 +67,39 @@ body {
     font-size: 12px;
   }
 }
+
+/* Flash messages. The ribbon is fixed at 40px tall, so anything that needs to
+   be read has to clear it. */
+.flash-messages {
+  padding: 52px 16px 0;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.flash-message {
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: 15px;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+.flash-alert {
+  background-color: #fdecea;
+  border-color: #f5c2c0;
+  color: #8c1c13;
+}
+
+.flash-notice {
+  background-color: #eaf6ec;
+  border-color: #bcdfc4;
+  color: #14532d;
+}
+
+/* Devise pages have no nav of their own, so they need to clear the fixed
+   ribbon themselves. */
+.auth-page {
+  padding-top: 52px;
+  padding-bottom: 40px;
+}

@@ -1,0 +1,12 @@
+<%# Devise reports failed logins through the flash, so this has to render on
+    every page or a rejected sign-in looks identical to a page that did nothing. %>
+<% if flash.any? %>
+  <div class="flash-messages">
+    <% flash.each do |type, message| %>
+      <% next if message.blank? %>
+      <div class="flash-message flash-<%= type == "notice" ? "notice" : "alert" %>" role="alert">
+        <%= message %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
