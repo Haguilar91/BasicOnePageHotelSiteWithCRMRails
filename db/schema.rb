@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_14_062835) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_16_203604) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -42,28 +42,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_062835) do
   create_table "announcements", force: :cascade do |t|
     t.boolean "active"
     t.datetime "created_at", null: false
-    t.text "description"
+    t.text "description_legacy"
     t.datetime "end_date"
     t.date "start_date"
-    t.text "title"
+    t.text "title_legacy"
     t.datetime "updated_at", null: false
   end
 
   create_table "experiences", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.text "description"
+    t.text "description_legacy"
     t.string "icon"
     t.integer "position"
-    t.string "title"
+    t.string "title_legacy"
     t.datetime "updated_at", null: false
   end
 
   create_table "features", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.text "description"
+    t.text "description_legacy"
     t.string "icon"
     t.integer "position"
-    t.string "title"
+    t.string "title_legacy"
     t.datetime "updated_at", null: false
   end
 
@@ -76,29 +76,54 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_062835) do
   create_table "local_activities", force: :cascade do |t|
     t.string "category", null: false
     t.datetime "created_at", null: false
-    t.text "description", null: false
+    t.text "description_legacy", null: false
     t.string "google_maps_url", null: false
     t.integer "position", default: 0, null: false
-    t.string "title", null: false
+    t.string "title_legacy", null: false
     t.datetime "updated_at", null: false
     t.index ["category"], name: "index_local_activities_on_category"
     t.index ["position"], name: "index_local_activities_on_position"
   end
 
+  create_table "mobility_string_translations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "key", null: false
+    t.string "locale", null: false
+    t.integer "translatable_id"
+    t.string "translatable_type"
+    t.datetime "updated_at", null: false
+    t.string "value"
+    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translations_on_translatable_attribute"
+    t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_string_translations_on_keys", unique: true
+    t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translations_on_query_keys"
+  end
+
+  create_table "mobility_text_translations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "key", null: false
+    t.string "locale", null: false
+    t.integer "translatable_id"
+    t.string "translatable_type"
+    t.datetime "updated_at", null: false
+    t.text "value"
+    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_text_translations_on_translatable_attribute"
+    t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
+  end
+
   create_table "offers", force: :cascade do |t|
     t.boolean "active", default: true, null: false
-    t.string "badge"
+    t.string "badge_legacy"
     t.string "booking_url"
     t.datetime "created_at", null: false
-    t.text "description"
+    t.text "description_legacy"
     t.integer "discount_percent"
     t.string "kind", default: "package", null: false
     t.integer "position"
     t.decimal "price"
     t.integer "room_id"
     t.boolean "show_on_ticker", default: false, null: false
-    t.text "ticker_description"
-    t.string "title"
+    t.text "ticker_description_legacy"
+    t.string "title_legacy"
     t.datetime "updated_at", null: false
     t.date "valid_from"
     t.date "valid_until"
@@ -108,7 +133,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_062835) do
   end
 
   create_table "page_contents", force: :cascade do |t|
-    t.text "content"
+    t.text "content_legacy"
     t.datetime "created_at", null: false
     t.string "key"
     t.string "title"
@@ -116,16 +141,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_14_062835) do
   end
 
   create_table "rooms", force: :cascade do |t|
-    t.string "badge"
+    t.string "badge_legacy"
     t.string "booking_platform", default: "custom", null: false
     t.string "booking_url"
-    t.string "button_name"
+    t.string "button_name_legacy"
     t.datetime "created_at", null: false
-    t.text "description"
-    t.text "features"
-    t.string "name"
+    t.text "description_legacy"
+    t.text "features_legacy"
+    t.string "name_legacy"
     t.integer "position"
-    t.string "price"
+    t.string "price_legacy"
     t.datetime "updated_at", null: false
   end
 
