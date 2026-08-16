@@ -1,31 +1,93 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  nav:
+    home: "Home"
+    rooms: "Rooms"
+    rooms_short: "Rooms"
+    offers: "Offers"
+    services: "Services"
+    activities: "What to do"
+    activities_short: "Places"
+    contact: "Contact"
+    book_now: "Book Now"
+    book: "Book"
+
+  hero:
+    view_rooms: "View Rooms"
+
+  gallery:
+    previous_photo: "Previous photo"
+    next_photo: "Next photo"
+    close_gallery: "Close gallery"
+
+  offers:
+    eyebrow: "Promotions"
+    heading: "Special Offers"
+    book_this_offer: "Book this offer"
+
+  activities:
+    eyebrow: "Querétaro"
+    google_maps_button: "View on Google Maps"
+    empty_state: "No items available in this category yet. Add activities in Avo."
+
+  location:
+    eyebrow: "Location"
+    address_label: "Address"
+    phone_label: "Phone"
+    email_label: "Email"
+
+  cta:
+    call_now: "Call Now"
+    send_email: "Send Email"
+
+  footer:
+    quick_links: "Quick Links"
+    follow_us: "Follow Us"
+    rights_reserved: "All rights reserved."
+
+  language_switcher:
+    es: "ES"
+    en: "EN"
+
+  models:
+    room:
+      booking_platforms:
+        custom:
+          label: "Custom"
+          default_button_name: "Book Now"
+        airbnb:
+          label: "Airbnb"
+          default_button_name: "Book on Airbnb"
+        whatsapp:
+          label: "WhatsApp"
+          default_button_name: "Book via WhatsApp"
+        booking:
+          label: "Booking.com"
+          default_button_name: "Book on Booking.com"
+    offer:
+      kinds:
+        room: "Room Offer"
+        package: "Package"
+      discount_badge: "%{percent}% OFF"
+      discount_ticker: "%{percent}% off"
+      validity:
+        range: "From %{from} to %{upto}"
+        from_only: "Starting %{from}"
+        until_only: "Valid until %{upto}"
+      errors:
+        valid_until_before_valid_from: "must be on or after the start date"
+    local_activity:
+      categories:
+        restaurants: "Restaurants"
+        points_of_interest: "Points of Interest"
+        tours: "Tours"
+
+  translations_panel:
+    title: "Translations"
+    not_authorized: "You don't have permission to access this section."
+    save: "Save"
+    translate: "Translate"
+    translate_all: "Translate all pending"
+    spanish_label: "Spanish"
+    english_label: "English"
+    saved: "Translations saved."
+    translate_error: "Couldn't translate. Try again or type the text manually."

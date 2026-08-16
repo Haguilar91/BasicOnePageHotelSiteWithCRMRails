@@ -11,7 +11,11 @@ gem "puma", ">= 5.0"
 
 gem "image_processing", "~> 1.2"
 gem "devise"
+gem "devise-i18n"
 gem 'simple_form'
+
+# Bilingual (ES/EN) content storage for Room/PageContent/Experience/etc.
+gem "mobility", "~> 1.3"
 
 # Admin panel gem
 gem "avo"

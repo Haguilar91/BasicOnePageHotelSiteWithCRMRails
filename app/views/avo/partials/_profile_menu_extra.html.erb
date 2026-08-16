@@ -1,0 +1,5 @@
+<%# Free-tier hook (config.profile_menu/main_menu require an Avo Pro license
+    and just show an upgrade nag otherwise) — Avo::SidebarProfileComponent
+    renders this partial unconditionally, so it's the actual place to add a
+    custom link to the admin profile dropdown. %>
+<%= render Avo::ProfileItemComponent.new(label: "Traducciones", path: "/translations", icon: "tabler/outline/language") %>

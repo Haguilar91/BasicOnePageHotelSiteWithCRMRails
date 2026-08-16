@@ -193,18 +193,23 @@
         <%= page_content('home_hero_title', 'Hotel Boutique') %>
     </span>
 </a>
-            <div class="hidden md:flex space-x-8">
-                <a href="#inicio" class="nav-link text-white/80 hover:text-white transition">Inicio</a>
-                <a href="#habitaciones" class="nav-link text-white/80 hover:text-white transition">Habitaciones</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#inicio" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.home") %></a>
+                <a href="#habitaciones" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.rooms") %></a>
                 <% if @offers.present? %>
-                  <a href="#ofertas" class="nav-link text-white/80 hover:text-white transition">Ofertas</a>
+                  <a href="#ofertas" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.offers") %></a>
                 <% end %>
-                <a href="#servicios" class="nav-link text-white/80 hover:text-white transition">Servicios</a>
-                <a href="#que-hacer" class="nav-link text-white/80 hover:text-white transition">Qué hacer</a>
-                <a href="#contacto" class="nav-link text-white/80 hover:text-white transition">Contacto</a>
+                <a href="#servicios" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.services") %></a>
+                <a href="#que-hacer" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.activities") %></a>
+                <a href="#contacto" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.contact") %></a>
+                <div class="flex items-center space-x-2 text-sm">
+                    <%= link_to t("language_switcher.es"), switch_locale_path("es"), class: "transition #{I18n.locale == :es ? 'text-[var(--color-accent)] font-bold' : 'text-white/60 hover:text-white'}" %>
+                    <span class="text-white/30">/</span>
+                    <%= link_to t("language_switcher.en"), switch_locale_path("en"), class: "transition #{I18n.locale == :en ? 'text-[var(--color-accent)] font-bold' : 'text-white/60 hover:text-white'}" %>
+                </div>
             </div>
             <a href="#reservar" class="btn-gold text-slate-900 px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-accent)]/50 transition">
-                Reservar Ahora
+                <%= t("nav.book_now") %>
             </a>
         </div>
     </div>
@@ -212,31 +217,35 @@
 
 <!-- Mobile Bottom Nav -->
 <nav class="mobile-bottom-nav md:hidden fixed bottom-0 inset-x-0 z-50 bg-[var(--color-bg-primary)]/95 backdrop-blur-md border-t border-white/10">
-    <div class="grid grid-cols-6">
+    <div class="grid grid-cols-7">
         <a href="#inicio" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="inicio">
             <i class="fas fa-home text-lg mb-1"></i>
-            <span class="text-[10px]">Inicio</span>
+            <span class="text-[10px]"><%= t("nav.home") %></span>
         </a>
         <a href="#habitaciones" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="habitaciones">
             <i class="fas fa-bed text-lg mb-1"></i>
-            <span class="text-[10px]">Habit.</span>
+            <span class="text-[10px]"><%= t("nav.rooms_short") %></span>
         </a>
         <a href="#servicios" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="servicios">
             <i class="fas fa-concierge-bell text-lg mb-1"></i>
-            <span class="text-[10px]">Servicios</span>
+            <span class="text-[10px]"><%= t("nav.services") %></span>
         </a>
         <a href="#que-hacer" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="que-hacer">
         <i class="fas fa-map-marked-alt text-lg mb-1"></i>
-        <span class="text-[10px]">Lugares</span>
+        <span class="text-[10px]"><%= t("nav.activities_short") %></span>
        </a>
         <a href="#contacto" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="contacto">
             <i class="fas fa-map-marker-alt text-lg mb-1"></i>
-            <span class="text-[10px]">Contacto</span>
+            <span class="text-[10px]"><%= t("nav.contact") %></span>
         </a>
         <a href="#reservar" class="mobile-nav-link flex flex-col items-center justify-center py-2  text-[var(--color-text-muted)] transition" data-mobile-nav="reservar">
             <i class="fas fa-calendar-check text-lg mb-1"></i>
-            <span class="text-[10px] font-semibold">Reservar</span>
+            <span class="text-[10px] font-semibold"><%= t("nav.book") %></span>
         </a>
+        <%= link_to switch_locale_path(I18n.locale == :es ? "en" : "es"), class: "flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" do %>
+            <i class="fas fa-globe text-lg mb-1"></i>
+            <span class="text-[10px]"><%= I18n.locale == :es ? t("language_switcher.en") : t("language_switcher.es") %></span>
+        <% end %>
     </div>
 </nav>
 
@@ -265,10 +274,10 @@
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#habitaciones" class="btn-gold text-slate-900 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
-                  <i class="fas fa-bed mr-2"></i> Ver Habitaciones
+                  <i class="fas fa-bed mr-2"></i> <%= t("hero.view_rooms") %>
               </a>
               <a href="#reservar" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-slate-900 transition inline-flex items-center justify-center">
-                  <i class="fas fa-calendar-check mr-2"></i> Reservar
+                  <i class="fas fa-calendar-check mr-2"></i> <%= t("nav.book") %>
               </a>
           </div>
       </div>
@@ -318,10 +327,10 @@
                         </div>
 
                         <% if room_photo_urls.size > 1 %>
-                          <button type="button" class="room-gallery-nav absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition" data-room-gallery-prev aria-label="Foto anterior">
+                          <button type="button" class="room-gallery-nav absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition" data-room-gallery-prev aria-label="<%= t('gallery.previous_photo') %>">
                               <i class="fas fa-chevron-left text-xs"></i>
                           </button>
-                          <button type="button" class="room-gallery-nav absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition" data-room-gallery-next aria-label="Foto siguiente">
+                          <button type="button" class="room-gallery-nav absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition" data-room-gallery-next aria-label="<%= t('gallery.next_photo') %>">
                               <i class="fas fa-chevron-right text-xs"></i>
                           </button>
                           <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10" data-room-gallery-dots>
@@ -380,8 +389,8 @@
     <section id="ofertas" class="py-20 bg-[var(--color-bg-primary)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
-                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Promociones</p>
-                <h2 class="text-4xl md:text-5xl font-serif font-bold">Ofertas Especiales</h2>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= t("offers.eyebrow") %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= t("offers.heading") %></h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -434,11 +443,11 @@
                         <% end %>
                         <% if booking_link.present? %>
                           <a href="<%= booking_link %>" target="_blank" rel="noopener" class="block text-center bg-[var(--color-accent)] text-slate-900 hover:brightness-90 font-semibold py-3 rounded-lg transition">
-                              <i class="fa-solid fa-calendar-check mr-2"></i>Reservar esta oferta
+                              <i class="fa-solid fa-calendar-check mr-2"></i><%= t("offers.book_this_offer") %>
                           </a>
                         <% else %>
                           <a href="#reservar" class="block text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
-                              <i class="fa-solid fa-calendar-check mr-2"></i>Reservar esta oferta
+                              <i class="fa-solid fa-calendar-check mr-2"></i><%= t("offers.book_this_offer") %>
                           </a>
                         <% end %>
                     </div>
@@ -478,7 +487,7 @@
     <section id="que-hacer" class="py-20 bg-[var(--color-bg-primary)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 fade-in">
-                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Querétaro</p>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= t("activities.eyebrow") %></p>
                 <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= page_content('home_activities_title', 'Qué hacer en Querétaro') %></h2>
                 <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= page_content('home_activities_subtitle', 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.') %></p>
             </div>
@@ -492,7 +501,7 @@
                                 type="button"
                                 data-tab-button="<%= category.parameterize %>"
                                 class="px-6 py-3 text-sm font-semibold transition <%= index.zero? ? 'bg-[var(--color-accent)] text-slate-900' : 'text-white/80 hover:bg-[var(--color-bg-tertiary)] hover:text-white' %>">
-                                <%= category %>
+                                <%= LocalActivity.category_label(category) %>
                             </button>
                         <% end %>
                     </div>
@@ -517,13 +526,13 @@
                                         <div class="flex items-center justify-between mb-4">
                                             <div>
                                                 <h3 class="text-2xl font-serif font-semibold text-white"><%= activity.title %></h3>
-                                                <p class="text-[var(--color-text-muted)] text-sm mt-2"><%= category %></p>
+                                                <p class="text-[var(--color-text-muted)] text-sm mt-2"><%= LocalActivity.category_label(category) %></p>
                                             </div>
                                             <i class="fas fa-<%= category == 'Restaurantes' ? 'utensils' : (category == 'Puntos de Interés' ? 'map-marker-alt' : 'route') %> text-[var(--color-accent)] text-3xl"></i>
                                         </div>
                                         <p class="text-white/80 mb-6"><%= activity.description %></p>
                                         <a href="<%= activity.google_maps_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-slate-900 transition hover:brightness-110">
-                                            <i class="fas fa-map-marked-alt mr-2"></i> Ver en Google Maps
+                                            <i class="fas fa-map-marked-alt mr-2"></i> <%= t("activities.google_maps_button") %>
                                         </a>
                                     </div>
                                 </div>
@@ -531,7 +540,7 @@
                         </div>
                     <% else %>
                         <div class="rounded-3xl border border-white/10 bg-[var(--color-bg-secondary)] p-10 text-center text-[var(--color-text-muted)] fade-in">
-                            No hay elementos disponibles en esta categoría todavía. Añade actividades en Avo.
+                            <%= t("activities.empty_state") %>
                         </div>
                     <% end %>
                 </div>
@@ -544,7 +553,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="fade-in">
-                    <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm">Ubicación</p>
+                    <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= t("location.eyebrow") %></p>
                     <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= page_content('home_location_title', 'En el Corazón de Querétaro') %></h2>
                     <p class="text-white/80 mb-6">
                         <%= page_content('home_location_desc', 'Nuestra ubicación privilegiada en el centro histórico de Querétaro te permite disfrutar de la historia, la cultura y el colonialismo en un solo lugar.') %>
@@ -553,21 +562,21 @@
                         <div class="flex items-start">
                             <i class="fas fa-map-marker-alt text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
-                                <h4 class="font-semibold">Dirección</h4>
+                                <h4 class="font-semibold"><%= t("location.address_label") %></h4>
                                 <p class="text-[var(--color-text-muted)]"><%= page_content('address_line', 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México') %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <i class="fas fa-phone text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
-                                <h4 class="font-semibold">Teléfono</h4>
+                                <h4 class="font-semibold"><%= t("location.phone_label") %></h4>
                                 <p class="text-[var(--color-text-muted)]"><%= page_content('contact_phone', '+52 442 212 3456') %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <i class="fas fa-envelope text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
-                                <h4 class="font-semibold">Email</h4>
+                                <h4 class="font-semibold"><%= t("location.email_label") %></h4>
                                 <p class="text-[var(--color-text-muted)]"><%= page_content('contact_email', 'info@hotelmeson.com') %></p>
                             </div>
                         </div>
@@ -599,10 +608,10 @@
             <% cta_email = page_content('contact_email', 'info@hotelmeson.com') %>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="tel:<%= cta_phone.gsub(/[^\d+]/, '') %>" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
-                    <i class="fas fa-phone-alt mr-2"></i> Llamar Ahora
+                    <i class="fas fa-phone-alt mr-2"></i> <%= t("cta.call_now") %>
                 </a>
                 <a href="mailto:<%= cta_email %>" class="bg-[var(--color-bg-tertiary)] hover:brightness-125 px-10 py-4 rounded-full font-bold text-lg transition inline-flex items-center justify-center">
-                    <i class="fas fa-envelope mr-2"></i> Enviar Email
+                    <i class="fas fa-envelope mr-2"></i> <%= t("cta.send_email") %>
                 </a>
             </div>
         </div>
@@ -632,12 +641,12 @@
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold mb-4">Enlaces Rápidos</h4>
+                    <h4 class="font-semibold mb-4"><%= t("footer.quick_links") %></h4>
                     <ul class="space-y-2 text-[var(--color-text-muted)]">
-                        <li><a href="#inicio" class="hover:text-[var(--color-accent)] transition">Inicio</a></li>
-                        <li><a href="#habitaciones" class="hover:text-[var(--color-accent)] transition">Habitaciones</a></li>
-                        <li><a href="#servicios" class="hover:text-[var(--color-accent)] transition">Servicios</a></li>
-                        <li><a href="#contacto" class="hover:text-[var(--color-accent)] transition">Contacto</a></li>
+                        <li><a href="#inicio" class="hover:text-[var(--color-accent)] transition"><%= t("nav.home") %></a></li>
+                        <li><a href="#habitaciones" class="hover:text-[var(--color-accent)] transition"><%= t("nav.rooms") %></a></li>
+                        <li><a href="#servicios" class="hover:text-[var(--color-accent)] transition"><%= t("nav.services") %></a></li>
+                        <li><a href="#contacto" class="hover:text-[var(--color-accent)] transition"><%= t("nav.contact") %></a></li>
                     </ul>
                 </div>
                 <% social_links = {
@@ -648,7 +657,7 @@
                    }.select { |_, url| url.present? } %>
                 <% if social_links.present? %>
                 <div>
-                    <h4 class="font-semibold mb-4">Síguenos</h4>
+                    <h4 class="font-semibold mb-4"><%= t("footer.follow_us") %></h4>
                     <div class="flex space-x-4">
                         <% social_links.each do |icon, url| %>
                           <a href="<%= url %>" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
@@ -660,20 +669,20 @@
                 <% end %>
             </div>
             <div class="border-t border-white/10 mt-8 pt-8 text-center text-[var(--color-text-muted)]">
-                <p>&copy; <%= Date.current.year %> <%= strip_tags(page_content('home_hero_title', 'Hotel Mesón del Bosque')) %>. Todos los derechos reservados.</p>
+                <p>&copy; <%= Date.current.year %> <%= strip_tags(page_content('home_hero_title', 'Hotel Mesón del Bosque')) %>. <%= t("footer.rights_reserved") %></p>
             </div>
         </div>
     </footer>
 
     <!-- Room Gallery Modal -->
     <div id="room-gallery-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4" data-room-gallery-modal>
-        <button type="button" class="absolute top-5 right-5 md:top-6 md:right-6 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-close aria-label="Cerrar galería">
+        <button type="button" class="absolute top-5 right-5 md:top-6 md:right-6 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-close aria-label="<%= t('gallery.close_gallery') %>">
             <i class="fas fa-times"></i>
         </button>
-        <button type="button" class="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-modal-prev aria-label="Foto anterior">
+        <button type="button" class="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-modal-prev aria-label="<%= t('gallery.previous_photo') %>">
             <i class="fas fa-chevron-left"></i>
         </button>
-        <button type="button" class="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-modal-next aria-label="Foto siguiente">
+        <button type="button" class="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-modal-next aria-label="<%= t('gallery.next_photo') %>">
             <i class="fas fa-chevron-right"></i>
         </button>
 

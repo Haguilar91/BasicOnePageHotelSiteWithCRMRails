@@ -1,0 +1,93 @@
+es:
+  nav:
+    home: "Inicio"
+    rooms: "Habitaciones"
+    rooms_short: "Habit."
+    offers: "Ofertas"
+    services: "Servicios"
+    activities: "Qué hacer"
+    activities_short: "Lugares"
+    contact: "Contacto"
+    book_now: "Reservar Ahora"
+    book: "Reservar"
+
+  hero:
+    view_rooms: "Ver Habitaciones"
+
+  gallery:
+    previous_photo: "Foto anterior"
+    next_photo: "Foto siguiente"
+    close_gallery: "Cerrar galería"
+
+  offers:
+    eyebrow: "Promociones"
+    heading: "Ofertas Especiales"
+    book_this_offer: "Reservar esta oferta"
+
+  activities:
+    eyebrow: "Querétaro"
+    google_maps_button: "Ver en Google Maps"
+    empty_state: "No hay elementos disponibles en esta categoría todavía. Añade actividades en Avo."
+
+  location:
+    eyebrow: "Ubicación"
+    address_label: "Dirección"
+    phone_label: "Teléfono"
+    email_label: "Email"
+
+  cta:
+    call_now: "Llamar Ahora"
+    send_email: "Enviar Email"
+
+  footer:
+    quick_links: "Enlaces Rápidos"
+    follow_us: "Síguenos"
+    rights_reserved: "Todos los derechos reservados."
+
+  language_switcher:
+    es: "ES"
+    en: "EN"
+
+  models:
+    room:
+      booking_platforms:
+        custom:
+          label: "Personalizado"
+          default_button_name: "Reservar"
+        airbnb:
+          label: "Airbnb"
+          default_button_name: "Reservar en Airbnb"
+        whatsapp:
+          label: "WhatsApp"
+          default_button_name: "Reservar por WhatsApp"
+        booking:
+          label: "Booking.com"
+          default_button_name: "Reservar en Booking.com"
+    offer:
+      kinds:
+        room: "Oferta de Habitación"
+        package: "Paquete"
+      discount_badge: "%{percent}% DESCUENTO"
+      discount_ticker: "%{percent}% de descuento"
+      validity:
+        range: "Del %{from} al %{upto}"
+        from_only: "A partir del %{from}"
+        until_only: "Válida hasta el %{upto}"
+      errors:
+        valid_until_before_valid_from: "debe ser igual o posterior a la fecha de inicio"
+    local_activity:
+      categories:
+        restaurants: "Restaurantes"
+        points_of_interest: "Puntos de Interés"
+        tours: "Tours"
+
+  translations_panel:
+    title: "Traducciones"
+    not_authorized: "No tienes permiso para acceder a esta sección."
+    save: "Guardar"
+    translate: "Traducir"
+    translate_all: "Traducir todo lo pendiente"
+    spanish_label: "Español"
+    english_label: "Inglés"
+    saved: "Traducciones guardadas."
+    translate_error: "No se pudo traducir. Intenta de nuevo o escribe el texto manualmente."

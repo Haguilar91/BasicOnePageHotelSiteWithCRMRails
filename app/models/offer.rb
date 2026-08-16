@@ -1,4 +1,8 @@
 class Offer < ApplicationRecord
+  extend Mobility
+  translates :title, :badge, backend: :key_value, type: :string
+  translates :description, :ticker_description, backend: :key_value, type: :text
+
   ROOM = "room".freeze
   PACKAGE = "package".freeze
   KINDS = {
@@ -65,7 +69,7 @@ class Offer < ApplicationRecord
   def display_badge
     return badge if badge.present?
 
-    "#{discount_percent}% DESCUENTO" if room_offer? && discount_percent.present?
+    I18n.t("models.offer.discount_badge", percent: discount_percent) if room_offer? && discount_percent.present?
   end
 
   def display_photo
@@ -82,7 +86,7 @@ class Offer < ApplicationRecord
     return ticker_description if ticker_description.present?
     return display_description if display_description.present?
 
-    "#{discount_percent}% de descuento" if room_offer? && discount_percent.present?
+    I18n.t("models.offer.discount_ticker", percent: discount_percent) if room_offer? && discount_percent.present?
   end
 
   def expired?
@@ -104,11 +108,11 @@ class Offer < ApplicationRecord
     upto = valid_until&.strftime("%d/%m/%Y")
 
     if from && upto
-      "Del #{from} al #{upto}"
+      I18n.t("models.offer.validity.range", from:, upto:)
     elsif from
-      "A partir del #{from}"
+      I18n.t("models.offer.validity.from_only", from:)
     elsif upto
-      "Válida hasta el #{upto}"
+      I18n.t("models.offer.validity.until_only", upto:)
     end
   end
 
@@ -118,7 +122,7 @@ class Offer < ApplicationRecord
     return if valid_from.blank? || valid_until.blank?
     return if valid_until >= valid_from
 
-    errors.add(:valid_until, "debe ser igual o posterior a la fecha de inicio")
+    errors.add(:valid_until, I18n.t("models.offer.errors.valid_until_before_valid_from"))
   end
 
   # Mirrors the decimal precision the admin used, so "150" stays "127" and

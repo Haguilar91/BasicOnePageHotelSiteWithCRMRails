@@ -1,4 +1,8 @@
 class Room < ApplicationRecord
+  extend Mobility
+  translates :name, :badge, :button_name, :price, backend: :key_value, type: :string
+  translates :description, :features, backend: :key_value, type: :text
+
   # `photo` is kept for rooms created before the gallery existed; `photos` is
   # the current multi-image gallery. See #gallery_photos for how they combine.
   has_one_attached :photo
@@ -20,6 +24,10 @@ class Room < ApplicationRecord
     platform_meta[:icon]
   end
 
+  # Uses I18n rather than BOOKING_PLATFORMS[:default_button_name] directly so
+  # the public button label follows the site's current locale — the hash's
+  # own :label/:default_button_name stay Spanish-only for the Avo admin
+  # select field, which always renders in Spanish (config.locale = :es).
   def booking_button_label
     button_name.presence || platform_meta[:default_button_name]
   end
@@ -34,6 +42,11 @@ class Room < ApplicationRecord
   private
 
   def platform_meta
-    BOOKING_PLATFORMS.fetch(booking_platform, BOOKING_PLATFORMS["custom"])
+    key = BOOKING_PLATFORMS.key?(booking_platform) ? booking_platform : "custom"
+    {
+      icon: BOOKING_PLATFORMS.dig(key, :icon),
+      label: I18n.t("models.room.booking_platforms.#{key}.label"),
+      default_button_name: I18n.t("models.room.booking_platforms.#{key}.default_button_name")
+    }
   end
 end
