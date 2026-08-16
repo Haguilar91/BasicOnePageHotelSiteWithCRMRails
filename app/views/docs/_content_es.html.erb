@@ -1,0 +1,195 @@
+<p>Esta guía explica cómo actualizar el contenido del sitio web del hotel usando el panel de administración (Avo), sin necesidad de saber programar. Todo lo que ves en la página principal — habitaciones, ofertas, textos, fotos, colores — se edita desde aquí.</p>
+
+<nav class="toc">
+  <p>Contenido</p>
+  <ul>
+    <li><a href="#empezar">Cómo entrar al panel</a></li>
+    <li><a href="#habitaciones">Habitaciones</a></li>
+    <li><a href="#ofertas">Ofertas</a></li>
+    <li><a href="#contenidos">Textos del sitio (Page contents)</a></li>
+    <li><a href="#experiencias">Experiencias / Servicios</a></li>
+    <li><a href="#caracteristicas">Características</a></li>
+    <li><a href="#que-hacer">Qué hacer (actividades locales)</a></li>
+    <li><a href="#anuncios">Anuncios</a></li>
+    <li><a href="#portada">Imagen de portada</a></li>
+    <li><a href="#temas">Temas y colores</a></li>
+    <li><a href="#traducciones">Traducciones al inglés</a></li>
+    <li><a href="#idioma">Selector de idioma en el sitio</a></li>
+    <li><a href="#preguntas">Preguntas frecuentes</a></li>
+  </ul>
+</nav>
+
+<h2 id="empezar">Cómo entrar al panel</h2>
+<ol>
+  <li>Entra a <code>/avo</code> en el sitio (por ejemplo <code>tudominio.com/avo</code>).</li>
+  <li>Inicia sesión con tu correo y contraseña.</li>
+  <li>Si olvidaste tu contraseña, usa el enlace "¿Ha olvidado su contraseña?" en la pantalla de acceso.</li>
+</ol>
+<p>Al entrar verás un menú lateral con todas las secciones que puedes editar: Rooms, Offers, Page contents, Experiences, Features, Local activities, Announcements, Hero images, Themes. Los nombres del menú están en inglés, pero el resto del panel (etiquetas, ayudas, botones) está en español.</p>
+<figure>
+  <%= image_tag "docs/avo-sidebar.png", alt: "Panel de Avo con el menú lateral de secciones" %>
+  <figcaption>El panel al entrar, con el menú de secciones a la izquierda.</figcaption>
+</figure>
+<p>En la esquina inferior izquierda está tu cuenta. Haz clic ahí para abrir el menú con enlaces a esta guía ("Docs") y a las Traducciones.</p>
+<figure>
+  <%= image_tag "docs/avo-profile-menu.png", alt: "Menú de cuenta con los enlaces a Guía y Traducciones" %>
+  <figcaption>El menú de tu cuenta, con los enlaces a esta guía y a Traducciones.</figcaption>
+</figure>
+
+<h2 id="habitaciones">Habitaciones (Rooms)</h2>
+<p>Cada habitación que aparece en la sección "Habitaciones" de la página principal es un registro aquí. Entra a <strong>Rooms</strong> en el menú y elige una habitación para editarla, o crea una nueva con el botón correspondiente.</p>
+<figure>
+  <%= image_tag "docs/site-rooms.png", alt: "Sección de Habitaciones en el sitio público" %>
+  <figcaption>Cómo se ve la sección de Habitaciones en el sitio.</figcaption>
+</figure>
+<figure>
+  <%= image_tag "docs/avo-room-form.png", alt: "Formulario de edición de una habitación en Avo" %>
+  <figcaption>El formulario de edición de una habitación en Avo.</figcaption>
+</figure>
+<ul>
+  <li><strong>Name</strong> — el nombre de la habitación (ej: "Habitación Deluxe").</li>
+  <li><strong>Price</strong> — texto libre, ej: "Desde $150" o "$700.00 MXN". No tiene que ser solo un número.</li>
+  <li><strong>Badge</strong> — una etiqueta destacada opcional que aparece sobre la foto (ej: "POPULAR", "OFERTA"). Déjala vacía si no quieres ninguna.</li>
+  <li><strong>Description</strong> — el párrafo descriptivo de la habitación.</li>
+  <li><strong>Features</strong> — la lista de comodidades (Cama King Size, Wi-Fi, etc.). Escribe <strong>una comodidad por línea</strong> — cada línea se muestra como un punto en la lista de la página.</li>
+  <li><strong>Booking platform</strong> — elige dónde se reserva esta habitación (Personalizado, Airbnb, WhatsApp o Booking.com). Esto cambia el ícono y el texto del botón de reserva automáticamente.</li>
+  <li><strong>Booking url</strong> — el enlace exacto al que lleva el botón de reserva.</li>
+  <li><strong>Button name</strong> — opcional. Si lo dejas vacío, se usa el texto predeterminado de la plataforma elegida (ej. "Reservar en Airbnb").</li>
+  <li><strong>Position</strong> — un número que controla el orden en que aparecen las habitaciones (1, 2, 3…). El número más bajo aparece primero.</li>
+</ul>
+
+<h3>Fotos de la habitación</h3>
+<p>Hay dos campos de foto:</p>
+<ul>
+  <li><strong>Photos</strong> — el campo que debes usar. Puedes subir <strong>varias fotos</strong>, que se mostrarán como una galería en la tarjeta de la habitación (con flechas para pasar de una a otra, y al hacer clic se abre en grande). Puedes seleccionar archivos de carpetas distintas en varios pasos antes de guardar — se van juntando en la lista de pendientes, y solo se suben de verdad cuando le das a <strong>Guardar</strong>.</li>
+  <li><strong>Photo</strong> — un campo antiguo, de una sola imagen. Solo se usa como respaldo si el campo <em>Photos</em> está vacío. Ya no hace falta usarlo para habitaciones nuevas.</li>
+</ul>
+<figure>
+  <%= image_tag "docs/avo-room-form-photos.png", alt: "Campo Photos con la lista de fotos pendientes de subir" %>
+  <figcaption>El campo Photos: puedes ir agregando fotos de varias carpetas antes de guardar.</figcaption>
+</figure>
+<div class="tip"><strong>Consejo:</strong> usa fotos horizontales (apaisadas) de buena calidad — se recortan automáticamente para verse bien en la tarjeta.</div>
+
+<h2 id="ofertas">Ofertas (Offers)</h2>
+<p>Aquí se manejan las promociones que aparecen en la sección "Ofertas Especiales" y en la cinta de anuncios que corre arriba del sitio. Hay dos tipos:</p>
+<figure>
+  <%= image_tag "docs/site-offers.png", alt: "Sección de Ofertas Especiales en el sitio público" %>
+  <figcaption>La sección de Ofertas Especiales en el sitio.</figcaption>
+</figure>
+<ul>
+  <li><strong>Oferta de Habitación</strong> — aplica un descuento a una habitación que ya existe. Elige la habitación y el porcentaje de descuento; el precio rebajado se calcula solo, a partir del precio de esa habitación.</li>
+  <li><strong>Paquete</strong> — una promoción independiente, con su propio título, precio y foto (no está ligada a ninguna habitación).</li>
+</ul>
+<p>Campos importantes:</p>
+<ul>
+  <li><strong>Título</strong> — obligatorio en paquetes. En ofertas de habitación puedes dejarlo vacío para usar el nombre de la habitación automáticamente.</li>
+  <li><strong>Descripción</strong> — texto de la tarjeta de la oferta.</li>
+  <li><strong>Etiqueta</strong> — texto destacado (ej: "20% DESCUENTO"). En ofertas de habitación, si la dejas vacía se genera sola a partir del porcentaje.</li>
+  <li><strong>Válida desde / Válida hasta</strong> — fechas opcionales. Fuera de ese rango, la oferta deja de mostrarse automáticamente sin que tengas que borrarla.</li>
+  <li><strong>Activa</strong> — el interruptor principal para mostrar u ocultar la oferta, sin importar las fechas.</li>
+  <li><strong>Mostrar en el ticker</strong> — si lo activas, esta oferta también aparece en la cinta de anuncios que corre en la parte superior del sitio.</li>
+  <li><strong>Texto para el ticker</strong> — opcional; si lo dejas vacío, se usa la descripción de la oferta.</li>
+</ul>
+<p>En la lista de ofertas puedes ver el <strong>Estado</strong> de cada una (Publicada, Programada, Expirada o Inactiva) para saber de un vistazo cuáles están visibles ahora mismo.</p>
+
+<h2 id="contenidos">Textos del sitio (Page contents)</h2>
+<p>Esta sección controla textos sueltos que aparecen en distintas partes de la página principal: títulos, subtítulos, datos de contacto, enlaces a redes sociales, etc. Cada registro tiene una <strong>clave</strong> (key) que identifica dónde se usa, y un <strong>contenido</strong> (content) que es el texto que se muestra.</p>
+<p>No se pueden crear claves nuevas libremente — solo edita el <strong>content</strong> de las que ya existen; el <strong>title</strong> es solo una etiqueta para identificarlas en este panel, no se muestra en el sitio.</p>
+<p>Claves más usadas y dónde aparecen:</p>
+<ul>
+  <li><code>home_hero_title</code> — el título grande de la portada y el nombre junto al logo en el menú y pie de página.</li>
+  <li><code>home_welcome_title</code> — el texto pequeño sobre el título de la portada (ej: "BIENVENIDOS A QUERÉTARO").</li>
+  <li><code>home_hero_subtitle</code> — el párrafo debajo del título de la portada.</li>
+  <li><code>home_features_title</code> / <code>home_features_subtitle</code> / <code>home_rooms_tagline</code> — encabezados de la sección de Habitaciones.</li>
+  <li><code>services_title</code> / <code>services_subtitle</code> — encabezados de la sección de Servicios.</li>
+  <li><code>home_activities_title</code> / <code>home_activities_subtitle</code> — encabezados de la sección "Qué hacer".</li>
+  <li><code>home_location_title</code> / <code>home_location_desc</code> — encabezados de la sección de Ubicación.</li>
+  <li><code>address_line</code>, <code>contact_phone</code>, <code>contact_email</code> — los datos de contacto que aparecen en la sección de Ubicación y en el pie de página.</li>
+  <li><code>map_iframe_url</code> — el enlace del mapa de Google Maps incrustado.</li>
+  <li><code>cta_title</code> / <code>cta_subtitle</code> — el título y subtítulo de la sección final de reserva.</li>
+  <li><code>social_facebook</code>, <code>social_instagram</code>, <code>social_twitter</code>, <code>social_tiktok</code> — enlaces a redes sociales. Si se dejan vacíos, ese ícono no aparece en el pie de página.</li>
+  <li><code>site_title</code> — el título que aparece en la pestaña del navegador.</li>
+</ul>
+<p>El registro con clave <code>global</code> es especial: no tiene texto, sino el <strong>logo</strong>, el <strong>favicon</strong> (ícono de la pestaña del navegador) y el <strong>ícono de la app</strong> del hotel.</p>
+<figure>
+  <%= image_tag "docs/site-location.png", alt: "Sección de Ubicación mostrando dirección, teléfono y correo" %>
+  <figcaption>La sección de Ubicación muestra address_line, contact_phone y contact_email.</figcaption>
+</figure>
+<div class="tip"><strong>Consejo:</strong> si dejas el campo <em>content</em> vacío, el sitio muestra un texto predeterminado en su lugar (no se rompe ni queda en blanco).</div>
+
+<h2 id="experiencias">Experiencias / Servicios</h2>
+<p>Es la sección "Experiencias Extraordinarias" (restaurante, alberca, spa, etc.). Cada tarjeta tiene un <strong>título</strong>, una <strong>descripción</strong> breve, y un <strong>ícono</strong> — puedes elegir uno de la lista de íconos disponibles, o subir una <strong>imagen personalizada</strong> (icon_image) que lo reemplaza. El campo <strong>position</strong> controla el orden.</p>
+<figure>
+  <%= image_tag "docs/site-services.png", alt: "Sección de Experiencias Extraordinarias en el sitio público" %>
+  <figcaption>La sección de Experiencias / Servicios en el sitio.</figcaption>
+</figure>
+
+<h2 id="caracteristicas">Características (Features)</h2>
+<p>Son los pequeños íconos con texto que aparecen justo debajo del encabezado de "Habitaciones Premium" (ej: Wi-Fi gratis, Estacionamiento, Desayuno incluido). Se editan igual que las Experiencias: título, descripción, ícono y posición.</p>
+<figure>
+  <%= image_tag "docs/site-features.png", alt: "Fila de características con íconos en el sitio público" %>
+  <figcaption>La fila de Características (Features) en el sitio.</figcaption>
+</figure>
+
+<h2 id="que-hacer">Qué hacer (actividades locales)</h2>
+<p>Son los restaurantes, puntos de interés y tours que aparecen en la sección "Qué hacer en Querétaro", organizados en pestañas por categoría.</p>
+<ul>
+  <li><strong>Título</strong> y <strong>descripción</strong> del lugar o actividad.</li>
+  <li><strong>Categoría</strong> — elige entre Restaurantes, Puntos de Interés o Tours; determina en qué pestaña aparece.</li>
+  <li><strong>Google maps url</strong> — el enlace que abre el botón "Ver en Google Maps".</li>
+  <li><strong>Foto</strong> — imagen del lugar. Si no subes una, se usa una imagen genérica automáticamente.</li>
+</ul>
+<figure>
+  <%= image_tag "docs/site-activities.png", alt: "Sección Qué hacer con tarjetas de restaurantes" %>
+  <figcaption>La sección "Qué hacer", organizada en pestañas por categoría.</figcaption>
+</figure>
+
+<h2 id="anuncios">Anuncios</h2>
+<p>Son los mensajes que corren en la cinta superior del sitio (ej: promociones de temporada). Tienen <strong>título</strong>, <strong>descripción</strong>, y un rango de fechas (<strong>start_date</strong> / <strong>end_date</strong>) durante el cual se muestran — fuera de ese rango, o si <strong>active</strong> está apagado, no aparecen. Las ofertas con "Mostrar en el ticker" activado también salen en esta misma cinta, mezcladas con los anuncios.</p>
+
+<h2 id="portada">Imagen de portada</h2>
+<p>Es la foto de fondo grande de la primera sección del sitio (justo debajo del menú). Se administra en <strong>Hero images</strong>.</p>
+<figure>
+  <%= image_tag "docs/site-hero.png", alt: "Sección de portada (hero) del sitio público" %>
+  <figcaption>La imagen de portada, arriba de todo en la página principal.</figcaption>
+</figure>
+<div class="tip"><strong>Importante:</strong> si hay varias imágenes cargadas, el sitio siempre usa <em>la más antigua</em> (la primera que se creó), no la más reciente. Para cambiar la imagen de portada, edita el registro existente y reemplaza su foto — no crees uno nuevo, porque no se usará hasta que borres o edites el anterior.</div>
+
+<h2 id="temas">Temas y colores</h2>
+<p>En <strong>Themes</strong> puedes cambiar la paleta de colores de todo el sitio (fondos, color de acento dorado, textos) sin tocar ninguna otra sección. Solo <strong>un tema puede estar activo a la vez</strong>: al marcar "Tema activo" en uno, los demás se desactivan automáticamente y el sitio usa esos colores de inmediato.</p>
+<p>Colores que se pueden ajustar: fondo principal, fondo secundario, fondo terciario, color de acento, acento suave, y color de texto atenuado. Se escriben en formato hexadecimal (ej: <code>#d4af37</code>) — si no sabes el código de un color, puedes buscar "selector de color" en internet para conseguirlo.</p>
+<figure>
+  <%= image_tag "docs/avo-theme.png", alt: "Formulario de edición de un tema con los campos de color" %>
+  <figcaption>El editor de un tema, con los campos de color.</figcaption>
+</figure>
+
+<h2 id="traducciones">Traducciones al inglés</h2>
+<p>El sitio puede mostrarse en español o en inglés (con un botón "ES / EN" en la página). Todo el contenido que editas en Avo (habitaciones, ofertas, textos, etc.) se guarda primero en español, y el inglés se agrega por separado en el panel de <strong>Traducciones</strong> (el enlace está en el menú de tu cuenta, junto a esta guía).</p>
+<figure>
+  <%= image_tag "docs/translations-panel.png", alt: "Panel de Traducciones con el valor en español y el campo en inglés" %>
+  <figcaption>El panel de Traducciones: español a la izquierda, inglés a la derecha.</figcaption>
+</figure>
+<ol>
+  <li>Abre el panel de Traducciones. Verás cada habitación, oferta, texto, etc. con su valor en español a la izquierda y un campo en blanco a la derecha para el inglés.</li>
+  <li>Haz clic en <strong>Traducir</strong> junto a cualquier campo para generar automáticamente una traducción al inglés (usa un servicio de traducción gratuito). También puedes usar <strong>Traducir todo lo pendiente</strong> para traducir de una vez todos los campos vacíos de una sección.</li>
+  <li>La traducción automática solo <strong>rellena el campo</strong>, no guarda nada todavía — revísala y corrígela a mano si hace falta.</li>
+  <li>Cuando estés conforme, haz clic en <strong>Guardar</strong> al final de la página.</li>
+</ol>
+<div class="tip"><strong>Consejo:</strong> mientras un texto no tenga traducción al inglés, el sitio en inglés muestra automáticamente la versión en español en su lugar (nunca queda en blanco), así que no hay prisa por traducir todo de golpe.</div>
+
+<h2 id="idioma">Selector de idioma en el sitio</h2>
+<p>Los visitantes cambian de idioma con el botón "ES / EN" en el menú (arriba en computadora, abajo en celular). El español es el idioma principal: si alguien visita el sitio sin elegir idioma, lo ve en español.</p>
+<figure>
+  <%= image_tag "docs/site-nav-switcher.png", alt: "Botón ES / EN en el menú de navegación" %>
+  <figcaption>El botón "ES / EN" en el menú.</figcaption>
+</figure>
+
+<h2 id="preguntas">Preguntas frecuentes</h2>
+<h3>Hice un cambio y no lo veo en el sitio.</h3>
+<p>Verifica que guardaste el registro (botón "Guardar" o "Save"). Si es una oferta o anuncio, revisa que esté <strong>Activa</strong> y que la fecha actual esté dentro del rango de fechas configurado. Si es un texto, recuerda que el campo vacío muestra el texto predeterminado del sitio, no un error.</p>
+<h3>¿Cómo cambio el orden en que aparecen las habitaciones, servicios o actividades?</h3>
+<p>Usa el campo <strong>Position</strong> (Posición) de cada registro. El número más bajo aparece primero.</p>
+<h3>¿Qué tamaño de imagen debo usar?</h3>
+<p>Fotos horizontales de al menos 1200 píxeles de ancho se ven bien en cualquier pantalla. Evita archivos demasiado pesados (más de 5 MB) para que el sitio cargue rápido.</p>
+<h3>Olvidé mi contraseña.</h3>
+<p>En la pantalla de acceso (<code>/users/sign_in</code>) usa el enlace "¿Ha olvidado su contraseña?". Si no te llega el correo, pide a otro administrador que te la restablezca.</p>

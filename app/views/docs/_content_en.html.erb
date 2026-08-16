@@ -1,0 +1,195 @@
+<p>This guide explains how to update the hotel website's content through the admin panel (Avo), no coding knowledge required. Everything you see on the main page — rooms, offers, text, photos, colors — is edited from here.</p>
+
+<nav class="toc">
+  <p>Contents</p>
+  <ul>
+    <li><a href="#getting-started">Getting into the panel</a></li>
+    <li><a href="#rooms">Rooms</a></li>
+    <li><a href="#offers">Offers</a></li>
+    <li><a href="#page-contents">Site text (Page contents)</a></li>
+    <li><a href="#experiences">Experiences / Services</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#activities">What to do (local activities)</a></li>
+    <li><a href="#announcements">Announcements</a></li>
+    <li><a href="#hero">Hero image</a></li>
+    <li><a href="#themes">Themes &amp; colors</a></li>
+    <li><a href="#translations">Translating into English</a></li>
+    <li><a href="#language">Language switcher on the site</a></li>
+    <li><a href="#faq">Frequently asked questions</a></li>
+  </ul>
+</nav>
+
+<h2 id="getting-started">Getting into the panel</h2>
+<ol>
+  <li>Go to <code>/avo</code> on the site (e.g. <code>yourdomain.com/avo</code>).</li>
+  <li>Sign in with your email and password.</li>
+  <li>If you forgot your password, use the "Forgot your password?" link on the sign-in screen.</li>
+</ol>
+<p>Once inside you'll see a sidebar with every section you can edit: Rooms, Offers, Page contents, Experiences, Features, Local activities, Announcements, Hero images, Themes. The menu item names are in English, but the rest of the panel (labels, help text, buttons) is in Spanish.</p>
+<figure>
+  <%= image_tag "docs/avo-sidebar.png", alt: "Avo panel with the sidebar list of sections" %>
+  <figcaption>The panel right after signing in, with the section menu on the left.</figcaption>
+</figure>
+<p>Your account is in the bottom-left corner. Click it to open a menu with links to this guide ("Docs") and to Translations.</p>
+<figure>
+  <%= image_tag "docs/avo-profile-menu.png", alt: "Account menu with links to the guide and Translations" %>
+  <figcaption>Your account menu, with links to this guide and Translations.</figcaption>
+</figure>
+
+<h2 id="rooms">Rooms</h2>
+<p>Every room shown in the "Habitaciones" section of the homepage is a record here. Go to <strong>Rooms</strong> in the menu and pick one to edit, or create a new one with the corresponding button.</p>
+<figure>
+  <%= image_tag "docs/site-rooms.png", alt: "Rooms section on the public site" %>
+  <figcaption>What the Rooms section looks like on the site.</figcaption>
+</figure>
+<figure>
+  <%= image_tag "docs/avo-room-form.png", alt: "Room edit form in Avo" %>
+  <figcaption>The edit form for a room in Avo.</figcaption>
+</figure>
+<ul>
+  <li><strong>Name</strong> — the room's name (e.g. "Deluxe Room").</li>
+  <li><strong>Price</strong> — free-form text, e.g. "From $150" or "$700.00 MXN". It doesn't have to be just a number.</li>
+  <li><strong>Badge</strong> — an optional highlighted label shown over the photo (e.g. "POPULAR", "SALE"). Leave it blank for none.</li>
+  <li><strong>Description</strong> — the room's descriptive paragraph.</li>
+  <li><strong>Features</strong> — the amenities list (King Size Bed, Wi-Fi, etc.). Write <strong>one amenity per line</strong> — each line becomes one bullet point on the page.</li>
+  <li><strong>Booking platform</strong> — where this room is booked (Custom, Airbnb, WhatsApp, or Booking.com). This automatically changes the icon and text of the booking button.</li>
+  <li><strong>Booking url</strong> — the exact link the booking button opens.</li>
+  <li><strong>Button name</strong> — optional. If left blank, the chosen platform's default text is used (e.g. "Book on Airbnb").</li>
+  <li><strong>Position</strong> — a number controlling the order rooms appear in (1, 2, 3…). The lowest number shows first.</li>
+</ul>
+
+<h3>Room photos</h3>
+<p>There are two photo fields:</p>
+<ul>
+  <li><strong>Photos</strong> — the one you should use. You can upload <strong>several photos</strong>, shown as a gallery on the room's card (with arrows to flip through them, and a click opens it full-size). You can pick files from different folders across several steps before saving — they pile up in a pending list, and only actually upload once you click <strong>Save</strong>.</li>
+  <li><strong>Photo</strong> — an older, single-image field. It's only used as a fallback when <em>Photos</em> is empty. You no longer need it for new rooms.</li>
+</ul>
+<figure>
+  <%= image_tag "docs/avo-room-form-photos.png", alt: "Photos field with the list of pending uploads" %>
+  <figcaption>The Photos field: you can keep adding photos from different folders before saving.</figcaption>
+</figure>
+<div class="tip"><strong>Tip:</strong> use good-quality landscape (horizontal) photos — they get automatically cropped to look right on the card.</div>
+
+<h2 id="offers">Offers</h2>
+<p>This is where you manage the promotions shown in the "Special Offers" section and in the ticker that scrolls across the top of the site. There are two kinds:</p>
+<figure>
+  <%= image_tag "docs/site-offers.png", alt: "Special Offers section on the public site" %>
+  <figcaption>The Special Offers section on the site.</figcaption>
+</figure>
+<ul>
+  <li><strong>Room Offer</strong> — applies a discount to an existing room. Pick the room and the discount percentage; the discounted price is calculated automatically from that room's price.</li>
+  <li><strong>Package</strong> — a standalone promotion with its own title, price, and photo (not tied to any room).</li>
+</ul>
+<p>Important fields:</p>
+<ul>
+  <li><strong>Title</strong> — required for packages. For room offers you can leave it blank to automatically use the room's name.</li>
+  <li><strong>Description</strong> — the offer card's text.</li>
+  <li><strong>Badge</strong> — highlighted text (e.g. "20% OFF"). For room offers, it's generated automatically from the percentage if left blank.</li>
+  <li><strong>Valid from / Valid until</strong> — optional dates. Outside that range, the offer stops showing automatically without you having to delete it.</li>
+  <li><strong>Active</strong> — the main switch to show or hide the offer, regardless of dates.</li>
+  <li><strong>Show on ticker</strong> — if turned on, this offer also appears in the announcement ribbon that scrolls across the top of the site.</li>
+  <li><strong>Ticker text</strong> — optional; if left blank, the offer's description is used instead.</li>
+</ul>
+<p>The offers list shows each one's <strong>Status</strong> (Published, Scheduled, Expired, or Inactive) so you can tell at a glance which ones are currently visible.</p>
+
+<h2 id="page-contents">Site text (Page contents)</h2>
+<p>This section controls standalone pieces of text used across the homepage: titles, subtitles, contact details, social media links, etc. Each record has a <strong>key</strong> that identifies where it's used, and a <strong>content</strong> field with the text that's actually shown.</p>
+<p>You can't freely create new keys — just edit the <strong>content</strong> of the ones that already exist; the <strong>title</strong> field is only a label to help you identify them in this panel, it's never shown on the site.</p>
+<p>The most commonly used keys and where they appear:</p>
+<ul>
+  <li><code>home_hero_title</code> — the large title on the homepage banner, and the name next to the logo in the nav bar and footer.</li>
+  <li><code>home_welcome_title</code> — the small text above the banner title (e.g. "WELCOME TO QUERÉTARO").</li>
+  <li><code>home_hero_subtitle</code> — the paragraph below the banner title.</li>
+  <li><code>home_features_title</code> / <code>home_features_subtitle</code> / <code>home_rooms_tagline</code> — headings for the Rooms section.</li>
+  <li><code>services_title</code> / <code>services_subtitle</code> — headings for the Services section.</li>
+  <li><code>home_activities_title</code> / <code>home_activities_subtitle</code> — headings for the "What to do" section.</li>
+  <li><code>home_location_title</code> / <code>home_location_desc</code> — headings for the Location section.</li>
+  <li><code>address_line</code>, <code>contact_phone</code>, <code>contact_email</code> — the contact details shown in the Location section and in the footer.</li>
+  <li><code>map_iframe_url</code> — the embedded Google Maps link.</li>
+  <li><code>cta_title</code> / <code>cta_subtitle</code> — the title and subtitle of the final booking call-to-action section.</li>
+  <li><code>social_facebook</code>, <code>social_instagram</code>, <code>social_twitter</code>, <code>social_tiktok</code> — social media links. If left blank, that icon simply doesn't show in the footer.</li>
+  <li><code>site_title</code> — the title shown in the browser tab.</li>
+</ul>
+<p>The record with key <code>global</code> is special: instead of text, it holds the hotel's <strong>logo</strong>, <strong>favicon</strong> (browser tab icon), and <strong>app icon</strong>.</p>
+<figure>
+  <%= image_tag "docs/site-location.png", alt: "Location section showing address, phone, and email" %>
+  <figcaption>The Location section renders address_line, contact_phone, and contact_email.</figcaption>
+</figure>
+<div class="tip"><strong>Tip:</strong> if you leave the <em>content</em> field blank, the site shows a built-in default text instead (it won't break or show blank).</div>
+
+<h2 id="experiences">Experiences / Services</h2>
+<p>This is the "Extraordinary Experiences" section (restaurant, pool, spa, etc.). Each card has a <strong>title</strong>, a short <strong>description</strong>, and an <strong>icon</strong> — you can pick one from the icon list, or upload a <strong>custom image</strong> (icon_image) to replace it. The <strong>position</strong> field controls the order.</p>
+<figure>
+  <%= image_tag "docs/site-services.png", alt: "Extraordinary Experiences section on the public site" %>
+  <figcaption>The Experiences / Services section on the site.</figcaption>
+</figure>
+
+<h2 id="features">Features</h2>
+<p>These are the small icons with text shown right below the "Habitaciones Premium" heading (e.g. Free Wi-Fi, Parking, Breakfast included). They're edited the same way as Experiences: title, description, icon, and position.</p>
+<figure>
+  <%= image_tag "docs/site-features.png", alt: "Row of feature icons on the public site" %>
+  <figcaption>The Features row on the site.</figcaption>
+</figure>
+
+<h2 id="activities">What to do (local activities)</h2>
+<p>These are the restaurants, points of interest, and tours shown in the "What to do in Querétaro" section, organized into category tabs.</p>
+<ul>
+  <li><strong>Title</strong> and <strong>description</strong> of the place or activity.</li>
+  <li><strong>Category</strong> — choose Restaurants, Points of Interest, or Tours; determines which tab it shows up in.</li>
+  <li><strong>Google maps url</strong> — the link opened by the "View on Google Maps" button.</li>
+  <li><strong>Photo</strong> — an image of the place. If you don't upload one, a generic image is used automatically.</li>
+</ul>
+<figure>
+  <%= image_tag "docs/site-activities.png", alt: "What to do section with restaurant cards" %>
+  <figcaption>The "What to do" section, organized into category tabs.</figcaption>
+</figure>
+
+<h2 id="announcements">Announcements</h2>
+<p>These are the messages that scroll across the ribbon at the top of the site (e.g. seasonal promotions). They have a <strong>title</strong>, <strong>description</strong>, and a date range (<strong>start_date</strong> / <strong>end_date</strong>) during which they show — outside that range, or if <strong>active</strong> is off, they don't appear. Offers with "Show on ticker" turned on also appear in this same ribbon, mixed in with announcements.</p>
+
+<h2 id="hero">Hero image</h2>
+<p>This is the large background photo in the site's very first section (right below the nav bar). It's managed under <strong>Hero images</strong>.</p>
+<figure>
+  <%= image_tag "docs/site-hero.png", alt: "Hero section on the public site" %>
+  <figcaption>The hero image, at the very top of the homepage.</figcaption>
+</figure>
+<div class="tip"><strong>Important:</strong> if several images are uploaded, the site always uses <em>the oldest one</em> (the first one ever created), not the most recent. To change the hero image, edit the existing record and replace its photo — don't create a new one, since it won't be used until the older one is deleted or edited.</div>
+
+<h2 id="themes">Themes &amp; colors</h2>
+<p>Under <strong>Themes</strong> you can change the color palette for the entire site (backgrounds, the gold accent color, text) without touching any other section. Only <strong>one theme can be active at a time</strong>: switching "Active theme" on for one automatically turns it off for the others, and the site uses those colors immediately.</p>
+<p>Colors you can adjust: primary background, secondary background, tertiary background, accent color, soft accent, and muted text color. They're written as hex codes (e.g. <code>#d4af37</code>) — if you don't know a color's code, searching "color picker" online will help you find one.</p>
+<figure>
+  <%= image_tag "docs/avo-theme.png", alt: "Theme edit form with the color fields" %>
+  <figcaption>The theme editor, with its color fields.</figcaption>
+</figure>
+
+<h2 id="translations">Translating into English</h2>
+<p>The site can be shown in Spanish or English (with an "ES / EN" button on the page). Everything you edit in Avo (rooms, offers, text, etc.) is saved in Spanish first, and English is added separately in the <strong>Translations</strong> panel (linked from your account menu, next to this guide).</p>
+<figure>
+  <%= image_tag "docs/translations-panel.png", alt: "Translations panel with the Spanish value and the English field" %>
+  <figcaption>The Translations panel: Spanish on the left, English on the right.</figcaption>
+</figure>
+<ol>
+  <li>Open the Translations panel. You'll see every room, offer, text field, etc. with its Spanish value on the left and a blank field on the right for English.</li>
+  <li>Click <strong>Translate</strong> next to any field to automatically generate an English translation (using a free translation service). You can also use <strong>Translate all pending</strong> to translate every empty field in a section at once.</li>
+  <li>Automatic translation only <strong>fills in the field</strong>, it doesn't save anything yet — review it and correct it by hand if needed.</li>
+  <li>Once you're happy with it, click <strong>Save</strong> at the bottom of the page.</li>
+</ol>
+<div class="tip"><strong>Tip:</strong> as long as a piece of text has no English translation yet, the English site automatically shows the Spanish version instead (it's never left blank), so there's no rush to translate everything at once.</div>
+
+<h2 id="language">Language switcher on the site</h2>
+<p>Visitors change language with the "ES / EN" button in the nav bar (top on desktop, bottom on mobile). Spanish is the main language — anyone visiting the site without picking a language sees it in Spanish.</p>
+<figure>
+  <%= image_tag "docs/site-nav-switcher.png", alt: "ES / EN button in the navigation bar" %>
+  <figcaption>The "ES / EN" button in the nav bar.</figcaption>
+</figure>
+
+<h2 id="faq">Frequently asked questions</h2>
+<h3>I made a change and don't see it on the site.</h3>
+<p>Make sure you saved the record ("Guardar"/"Save" button). If it's an offer or announcement, check that it's <strong>Active</strong> and that today's date falls within the configured date range. If it's a text field, remember that an empty field shows the site's built-in default text, not an error.</p>
+<h3>How do I change the order rooms, services, or activities appear in?</h3>
+<p>Use each record's <strong>Position</strong> field. The lowest number shows first.</p>
+<h3>What image size should I use?</h3>
+<p>Horizontal photos at least 1200 pixels wide look good on any screen. Avoid very large files (over 5 MB) so the site keeps loading quickly.</p>
+<h3>I forgot my password.</h3>
+<p>On the sign-in screen (<code>/users/sign_in</code>) use the "Forgot your password?" link. If the email doesn't arrive, ask another admin to reset it for you.</p>

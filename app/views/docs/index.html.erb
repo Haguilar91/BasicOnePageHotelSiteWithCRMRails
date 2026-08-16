@@ -1,0 +1,98 @@
+<div class="max-w-4xl mx-auto px-4 py-10">
+  <div class="flex items-center justify-between mb-8 gap-4 flex-wrap">
+    <h1 class="text-2xl font-bold"><%= @lang == "en" ? "Site Content Guide" : "Guía para editar el sitio" %></h1>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 text-sm">
+        <%= link_to "Español", docs_path(lang: "es"), class: "px-3 py-1.5 rounded-full transition #{@lang == "es" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-900 border border-slate-300"}" %>
+        <%= link_to "English", docs_path(lang: "en"), class: "px-3 py-1.5 rounded-full transition #{@lang == "en" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-900 border border-slate-300"}" %>
+      </div>
+      <%= link_to "← Avo", "/avo", class: "text-sm text-slate-500 hover:text-slate-800" %>
+    </div>
+  </div>
+
+  <article class="bg-white rounded-2xl shadow-sm border border-slate-200 px-6 py-8 sm:px-10 sm:py-10 docs-article">
+    <%= render "docs/content_#{@lang}" %>
+  </article>
+</div>
+
+<style>
+  .docs-article h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    scroll-margin-top: 1.5rem;
+  }
+  .docs-article h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .docs-article h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .docs-article p {
+    margin-top: 0.65rem;
+    line-height: 1.6;
+    color: #334155;
+  }
+  .docs-article ul, .docs-article ol {
+    margin-top: 0.65rem;
+    margin-left: 1.25rem;
+    line-height: 1.6;
+    color: #334155;
+  }
+  .docs-article ul { list-style-type: disc; }
+  .docs-article ol { list-style-type: decimal; }
+  .docs-article li { margin-top: 0.3rem; }
+  .docs-article li > p { margin-top: 0; display: inline; }
+  .docs-article code {
+    background: #f1f5f9;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.3rem;
+    font-size: 0.85em;
+    color: #b45309;
+  }
+  .docs-article .tip {
+    margin-top: 0.9rem;
+    padding: 0.85rem 1rem;
+    border-radius: 0.6rem;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    font-size: 0.92rem;
+    color: #78350f;
+  }
+  .docs-article .tip strong { color: #92400e; }
+  .docs-article nav.toc {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .docs-article nav.toc p { margin-top: 0; font-weight: 600; }
+  .docs-article nav.toc ul { margin-top: 0.5rem; columns: 2; }
+  .docs-article nav.toc a { color: #b8860b; text-decoration: none; }
+  .docs-article nav.toc a:hover { text-decoration: underline; }
+  .docs-article figure {
+    margin-top: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .docs-article figure img {
+    display: block;
+    width: 100%;
+    border-radius: 0.6rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  }
+  .docs-article figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    color: #64748b;
+    text-align: center;
+  }
+</style>

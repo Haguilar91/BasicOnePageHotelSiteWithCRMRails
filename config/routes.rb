@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     get "translations", to: "translations#index", as: :translations
     patch "translations", to: "translations#update"
     post "translations/translate", to: "translations#translate", as: :translate_translations
+
+    get "docs", to: "docs#index", as: :docs
   end
 
   # Path-based locale for the public site (/es, /en) for SEO-visible,
