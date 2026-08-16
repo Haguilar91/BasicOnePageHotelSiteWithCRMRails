@@ -1,7 +1,7 @@
 class Avo::Resources::Room < Avo::BaseResource
   self.title = :name
   self.icon = "heroicons/outline/key"
-  self.includes = [:photo_attachment]
+  self.includes = [:photo_attachment, photos_attachments: :blob]
   self.search = {
     query: -> { query.ransack(name_cont: q, description_cont: q).result(distinct: false) }
   }
@@ -20,7 +20,8 @@ class Avo::Resources::Room < Avo::BaseResource
       default: "custom",
       help: "Elige una plataforma para mostrar su ícono junto al botón de reserva."
     field :button_name, as: :text, placeholder: "Reservar", help: "Texto del botón de reserva. Déjalo en blanco para usar el texto predeterminado de la plataforma elegida (ej. 'Reservar en Airbnb')."
-    field :photo, as: :file, is_image: true, help: "Fotografía principal de la habitación"
+    field :photos, as: :files, is_image: true, help: "Fotografías de la habitación (puedes subir varias; se mostrarán como galería en la tarjeta de la habitación)"
+    field :photo, as: :file, is_image: true, show_on: :edit, help: "Foto antigua de respaldo, usada solo si no hay fotografías en el campo de arriba"
     field :position, as: :number, help: "Orden de aparición en la página principal (1, 2, 3...)"
   end
 end

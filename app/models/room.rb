@@ -1,5 +1,8 @@
 class Room < ApplicationRecord
+  # `photo` is kept for rooms created before the gallery existed; `photos` is
+  # the current multi-image gallery. See #gallery_photos for how they combine.
   has_one_attached :photo
+  has_many_attached :photos
 
   # A room offer is defined by its room, so it goes away with it.
   has_many :offers, dependent: :destroy
@@ -19,6 +22,13 @@ class Room < ApplicationRecord
 
   def booking_button_label
     button_name.presence || platform_meta[:default_button_name]
+  end
+
+  # Photos to show in the room card/gallery, newest UI first: the `photos`
+  # collection if any were uploaded, falling back to the legacy single
+  # `photo` so rooms set up before the gallery existed keep working.
+  def gallery_photos
+    photos.attached? ? photos : (photo.attached? ? [photo] : [])
   end
 
   private

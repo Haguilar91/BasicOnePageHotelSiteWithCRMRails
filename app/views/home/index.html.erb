@@ -80,7 +80,26 @@
         .room-card:hover img {
             transform: scale(1.1);
         }
-        
+
+        .room-gallery-nav {
+            transition: opacity 0.2s ease, background-color 0.2s ease;
+        }
+
+        /* Arrows only need a hover reveal on devices that actually hover
+           with a precise pointer (mouse/trackpad). Touch devices can't
+           trigger :hover, so arrows stay visible there and swiping is the
+           primary way to flip images (see room_gallery.js). */
+        @media (hover: hover) and (pointer: fine) {
+            .room-gallery-nav {
+                opacity: 0;
+            }
+
+            .room-gallery:hover .room-gallery-nav,
+            .room-gallery-nav:focus-visible {
+                opacity: 1;
+            }
+        }
+
         .btn-gold {
             background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-soft) 50%, var(--color-accent) 100%);
             background-size: 200% 200%;
@@ -284,16 +303,32 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <% (@rooms.presence || Room.order(:position, :id)).each do |room| %>
+                <% room_photo_urls = room.gallery_photos.map { |p| url_for(p) }.presence || ["https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80"] %>
                 <div class="room-card bg-[var(--color-bg-secondary)] rounded-2xl overflow-hidden shadow-xl <%= 'border-2 border-[var(--color-accent)]/30' if room.badge.present? %> fade-in">
-                    <div class="relative h-64 overflow-hidden">
-                        <% if room.photo.attached? %>
-                          <img src="<%= url_for(room.photo) %>" 
-                               alt="<%= room.name %>" 
-                               class="w-full h-full object-cover">
-                        <% else %>
-                          <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80" 
-                               alt="<%= room.name %>" 
-                               class="w-full h-full object-cover">
+                    <div class="relative h-64 overflow-hidden room-gallery" data-room-gallery data-room-name="<%= room.name %>" data-photos="<%= room_photo_urls.to_json %>">
+                        <div class="room-gallery-track flex h-full transition-transform duration-500 ease-out" style="width: <%= room_photo_urls.size * 100 %>%;">
+                          <% room_photo_urls.each do |url| %>
+                            <div class="h-full flex-shrink-0" style="width: <%= 100.0 / room_photo_urls.size %>%;">
+                              <img src="<%= url %>"
+                                   alt="<%= room.name %>"
+                                   class="w-full h-full object-cover cursor-zoom-in"
+                                   data-room-gallery-open>
+                            </div>
+                          <% end %>
+                        </div>
+
+                        <% if room_photo_urls.size > 1 %>
+                          <button type="button" class="room-gallery-nav absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition" data-room-gallery-prev aria-label="Foto anterior">
+                              <i class="fas fa-chevron-left text-xs"></i>
+                          </button>
+                          <button type="button" class="room-gallery-nav absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/60 transition" data-room-gallery-next aria-label="Foto siguiente">
+                              <i class="fas fa-chevron-right text-xs"></i>
+                          </button>
+                          <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10" data-room-gallery-dots>
+                            <% room_photo_urls.each_with_index do |_, i| %>
+                              <span class="w-1.5 h-1.5 rounded-full <%= i.zero? ? 'bg-white' : 'bg-white/40' %> room-gallery-dot transition" data-index="<%= i %>"></span>
+                            <% end %>
+                          </div>
                         <% end %>
                         <% room_offer = @room_offers[room.id] %>
                         <% room_discounted = room_offer&.discounted_price %>
@@ -629,6 +664,27 @@
             </div>
         </div>
     </footer>
+
+    <!-- Room Gallery Modal -->
+    <div id="room-gallery-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4" data-room-gallery-modal>
+        <button type="button" class="absolute top-5 right-5 md:top-6 md:right-6 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-close aria-label="Cerrar galería">
+            <i class="fas fa-times"></i>
+        </button>
+        <button type="button" class="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-modal-prev aria-label="Foto anterior">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button type="button" class="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-room-gallery-modal-next aria-label="Foto siguiente">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <div class="max-w-5xl w-full" data-room-gallery-modal-content>
+            <img src="" alt="" class="w-full max-h-[75vh] object-contain rounded-lg mx-auto" data-room-gallery-modal-image>
+            <div class="text-center mt-4 text-white/80">
+                <span class="font-serif text-lg" data-room-gallery-modal-title></span>
+                <span class="ml-2 text-sm text-white/50" data-room-gallery-modal-counter></span>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Smooth scrolling for navigation links
