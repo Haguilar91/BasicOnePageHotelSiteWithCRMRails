@@ -1,1 +1,3 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<%# Loaded after avo/application.js sets window.Stimulus; see avo_gallery_upload.js %>
+<%= javascript_include_tag "avo_gallery_upload", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
