@@ -1,7 +1,7 @@
 class Avo::Resources::Room < Avo::BaseResource
   self.title = :name
   self.icon = "heroicons/outline/key"
-  self.includes = [:photo_attachment, photos_attachments: :blob]
+  self.includes = [photos_attachments: :blob]
   self.search = {
     query: -> { query.ransack(name_cont: q, description_cont: q).result(distinct: false) }
   }
@@ -23,7 +23,6 @@ class Avo::Resources::Room < Avo::BaseResource
     field :photos, as: :files, is_image: true,
       help: "Fotografías de la habitación (puedes subir varias; se mostrarán como galería en la tarjeta de la habitación). Puedes elegir archivos de varias carpetas en distintos pasos antes de guardar.",
       components: { edit_component: "RoomPhotosUploadEditComponent" }
-    field :photo, as: :file, is_image: true, show_on: :edit, help: "Foto antigua de respaldo, usada solo si no hay fotografías en el campo de arriba"
     field :position, as: :number, help: "Orden de aparición en la página principal (1, 2, 3...)"
   end
 end

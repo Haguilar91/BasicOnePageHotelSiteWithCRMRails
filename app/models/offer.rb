@@ -75,7 +75,7 @@ class Offer < ApplicationRecord
   def display_photo
     return photo if photo.attached?
 
-    room.photo if room_offer? && room&.photo&.attached?
+    room.gallery_photos.first if room_offer? && room.present?
   end
 
   def display_description

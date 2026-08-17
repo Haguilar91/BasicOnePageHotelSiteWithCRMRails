@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @rooms = Room.with_attached_photo.with_attached_photos.order(:position, :id)
+    @rooms = Room.with_attached_photos.order(:position, :id)
     @experiences = Experience.order(:position, :id)
     @features = Feature.order(:position, :id)
     @local_activities = LocalActivity.order(:category, :position)
