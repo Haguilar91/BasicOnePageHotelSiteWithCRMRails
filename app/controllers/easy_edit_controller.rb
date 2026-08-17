@@ -15,7 +15,12 @@ class EasyEditController < ApplicationController
         name: { type: :text, label: "Nombre" },
         badge: { type: :text, label: "Etiqueta" },
         price: { type: :text, label: "Precio" },
-        button_name: { type: :text, label: "Texto del botón" },
+        booking_platform: {
+          type: :select, label: "Plataforma de reserva",
+          options: Room::BOOKING_PLATFORMS.transform_values { |meta| meta[:label] }.invert
+        },
+        booking_url: { type: :text, label: "Enlace de reserva" },
+        button_name: { type: :text, label: "Texto del botón (opcional, usa el de la plataforma si se deja vacío)" },
         description: { type: :textarea, label: "Descripción" },
         features: { type: :textarea, label: "Características (una por línea)" },
         photos: { type: :files, label: "Fotos" }
@@ -29,6 +34,7 @@ class EasyEditController < ApplicationController
         title: { type: :text, label: "Título" },
         badge: { type: :text, label: "Etiqueta" },
         description: { type: :textarea, label: "Descripción" },
+        booking_url: { type: :text, label: "Enlace de reserva (opcional, usa la sección de reservar si se deja vacío)" },
         ticker_description: { type: :textarea, label: "Texto para el ticker" },
         photo: { type: :file, label: "Imagen" }
       }
@@ -68,6 +74,7 @@ class EasyEditController < ApplicationController
       fields: {
         title: { type: :text, label: "Título" },
         description: { type: :textarea, label: "Descripción" },
+        google_maps_url: { type: :text, label: "Enlace de Google Maps" },
         photo: { type: :file, label: "Foto" }
       }
     }

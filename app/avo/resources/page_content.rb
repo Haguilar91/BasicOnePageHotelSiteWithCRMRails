@@ -21,6 +21,15 @@ class Avo::Resources::PageContent < Avo::BaseResource
     field :favicon, as: :file, is_image: true, help: "Favicon del sitio (para registro 'global')"
     field :app_icon, as: :file, is_image: true, help: "Icono de aplicación PWA (para registro 'global')"
     field :images, as: :files, is_image: true, help: "Imágenes o fotografías adjuntas"
+
+    field "Botones de Contacto (CTA)", as: :heading
+
+    field :show_cta_call, as: :boolean, name: "Mostrar botón «Llamar Ahora»",
+      help: "Solo aplica al registro 'global'. Desactívalo para ocultar el botón de llamada en la sección final de reserva, sin perder el número guardado."
+    field :show_cta_whatsapp, as: :boolean, name: "Mostrar botón «Enviar WhatsApp»",
+      help: "Solo aplica al registro 'global'. Desactívalo para ocultar el botón de WhatsApp en la sección final de reserva."
+    field :show_cta_email, as: :boolean, name: "Mostrar botón «Enviar Email»",
+      help: "Solo aplica al registro 'global'. Desactívalo para ocultar el botón de correo en la sección final de reserva."
   end
 end
 

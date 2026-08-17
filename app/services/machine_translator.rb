@@ -12,6 +12,11 @@ class MachineTranslator
   # shows a real error rather than saving the warning text as a "translation".
   WARNING_MARKERS = ["MYMEMORY WARNING", "QUERY LENGTH LIMIT", "INVALID"].freeze
 
+  # Matches a run of decorative emoji (plus the whitespace around them) at
+  # the start/end of a string — used to shield emoji from MyMemory before
+  # translating. See #fetch_translation for why.
+  DECORATIVE_EMOJI_RUN = /[\p{Extended_Pictographic}\u{FE0F}\u{200D}\s]/
+
   Result = Struct.new(:text, :ok, :error, keyword_init: true) do
     alias_method :ok?, :ok
   end
@@ -34,7 +39,33 @@ class MachineTranslator
 
   private
 
+  # MyMemory's top-level `translatedText` is whichever entry in its
+  # translation-memory corpus scored highest overall, not necessarily a
+  # faithful translation of *our* exact string — for short marketing copy
+  # wrapped in decorative emoji (e.g. "🎉 ¡Temporada de Verano!"), a fuzzy
+  # match from someone else's plain-text memory entry routinely outscores
+  # the live translation of our literal query, silently dropping the emoji.
+  # Rather than fight that scoring, leading/trailing emoji are stripped
+  # before the request and stitched back on after — MyMemory only ever
+  # sees (and can only ever mangle) the plain-text core.
   def fetch_translation(text, from, to)
+    leading, core, trailing = split_decorative_emoji(text)
+    return Result.new(text: text, ok: true, error: nil) if core.blank?
+
+    result = fetch_core_translation(core, from, to)
+    return result unless result.ok?
+
+    Result.new(text: [leading, result.text, trailing].compact_blank.join(" "), ok: true, error: nil)
+  end
+
+  def split_decorative_emoji(text)
+    match = text.match(/\A(#{DECORATIVE_EMOJI_RUN}*)(.*?)(#{DECORATIVE_EMOJI_RUN}*)\z/m)
+    return [nil, text, nil] unless match
+
+    [match[1].strip.presence, match[2].strip, match[3].strip.presence]
+  end
+
+  def fetch_core_translation(text, from, to)
     uri = ENDPOINT.dup
     query = { q: text, langpair: "#{from}|#{to}" }
     contact_email = Rails.application.credentials.dig(:mymemory, :contact_email)

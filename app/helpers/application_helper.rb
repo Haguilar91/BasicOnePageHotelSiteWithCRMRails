@@ -28,6 +28,16 @@ module ApplicationHelper
     session[:easy_edit].present? && current_user&.admin?
   end
 
+  # Whether a CTA contact button (:call, :whatsapp, :email) should render.
+  # Controlled from the "global" PageContent record in Avo, so an admin can
+  # hide a channel they don't want to offer (e.g. phone calls) without losing
+  # its configuration — the button markup and its data stay intact either way.
+  def cta_button_enabled?(button)
+    @_page_contents ||= PageContent.includes(:text_translations).index_by(&:key)
+    global = @_page_contents["global"]
+    global.nil? || global.public_send("show_cta_#{button}")
+  end
+
   # Wraps a page_content value with an Easy Edit pencil trigger when edit
   # mode is on; otherwise renders identically to a plain page_content call,
   # so this is safe to use everywhere page_content already is.

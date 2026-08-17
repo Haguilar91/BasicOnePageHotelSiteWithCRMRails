@@ -4,6 +4,7 @@
   <p>Contenido</p>
   <ul>
     <li><a href="#empezar">Cómo entrar al panel</a></li>
+    <li><a href="#easy-edit">Modo Easy Edit (editar directo en el sitio)</a></li>
     <li><a href="#habitaciones">Habitaciones</a></li>
     <li><a href="#ofertas">Ofertas</a></li>
     <li><a href="#contenidos">Textos del sitio (Page contents)</a></li>
@@ -30,11 +31,53 @@
   <%= image_tag "docs/avo-sidebar.png", alt: "Panel de Avo con el menú lateral de secciones" %>
   <figcaption>El panel al entrar, con el menú de secciones a la izquierda.</figcaption>
 </figure>
-<p>En la esquina inferior izquierda está tu cuenta. Haz clic ahí para abrir el menú con enlaces a esta guía ("Docs") y a las Traducciones.</p>
+<p>En la esquina inferior izquierda está tu cuenta. Haz clic ahí para abrir el menú con enlaces a <strong>Easy Edit</strong> (ver siguiente sección), esta guía ("Docs") y las Traducciones.</p>
 <figure>
   <%= image_tag "docs/avo-profile-menu.png", alt: "Menú de cuenta con los enlaces a Guía y Traducciones" %>
   <figcaption>El menú de tu cuenta, con los enlaces a esta guía y a Traducciones.</figcaption>
 </figure>
+
+<h2 id="easy-edit">Modo Easy Edit (editar directo en el sitio)</h2>
+<p><strong>Easy Edit</strong> es una forma más rápida de corregir textos, precios y fotos: en vez de buscar el registro correcto dentro de Avo, editas directamente sobre la página del sitio, viendo el resultado al instante. Es ideal para cambios rápidos; para tareas como crear una habitación nueva, cambiar el orden o los colores del tema, sigue usando Avo como se explica en el resto de esta guía.</p>
+
+<h3>Cómo activarlo</h3>
+<ol>
+  <li>Haz clic en tu cuenta, en la esquina inferior izquierda del panel de Avo.</li>
+  <li>Elige <strong>Easy Edit</strong> en el menú.</li>
+</ol>
+<figure>
+  <%= image_tag "docs/avo-profile-menu.png", alt: "Menú de cuenta con el enlace a Easy Edit" %>
+  <figcaption>El menú de tu cuenta, con el enlace a Easy Edit.</figcaption>
+</figure>
+<p>Esto te lleva a la página principal del sitio con una franja en la parte superior que dice "Easy Edit activado". Mientras esa franja esté visible, el modo de edición está activo.</p>
+
+<h3>Cómo editar</h3>
+<p>Con Easy Edit activado, verás dos tipos de marcas sobre el sitio:</p>
+<ul>
+  <li>Un <strong>contorno punteado dorado</strong> alrededor de títulos, párrafos y otros textos sueltos.</li>
+  <li>Un <strong>ícono de lápiz</strong> (✏️) sobre fotos, tarjetas de habitaciones/ofertas/actividades y algunos botones (por ejemplo, los botones de reserva de cada habitación).</li>
+</ul>
+<figure>
+  <%= image_tag "docs/easy-edit-text.png", alt: "Portada del sitio con textos marcados con contorno punteado en modo Easy Edit" %>
+  <figcaption>Los textos editables se marcan con un contorno punteado.</figcaption>
+</figure>
+<figure>
+  <%= image_tag "docs/easy-edit-pencils.png", alt: "Tarjetas de habitaciones con ícono de lápiz en modo Easy Edit" %>
+  <figcaption>Las fotos y botones muestran un ícono de lápiz en una esquina.</figcaption>
+</figure>
+<p>Haz clic en cualquier texto marcado o en un ícono de lápiz para abrir una ventana con los campos de ese elemento — por ejemplo, al hacer clic en una habitación verás su nombre, precio, etiqueta, descripción, características, plataforma de reserva y fotos, todo en un solo formulario. Cambia lo que necesites y haz clic en <strong>Guardar</strong>; la página se recarga mostrando el cambio ya aplicado.</p>
+<figure>
+  <%= image_tag "docs/easy-edit-modal.png", alt: "Ventana de edición de Easy Edit con los campos de un elemento" %>
+  <figcaption>Al hacer clic se abre una ventana con los campos de ese elemento.</figcaption>
+</figure>
+
+<h3>Qué se puede editar aquí</h3>
+<p>Textos, precios, etiquetas, descripciones, características, enlaces de reserva y de Google Maps, y fotos de: Habitaciones, Ofertas, Experiencias, Características y Qué hacer (actividades). También los textos sueltos del sitio (Page contents), incluyendo los tres botones de la sección final de reserva (Llamar Ahora, WhatsApp, Email).</p>
+<div class="tip"><strong>Cosas que siguen siendo solo de Avo:</strong> crear o borrar registros, el orden (Position), activar/desactivar una oferta o anuncio, las fechas de vigencia, mostrar u ocultar los botones de Llamar/WhatsApp/Email, los colores del tema, la imagen de portada, los anuncios, y los usuarios. Para eso, entra a Avo y sigue las secciones correspondientes de esta guía.</div>
+<p>Easy Edit siempre guarda en <strong>español</strong>, sin importar en qué idioma estés viendo el sitio en ese momento — el inglés se sigue editando por separado en el panel de <a href="#traducciones">Traducciones</a>.</p>
+
+<h3>Cómo desactivarlo</h3>
+<p>Haz clic en <strong>Desactivar</strong>, dentro de la misma franja superior. Los contornos punteados y los íconos de lápiz desaparecen, y el sitio vuelve a verse como lo ve cualquier visitante.</p>
 
 <h2 id="habitaciones">Habitaciones (Rooms)</h2>
 <p>Cada habitación que aparece en la sección "Habitaciones" de la página principal es un registro aquí. Entra a <strong>Rooms</strong> en el menú y elige una habitación para editarla, o crea una nueva con el botón correspondiente.</p>
@@ -107,10 +150,11 @@
   <li><code>address_line</code>, <code>contact_phone</code>, <code>contact_email</code> — los datos de contacto que aparecen en la sección de Ubicación y en el pie de página.</li>
   <li><code>map_iframe_url</code> — el enlace del mapa de Google Maps incrustado.</li>
   <li><code>cta_title</code> / <code>cta_subtitle</code> — el título y subtítulo de la sección final de reserva.</li>
+  <li>La sección final de reserva muestra tres botones: <strong>Llamar Ahora</strong>, <strong>Enviar WhatsApp</strong> y <strong>Enviar Email</strong>. Los tres usan el mismo <code>contact_phone</code> / <code>contact_email</code> de arriba, y cada uno se puede mostrar u ocultar por separado desde el registro <code>global</code> (ver más abajo) sin perder su configuración — por ejemplo, si solo quieres ofrecer WhatsApp, puedes apagar los otros dos y volver a encenderlos cuando quieras.</li>
   <li><code>social_facebook</code>, <code>social_instagram</code>, <code>social_twitter</code>, <code>social_tiktok</code> — enlaces a redes sociales. Si se dejan vacíos, ese ícono no aparece en el pie de página.</li>
   <li><code>site_title</code> — el título que aparece en la pestaña del navegador.</li>
 </ul>
-<p>El registro con clave <code>global</code> es especial: no tiene texto, sino el <strong>logo</strong>, el <strong>favicon</strong> (ícono de la pestaña del navegador) y el <strong>ícono de la app</strong> del hotel.</p>
+<p>El registro con clave <code>global</code> es especial: no tiene texto, sino el <strong>logo</strong>, el <strong>favicon</strong> (ícono de la pestaña del navegador), el <strong>ícono de la app</strong> del hotel, y tres interruptores para mostrar u ocultar cada botón de la sección final de reserva (<strong>Mostrar botón «Llamar Ahora»</strong>, <strong>«Enviar WhatsApp»</strong>, <strong>«Enviar Email»</strong>).</p>
 <figure>
   <%= image_tag "docs/site-location.png", alt: "Sección de Ubicación mostrando dirección, teléfono y correo" %>
   <figcaption>La sección de Ubicación muestra address_line, contact_phone y contact_email.</figcaption>

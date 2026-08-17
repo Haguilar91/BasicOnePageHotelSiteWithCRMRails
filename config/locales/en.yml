@@ -38,6 +38,8 @@ en:
   cta:
     call_now: "Call Now"
     send_email: "Send Email"
+    send_whatsapp: "Send WhatsApp"
+    whatsapp_message: "Hi, I'd like more information about Hotel Mesón del Bosque."
 
   footer:
     quick_links: "Quick Links"

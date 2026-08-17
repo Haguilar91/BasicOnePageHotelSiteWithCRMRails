@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_16_203604) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_17_053025) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -136,6 +136,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_203604) do
     t.text "content_legacy"
     t.datetime "created_at", null: false
     t.string "key"
+    t.boolean "show_cta_call", default: true, null: false
+    t.boolean "show_cta_email", default: true, null: false
+    t.boolean "show_cta_whatsapp", default: true, null: false
     t.string "title"
     t.datetime "updated_at", null: false
   end

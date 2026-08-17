@@ -16,6 +16,13 @@
       <% elsif field_config[:type] == :textarea %>
         <textarea name="record[<%= field %>]" rows="4"
                   class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[var(--color-accent,#b8860b)] focus:outline-none"><%= value %></textarea>
+      <% elsif field_config[:type] == :select %>
+        <select name="record[<%= field %>]"
+                class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[var(--color-accent,#b8860b)] focus:outline-none">
+          <% field_config[:options].each do |label, option_value| %>
+            <option value="<%= option_value %>" <%= "selected" if value.to_s == option_value.to_s %>><%= label %></option>
+          <% end %>
+        </select>
       <% elsif field_config[:type] == :file %>
         <% if value.respond_to?(:attached?) && value.attached? %>
           <img src="<%= url_for(value) %>" class="w-full max-h-40 object-cover rounded-lg mb-2 border border-slate-200">
