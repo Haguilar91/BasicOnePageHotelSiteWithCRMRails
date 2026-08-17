@@ -4,6 +4,7 @@
   <p>Contents</p>
   <ul>
     <li><a href="#getting-started">Getting into the panel</a></li>
+    <li><a href="#easy-edit">Easy Edit mode (edit right on the site)</a></li>
     <li><a href="#rooms">Rooms</a></li>
     <li><a href="#offers">Offers</a></li>
     <li><a href="#page-contents">Site text (Page contents)</a></li>
@@ -30,11 +31,53 @@
   <%= image_tag "docs/avo-sidebar.png", alt: "Avo panel with the sidebar list of sections" %>
   <figcaption>The panel right after signing in, with the section menu on the left.</figcaption>
 </figure>
-<p>Your account is in the bottom-left corner. Click it to open a menu with links to this guide ("Docs") and to Translations.</p>
+<p>Your account is in the bottom-left corner. Click it to open a menu with links to <strong>Easy Edit</strong> (see the next section), this guide ("Docs"), and Translations.</p>
 <figure>
   <%= image_tag "docs/avo-profile-menu.png", alt: "Account menu with links to the guide and Translations" %>
   <figcaption>Your account menu, with links to this guide and Translations.</figcaption>
 </figure>
+
+<h2 id="easy-edit">Easy Edit mode (edit right on the site)</h2>
+<p><strong>Easy Edit</strong> is a faster way to fix text, prices, and photos: instead of hunting for the right record inside Avo, you edit directly on the live site and see the result instantly. It's great for quick tweaks; for tasks like creating a new room, reordering things, or changing theme colors, keep using Avo as explained in the rest of this guide.</p>
+
+<h3>How to turn it on</h3>
+<ol>
+  <li>Click your account, in the bottom-left corner of the Avo panel.</li>
+  <li>Choose <strong>Easy Edit</strong> from the menu.</li>
+</ol>
+<figure>
+  <%= image_tag "docs/avo-profile-menu.png", alt: "Account menu with the Easy Edit link" %>
+  <figcaption>Your account menu, with the Easy Edit link.</figcaption>
+</figure>
+<p>This takes you to the site's homepage with a banner across the top that says "Easy Edit activado" (Easy Edit is on). As long as that banner is visible, edit mode is active.</p>
+
+<h3>How to edit</h3>
+<p>With Easy Edit on, you'll see two kinds of markers over the site:</p>
+<ul>
+  <li>A <strong>dashed gold outline</strong> around titles, paragraphs, and other loose text.</li>
+  <li>A <strong>pencil icon</strong> (✏️) over photos, room/offer/activity cards, and some buttons (for example, each room's booking button).</li>
+</ul>
+<figure>
+  <%= image_tag "docs/easy-edit-text.png", alt: "Site homepage with text marked with a dashed outline in Easy Edit mode" %>
+  <figcaption>Editable text is marked with a dashed outline.</figcaption>
+</figure>
+<figure>
+  <%= image_tag "docs/easy-edit-pencils.png", alt: "Room cards with a pencil icon in Easy Edit mode" %>
+  <figcaption>Photos and buttons show a pencil icon in one corner.</figcaption>
+</figure>
+<p>Click any marked text or a pencil icon to open a window with that element's fields — for example, clicking a room shows its name, price, badge, description, features, booking platform, and photos, all in one form. Change whatever you need and click <strong>Guardar</strong> (Save); the page reloads showing the change already applied.</p>
+<figure>
+  <%= image_tag "docs/easy-edit-modal.png", alt: "Easy Edit editing window with an element's fields" %>
+  <figcaption>Clicking opens a window with that element's fields.</figcaption>
+</figure>
+
+<h3>What you can edit here</h3>
+<p>Text, prices, badges, descriptions, features, booking and Google Maps links, and photos for: Rooms, Offers, Experiences, Features, and What to do (activities). Also the site's loose text (Page contents), including the three buttons in the final booking section (Call Now, WhatsApp, Email).</p>
+<div class="tip"><strong>Still Avo-only:</strong> creating or deleting records, ordering (Position), turning an offer or announcement on/off, validity dates, showing/hiding the Call/WhatsApp/Email buttons, theme colors, the hero image, announcements, and users. For those, go into Avo and follow the matching sections of this guide.</div>
+<p>Easy Edit always saves in <strong>Spanish</strong>, no matter which language you're currently viewing the site in — English is still edited separately in the <a href="#translations">Translations</a> panel.</p>
+
+<h3>How to turn it off</h3>
+<p>Click <strong>Desactivar</strong> (Turn off) inside that same top banner. The dashed outlines and pencil icons disappear, and the site looks the way any visitor sees it.</p>
 
 <h2 id="rooms">Rooms</h2>
 <p>Every room shown in the "Habitaciones" section of the homepage is a record here. Go to <strong>Rooms</strong> in the menu and pick one to edit, or create a new one with the corresponding button.</p>
@@ -107,10 +150,11 @@
   <li><code>address_line</code>, <code>contact_phone</code>, <code>contact_email</code> — the contact details shown in the Location section and in the footer.</li>
   <li><code>map_iframe_url</code> — the embedded Google Maps link.</li>
   <li><code>cta_title</code> / <code>cta_subtitle</code> — the title and subtitle of the final booking call-to-action section.</li>
+  <li>That final section shows three buttons: <strong>Call Now</strong>, <strong>Send WhatsApp</strong>, and <strong>Send Email</strong>. All three use the same <code>contact_phone</code> / <code>contact_email</code> above, and each can be shown or hidden independently from the <code>global</code> record (see below) without losing its setup — for example, if you only want to offer WhatsApp, you can turn the other two off and switch them back on any time.</li>
   <li><code>social_facebook</code>, <code>social_instagram</code>, <code>social_twitter</code>, <code>social_tiktok</code> — social media links. If left blank, that icon simply doesn't show in the footer.</li>
   <li><code>site_title</code> — the title shown in the browser tab.</li>
 </ul>
-<p>The record with key <code>global</code> is special: instead of text, it holds the hotel's <strong>logo</strong>, <strong>favicon</strong> (browser tab icon), and <strong>app icon</strong>.</p>
+<p>The record with key <code>global</code> is special: instead of text, it holds the hotel's <strong>logo</strong>, <strong>favicon</strong> (browser tab icon), <strong>app icon</strong>, and three switches to show or hide each button in the final booking section (<strong>Show "Call Now" button</strong>, <strong>"Send WhatsApp"</strong>, <strong>"Send Email"</strong>).</p>
 <figure>
   <%= image_tag "docs/site-location.png", alt: "Location section showing address, phone, and email" %>
   <figcaption>The Location section renders address_line, contact_phone, and contact_email.</figcaption>

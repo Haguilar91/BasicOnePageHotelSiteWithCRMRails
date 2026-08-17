@@ -16,6 +16,18 @@ Rails.application.routes.draw do
     post "translations/translate", to: "translations#translate", as: :translate_translations
 
     get "docs", to: "docs#index", as: :docs
+
+    # Easy Edit: a WYSIWYG-ish overlay on the live public site (enabled via a
+    # session flag) that lets an admin click a pencil icon on a room/offer/
+    # etc. card and edit its text/photo fields in a modal, without leaving
+    # the page. #enable and #disable just flip the session flag and bounce
+    # back to wherever the admin was; #edit/#update aren't RESTful member
+    # routes on a single resource type — they're dispatched by a
+    # `:resource` param (see EasyEditController::MODELS).
+    get "easy_edit/enable", to: "easy_edit#enable", as: :enable_easy_edit
+    get "easy_edit/disable", to: "easy_edit#disable", as: :disable_easy_edit
+    get "easy_edit/:resource/:id/edit", to: "easy_edit#edit", as: :edit_easy_edit
+    patch "easy_edit/:resource/:id", to: "easy_edit#update", as: :easy_edit
   end
 
   # Path-based locale for the public site (/es, /en) for SEO-visible,
