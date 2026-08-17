@@ -2,5 +2,6 @@
     and just show an upgrade nag otherwise) — Avo::SidebarProfileComponent
     renders this partial unconditionally, so it's the actual place to add a
     custom link to the admin profile dropdown. %>
+<%= render Avo::ProfileItemComponent.new(label: "Easy Edit", path: "/easy_edit/enable", icon: "tabler/outline/edit") %>
 <%= render Avo::ProfileItemComponent.new(label: "Guía / Docs", path: "/docs", icon: "tabler/outline/help-circle") %>
 <%= render Avo::ProfileItemComponent.new(label: "Traducciones", path: "/translations", icon: "tabler/outline/language") %>

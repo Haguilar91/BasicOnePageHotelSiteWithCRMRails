@@ -20,4 +20,26 @@ module ApplicationHelper
     path = "/" if path.blank?
     request.query_string.presence ? "#{path}?#{request.query_string}" : path
   end
+
+  # Whether the "Easy Edit" WYSIWYG overlay should render on this page.
+  # Double-checks admin? on every render (not just at toggle time) so the
+  # overlay disappears immediately if the account is ever demoted mid-session.
+  def easy_edit_mode?
+    session[:easy_edit].present? && current_user&.admin?
+  end
+
+  # Wraps a page_content value with an Easy Edit pencil trigger when edit
+  # mode is on; otherwise renders identically to a plain page_content call,
+  # so this is safe to use everywhere page_content already is.
+  def editable_content(key, default = nil, tag: :span, raw_html: false, css_class: nil)
+    text = page_content(key, default)
+    rendered = raw_html ? raw(text) : text
+    return rendered unless easy_edit_mode?
+
+    content_tag(tag, rendered, class: class_names("easy-edit-editable", css_class), data: {
+      easy_edit_trigger: true,
+      easy_edit_resource: "page_content",
+      easy_edit_id: key
+    })
+  end
 end

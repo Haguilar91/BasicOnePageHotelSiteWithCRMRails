@@ -4,6 +4,9 @@
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_include_tag "announcements", "data-turbo-track": "reload", defer: true %>
   <%= javascript_include_tag "room_gallery", "data-turbo-track": "reload", defer: true %>
+  <% if easy_edit_mode? %>
+    <%= javascript_include_tag "easy_edit", "data-turbo-track": "reload", defer: true %>
+  <% end %>
   <!-- Tailwind CSS (site-wide) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Dynamic Browser Tab Title from Avo -->
@@ -64,6 +67,74 @@
     <% end %>
 
     <%= render "shared/flash" %>
+
+    <% if easy_edit_mode? %>
+      <div class="easy-edit-banner">
+        <i class="fas fa-pen"></i> Easy Edit activado — haz clic en el ícono de lápiz para editar
+        <%= link_to "Desactivar", disable_easy_edit_path, class: "easy-edit-banner__off" %>
+      </div>
+
+      <div class="fixed inset-0 z-[300] hidden items-center justify-center bg-black/60 p-4" data-easy-edit-modal>
+        <div class="bg-white text-slate-900 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" data-easy-edit-modal-content>
+          <div class="flex justify-end">
+            <button type="button" class="text-slate-400 hover:text-slate-700 text-xl leading-none" data-easy-edit-modal-close aria-label="Cerrar">&times;</button>
+          </div>
+          <div data-easy-edit-modal-body></div>
+        </div>
+      </div>
+
+      <style>
+        .easy-edit-banner {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 250;
+          background: #111827;
+          color: #fff;
+          text-align: center;
+          font-size: 0.8rem;
+          padding: 0.4rem 1rem;
+        }
+        .easy-edit-banner__off {
+          margin-left: 0.75rem;
+          color: #fca5a5;
+          text-decoration: underline;
+        }
+        .easy-edit-editable {
+          position: relative;
+          outline: 1px dashed rgba(184, 134, 11, 0.5);
+          outline-offset: 4px;
+          cursor: pointer;
+          border-radius: 0.25rem;
+        }
+        .easy-edit-editable:hover {
+          outline-style: solid;
+          background: rgba(184, 134, 11, 0.08);
+        }
+        .easy-edit-pencil {
+          position: absolute;
+          top: 0.5rem;
+          right: 0.5rem;
+          z-index: 20;
+          width: 2rem;
+          height: 2rem;
+          border-radius: 9999px;
+          background: rgba(17, 24, 39, 0.85);
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.8rem;
+          cursor: pointer;
+          border: none;
+        }
+        .easy-edit-pencil:hover {
+          background: var(--color-accent, #b8860b);
+          color: #111827;
+        }
+      </style>
+    <% end %>
 
     <%= yield %>
   </body>

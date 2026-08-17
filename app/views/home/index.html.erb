@@ -255,7 +255,7 @@
            class="hero min-h-screen flex items-center justify-center"
            style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<%= hero_bg_url %>'); background-size: cover; background-position: center; background-attachment: fixed;">
       <div class="text-center px-4">
-          <p class="text-[var(--color-accent)] tracking-widest mb-4 uppercase text-sm"><%= page_content('home_welcome_title', 'Bienvenido al Hotel Mesón') %></p>
+          <p class="text-[var(--color-accent)] tracking-widest mb-4 uppercase text-sm"><%= editable_content('home_welcome_title', 'Bienvenido al Hotel Mesón') %></p>
           
           <!-- Large Centered Hero Emblem -->
           <% brand_settings = PageContent.find_by(key: 'global') %>
@@ -266,10 +266,10 @@
           <% end %>
 
           <h1 class="text-5xl md:text-7xl font-bold mb-6">
-              <%= raw(page_content('home_hero_title', 'Hotel Mesón')) %>
+              <%= editable_content('home_hero_title', 'Hotel Mesón', raw_html: true, tag: :span) %>
           </h1>
           <p class="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
-              <%= page_content('home_hero_subtitle', 'Una experiencia de lujo en el corazón histórico de Querétaro') %>
+              <%= editable_content('home_hero_subtitle', 'Una experiencia de lujo en el corazón histórico de Querétaro') %>
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -290,7 +290,12 @@
         <!-- FIXED: Changed md:grid-cols-3 to md:grid-cols-2 lg:grid-cols-4 -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <% @features.each do |feature| %>
-              <div class="text-center p-6">
+              <div class="relative text-center p-6">
+                  <% if easy_edit_mode? %>
+                    <button type="button" class="easy-edit-pencil" style="top: 0.25rem; right: 0.25rem;" data-easy-edit-trigger data-easy-edit-resource="feature" data-easy-edit-id="<%= feature.id %>" aria-label="Editar característica">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                  <% end %>
                   <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-[var(--color-bg-tertiary)] flex items-center justify-center transition hover:scale-110 duration-300">
                       <i class="fas fa-<%= feature.icon.presence || 'star' %> text-[var(--color-accent)] text-3xl"></i>
                   </div>
@@ -305,9 +310,9 @@
     <section id="habitaciones" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
-                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= page_content('home_features_title', 'Nuestras Habitaciones') %></p>
-                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= page_content('home_features_subtitle', 'Habitaciones Premium') %></h2>
-                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= page_content('home_rooms_tagline', 'Diseñadas para brindarte la máxima comodidad y tranquilidad') %></p>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= editable_content('home_features_title', 'Nuestras Habitaciones') %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= editable_content('home_features_subtitle', 'Habitaciones Premium', tag: :span) %></h2>
+                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= editable_content('home_rooms_tagline', 'Diseñadas para brindarte la máxima comodidad y tranquilidad') %></p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -356,6 +361,11 @@
                           <div class="absolute top-4 left-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
                               <%= room_badge %>
                           </div>
+                        <% end %>
+                        <% if easy_edit_mode? %>
+                          <button type="button" class="easy-edit-pencil" style="bottom: 0.75rem; right: 0.75rem; top: auto;" data-easy-edit-trigger data-easy-edit-resource="room" data-easy-edit-id="<%= room.id %>" aria-label="Editar habitación">
+                              <i class="fas fa-pen"></i>
+                          </button>
                         <% end %>
                     </div>
                     <div class="p-6">
@@ -430,6 +440,11 @@
                               <%= offer_badge %>
                           </div>
                         <% end %>
+                        <% if easy_edit_mode? %>
+                          <button type="button" class="easy-edit-pencil" style="bottom: 0.75rem; right: 0.75rem; top: auto;" data-easy-edit-trigger data-easy-edit-resource="offer" data-easy-edit-id="<%= offer.id %>" aria-label="Editar oferta">
+                              <i class="fas fa-pen"></i>
+                          </button>
+                        <% end %>
                     </div>
                     <div class="p-6">
                         <h3 class="text-2xl font-serif font-semibold mb-2"><%= offer.display_title %></h3>
@@ -462,14 +477,19 @@
     <section id="servicios" class="py-20 bg-[var(--color-bg-secondary)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 fade-in">
-                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= page_content('services_title', 'Nuestros Servicios') %></p>
-                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= page_content('services_subtitle', 'Experiencias Extraordinarias') %></h2>
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= editable_content('services_title', 'Nuestros Servicios') %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= editable_content('services_subtitle', 'Experiencias Extraordinarias') %></h2>
             </div>
             
             <!-- FIXED: Constrained max-width to 4xl, centered with mx-auto, and reduced to max 2 columns -->
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
                 <% (@experiences.presence || Experience.order(:position, :id)).each_with_index do |exp, idx| %>
-                <div class="testimonial-card p-8 rounded-2xl text-center floating" style="animation-delay: <%= idx * 0.2 %>s;">
+                <div class="relative testimonial-card p-8 rounded-2xl text-center floating" style="animation-delay: <%= idx * 0.2 %>s;">
+                    <% if easy_edit_mode? %>
+                      <button type="button" class="easy-edit-pencil" style="top: 0.5rem; right: 0.5rem;" data-easy-edit-trigger data-easy-edit-resource="experience" data-easy-edit-id="<%= exp.id %>" aria-label="Editar experiencia">
+                          <i class="fas fa-pen"></i>
+                      </button>
+                    <% end %>
                     <% if exp.icon_image.attached? %>
                       <img src="<%= url_for(exp.icon_image) %>" alt="<%= exp.title %>" class="w-16 h-16 mx-auto mb-6 object-contain">
                     <% else %>
@@ -488,8 +508,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 fade-in">
                 <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= t("activities.eyebrow") %></p>
-                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= page_content('home_activities_title', 'Qué hacer en Querétaro') %></h2>
-                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= page_content('home_activities_subtitle', 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.') %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= editable_content('home_activities_title', 'Qué hacer en Querétaro') %></h2>
+                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= editable_content('home_activities_subtitle', 'Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro.') %></p>
             </div>
 
             <% activities_by_category = @local_activities.group_by(&:category) %>
@@ -520,6 +540,11 @@
                                             <img src="<%= url_for(activity.photo) %>" alt="<%= activity.title %>" class="w-full h-full object-cover">
                                         <% else %>
                                             <img src="https://images.unsplash.com/featured/?<%= URI.encode_www_form_component(activity.title) %>&w=1200&q=80" alt="<%= activity.title %>" class="w-full h-full object-cover">
+                                        <% end %>
+                                        <% if easy_edit_mode? %>
+                                          <button type="button" class="easy-edit-pencil" style="top: 0.75rem; right: 0.75rem;" data-easy-edit-trigger data-easy-edit-resource="local_activity" data-easy-edit-id="<%= activity.id %>" aria-label="Editar actividad">
+                                              <i class="fas fa-pen"></i>
+                                          </button>
                                         <% end %>
                                     </div>
                                     <div class="p-8">
@@ -554,30 +579,30 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="fade-in">
                     <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= t("location.eyebrow") %></p>
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= page_content('home_location_title', 'En el Corazón de Querétaro') %></h2>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= editable_content('home_location_title', 'En el Corazón de Querétaro') %></h2>
                     <p class="text-white/80 mb-6">
-                        <%= page_content('home_location_desc', 'Nuestra ubicación privilegiada en el centro histórico de Querétaro te permite disfrutar de la historia, la cultura y el colonialismo en un solo lugar.') %>
+                        <%= editable_content('home_location_desc', 'Nuestra ubicación privilegiada en el centro histórico de Querétaro te permite disfrutar de la historia, la cultura y el colonialismo en un solo lugar.', tag: :span) %>
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-start">
                             <i class="fas fa-map-marker-alt text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold"><%= t("location.address_label") %></h4>
-                                <p class="text-[var(--color-text-muted)]"><%= page_content('address_line', 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México') %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= editable_content('address_line', 'Calle Ignacio Allende Norte 82, Centro Histórico, Querétaro, México') %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <i class="fas fa-phone text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold"><%= t("location.phone_label") %></h4>
-                                <p class="text-[var(--color-text-muted)]"><%= page_content('contact_phone', '+52 442 212 3456') %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= editable_content('contact_phone', '+52 442 212 3456') %></p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <i class="fas fa-envelope text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
                                 <h4 class="font-semibold"><%= t("location.email_label") %></h4>
-                                <p class="text-[var(--color-text-muted)]"><%= page_content('contact_email', 'info@hotelmeson.com') %></p>
+                                <p class="text-[var(--color-text-muted)]"><%= editable_content('contact_email', 'info@hotelmeson.com') %></p>
                             </div>
                         </div>
                     </div>
@@ -600,9 +625,9 @@
     <section id="reservar" class="py-20 relative overflow-hidden">
         <div class="absolute inset-0 bg-[var(--color-accent)]/10"></div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center fade-in">
-            <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= page_content('cta_title', '¡Listo para una experiencia inolvidable?') %></h2>
+            <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= editable_content('cta_title', '¡Listo para una experiencia inolvidable?') %></h2>
             <p class="text-xl text-white/80 mb-8">
-                <%= page_content('cta_subtitle', 'Reserva ahora y disfruta de las mejores tarifas de temporada') %>
+                <%= editable_content('cta_subtitle', 'Reserva ahora y disfruta de las mejores tarifas de temporada') %>
             </p>
             <% cta_phone = page_content('contact_phone', '+52 442 212 3456') %>
             <% cta_email = page_content('contact_email', 'info@hotelmeson.com') %>

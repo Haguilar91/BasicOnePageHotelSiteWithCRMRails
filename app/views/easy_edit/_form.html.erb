@@ -1,0 +1,44 @@
+<h3 class="text-lg font-semibold text-slate-900"><%= config[:record_label].call(record) %></h3>
+<p class="text-sm text-slate-500 mb-5"><%= config[:label] %></p>
+
+<form data-easy-edit-form action="<%= easy_edit_path(resource: resource, id: id) %>" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="_method" value="patch">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+  <% config[:fields].each do |field, field_config| %>
+    <% value = record.public_send(field) %>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-slate-700 mb-1"><%= field_config[:label] %></label>
+
+      <% if field_config[:type] == :text %>
+        <input type="text" name="record[<%= field %>]" value="<%= value %>"
+               class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[var(--color-accent,#b8860b)] focus:outline-none">
+      <% elsif field_config[:type] == :textarea %>
+        <textarea name="record[<%= field %>]" rows="4"
+                  class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[var(--color-accent,#b8860b)] focus:outline-none"><%= value %></textarea>
+      <% elsif field_config[:type] == :file %>
+        <% if value.respond_to?(:attached?) && value.attached? %>
+          <img src="<%= url_for(value) %>" class="w-full max-h-40 object-cover rounded-lg mb-2 border border-slate-200">
+        <% end %>
+        <input type="file" name="record[<%= field %>]" accept="image/*" class="block w-full text-sm text-slate-600">
+      <% elsif field_config[:type] == :files %>
+        <% if value.respond_to?(:attached?) && value.attached? %>
+          <div class="grid grid-cols-4 gap-2 mb-2">
+            <% value.each do |photo| %>
+              <img src="<%= url_for(photo) %>" class="w-full aspect-square object-cover rounded-lg border border-slate-200">
+            <% end %>
+          </div>
+        <% end %>
+        <input type="file" name="record[<%= field %>][]" accept="image/*" multiple class="block w-full text-sm text-slate-600">
+        <p class="text-xs text-slate-400 mt-1">Las fotos nuevas se agregan a las existentes — para quitar una foto usa Avo.</p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <p class="text-sm text-red-600 hidden mb-3" data-easy-edit-error></p>
+
+  <div class="flex justify-end gap-2 mt-2">
+    <button type="button" class="px-4 py-2 rounded-full text-sm text-slate-600 hover:bg-slate-100" data-easy-edit-modal-close>Cancelar</button>
+    <button type="submit" class="px-5 py-2 rounded-full text-sm font-semibold bg-slate-900 text-white hover:bg-slate-700 transition" data-easy-edit-submit>Guardar</button>
+  </div>
+</form>
