@@ -25,11 +25,11 @@ class Avo::Resources::PageContent < Avo::BaseResource
     field "Botones de Contacto (CTA)", as: :heading
 
     field :show_cta_call, as: :boolean, name: "Mostrar botón «Llamar Ahora»",
-      help: "Solo aplica al registro 'global'. Desactívalo para ocultar el botón de llamada en la sección final de reserva, sin perder el número guardado."
+      help: "Solo aplica al registro 'global'. Desactívalo para ocultar el botón de llamada en la sección final de reserva y como opción de canal en el formulario de reserva, sin perder el número guardado."
     field :show_cta_whatsapp, as: :boolean, name: "Mostrar botón «Enviar WhatsApp»",
-      help: "Solo aplica al registro 'global'. Desactívalo para ocultar el botón de WhatsApp en la sección final de reserva."
+      help: "Solo aplica al registro 'global'. Controla si WhatsApp aparece como botón en la sección final de reserva y como opción de canal en el formulario de reserva — es decir, si el formulario puede enviarse por WhatsApp."
     field :show_cta_email, as: :boolean, name: "Mostrar botón «Enviar Email»",
-      help: "Solo aplica al registro 'global'. Desactívalo para ocultar el botón de correo en la sección final de reserva."
+      help: "Solo aplica al registro 'global'. Controla si el correo aparece como botón en la sección final de reserva y como opción de canal en el formulario de reserva — es decir, si el formulario puede enviarse por correo. Activa ambos (WhatsApp y Email) para que el huésped pueda elegir cualquiera de los dos."
   end
 end
 
