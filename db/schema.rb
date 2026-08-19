@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_17_053025) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_19_063246) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -64,6 +64,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_053025) do
     t.string "icon"
     t.integer "position"
     t.string "title_legacy"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "gallery_photos", force: :cascade do |t|
+    t.string "caption_legacy"
+    t.datetime "created_at", null: false
+    t.integer "position", default: 0, null: false
     t.datetime "updated_at", null: false
   end
 

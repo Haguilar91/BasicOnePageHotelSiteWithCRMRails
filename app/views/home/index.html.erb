@@ -193,16 +193,19 @@
         <%= page_content('home_hero_title', 'Hotel Boutique') %>
     </span>
 </a>
-            <div class="hidden md:flex items-center space-x-8">
+            <div class="hidden lg:flex items-center space-x-5 text-sm">
                 <a href="#inicio" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.home") %></a>
                 <a href="#habitaciones" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.rooms") %></a>
                 <% if @offers.present? %>
                   <a href="#ofertas" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.offers") %></a>
                 <% end %>
+                <% if @gallery_photos.present? %>
+                  <a href="#galeria" class="nav-link text-white/80 hover:text-white transition"><%= t("gallery.nav_label") %></a>
+                <% end %>
                 <a href="#servicios" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.services") %></a>
                 <a href="#que-hacer" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.activities") %></a>
                 <a href="#contacto" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.contact") %></a>
-                <div class="flex items-center space-x-2 text-sm">
+                <div class="flex items-center space-x-2 pl-2 border-l border-white/10">
                     <%= link_to t("language_switcher.es"), switch_locale_path("es"), class: "transition #{I18n.locale == :es ? 'text-[var(--color-accent)] font-bold' : 'text-white/60 hover:text-white'}" %>
                     <span class="text-white/30">/</span>
                     <%= link_to t("language_switcher.en"), switch_locale_path("en"), class: "transition #{I18n.locale == :en ? 'text-[var(--color-accent)] font-bold' : 'text-white/60 hover:text-white'}" %>
@@ -216,7 +219,7 @@
 </nav>
 
 <!-- Mobile Bottom Nav -->
-<nav class="mobile-bottom-nav md:hidden fixed bottom-0 inset-x-0 z-50 bg-[var(--color-bg-primary)]/95 backdrop-blur-md border-t border-white/10">
+<nav class="mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-50 bg-[var(--color-bg-primary)]/95 backdrop-blur-md border-t border-white/10">
     <div class="grid grid-cols-7">
         <a href="#inicio" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="inicio">
             <i class="fas fa-home text-lg mb-1"></i>
@@ -473,6 +476,37 @@
     </section>
     <% end %>
 
+    <!-- Hotel Gallery Section (general hotel photos — lobby, terrace, facade,
+         common areas — as opposed to each room's own gallery above) -->
+    <% if @gallery_photos.present? %>
+    <section id="galeria" class="py-20 bg-[var(--color-bg-secondary)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= t("gallery.eyebrow") %></p>
+                <h2 class="text-4xl md:text-5xl font-serif font-bold"><%= t("gallery.heading") %></h2>
+                <p class="text-[var(--color-text-muted)] mt-4 max-w-2xl mx-auto"><%= t("gallery.tagline") %></p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" data-hotel-gallery>
+                <% @gallery_photos.each_with_index do |photo, index| %>
+                  <div class="relative aspect-square rounded-xl overflow-hidden room-card">
+                      <img src="<%= url_for(photo.photo) %>"
+                           alt="<%= photo.caption.presence || t('gallery.heading') %>"
+                           class="w-full h-full object-cover cursor-zoom-in"
+                           data-hotel-gallery-open
+                           data-index="<%= index %>">
+                      <% if photo.caption.present? %>
+                        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2">
+                            <span class="text-xs text-white/90"><%= photo.caption %></span>
+                        </div>
+                      <% end %>
+                  </div>
+                <% end %>
+            </div>
+        </div>
+    </section>
+    <% end %>
+
 <!-- Services Section (Experiencias Extraordinarias) -->
     <section id="servicios" class="py-20 bg-[var(--color-bg-secondary)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -700,6 +734,9 @@
                     <ul class="space-y-2 text-[var(--color-text-muted)]">
                         <li><a href="#inicio" class="hover:text-[var(--color-accent)] transition"><%= t("nav.home") %></a></li>
                         <li><a href="#habitaciones" class="hover:text-[var(--color-accent)] transition"><%= t("nav.rooms") %></a></li>
+                        <% if @gallery_photos.present? %>
+                          <li><a href="#galeria" class="hover:text-[var(--color-accent)] transition"><%= t("gallery.nav_label") %></a></li>
+                        <% end %>
                         <li><a href="#servicios" class="hover:text-[var(--color-accent)] transition"><%= t("nav.services") %></a></li>
                         <li><a href="#contacto" class="hover:text-[var(--color-accent)] transition"><%= t("nav.contact") %></a></li>
                     </ul>
@@ -746,6 +783,28 @@
             <div class="text-center mt-4 text-white/80">
                 <span class="font-serif text-lg" data-room-gallery-modal-title></span>
                 <span class="ml-2 text-sm text-white/50" data-room-gallery-modal-counter></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hotel Gallery Modal (separate from the Room Gallery Modal above so
+         each keeps its own independent open/prev/next state) -->
+    <div id="hotel-gallery-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4" data-hotel-gallery-modal>
+        <button type="button" class="absolute top-5 right-5 md:top-6 md:right-6 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-hotel-gallery-close aria-label="<%= t('gallery.close_gallery') %>">
+            <i class="fas fa-times"></i>
+        </button>
+        <button type="button" class="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-hotel-gallery-modal-prev aria-label="<%= t('gallery.previous_photo') %>">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button type="button" class="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20 transition" data-hotel-gallery-modal-next aria-label="<%= t('gallery.next_photo') %>">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <div class="max-w-5xl w-full">
+            <img src="" alt="" class="w-full max-h-[75vh] object-contain rounded-lg mx-auto" data-hotel-gallery-modal-image>
+            <div class="text-center mt-4 text-white/80">
+                <span class="font-serif text-lg" data-hotel-gallery-modal-title></span>
+                <span class="ml-2 text-sm text-white/50" data-hotel-gallery-modal-counter></span>
             </div>
         </div>
     </div>
@@ -853,5 +912,78 @@ if (mobileNavLinks.length && sections.length) {
         window.requestAnimationFrame(updateActiveNav);
     }, { passive: true });
 }
+
+// Hotel Gallery lightbox — a simple, self-contained modal for the general
+// hotel photos grid (#galeria). Kept independent from room_gallery.js
+// (which drives the per-room card carousels + Room Gallery Modal) so the
+// two features never share click handlers or state.
+(function () {
+    const grid = document.querySelector('[data-hotel-gallery]');
+    const modal = document.querySelector('[data-hotel-gallery-modal]');
+    if (!grid || !modal) return;
+
+    const thumbs = Array.from(grid.querySelectorAll('[data-hotel-gallery-open]'));
+    const photos = thumbs.map(img => ({ src: img.src, alt: img.alt }));
+    const modalImage = modal.querySelector('[data-hotel-gallery-modal-image]');
+    const modalTitle = modal.querySelector('[data-hotel-gallery-modal-title]');
+    const modalCounter = modal.querySelector('[data-hotel-gallery-modal-counter]');
+    const prevBtn = modal.querySelector('[data-hotel-gallery-modal-prev]');
+    const nextBtn = modal.querySelector('[data-hotel-gallery-modal-next]');
+    let index = 0;
+
+    function render() {
+        const photo = photos[index];
+        modalImage.src = photo.src;
+        modalImage.alt = photo.alt;
+        modalTitle.textContent = photo.alt || '';
+        const hasMultiple = photos.length > 1;
+        modalCounter.textContent = hasMultiple ? `${index + 1} / ${photos.length}` : '';
+        prevBtn.classList.toggle('hidden', !hasMultiple);
+        nextBtn.classList.toggle('hidden', !hasMultiple);
+    }
+
+    function open(startIndex) {
+        index = startIndex || 0;
+        render();
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+
+    function showPrev() {
+        index = (index - 1 + photos.length) % photos.length;
+        render();
+    }
+
+    function showNext() {
+        index = (index + 1) % photos.length;
+        render();
+    }
+
+    thumbs.forEach((img, i) => {
+        img.addEventListener('click', () => open(i));
+    });
+
+    modal.querySelector('[data-hotel-gallery-close]').addEventListener('click', close);
+    prevBtn.addEventListener('click', showPrev);
+    nextBtn.addEventListener('click', showNext);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (modal.classList.contains('hidden')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') showPrev();
+        if (e.key === 'ArrowRight') showNext();
+    });
+})();
     </script>
 </div>

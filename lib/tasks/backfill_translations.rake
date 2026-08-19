@@ -13,7 +13,8 @@ namespace :translations do
       Feature => %i[title description],
       LocalActivity => %i[title description],
       Offer => %i[title badge description ticker_description],
-      Announcement => %i[title description]
+      Announcement => %i[title description],
+      GalleryPhoto => %i[caption]
     }
 
     Mobility.with_locale(:es) do
