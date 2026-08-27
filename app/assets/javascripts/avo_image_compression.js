@@ -67,11 +67,64 @@
     }
   }
 
-  async function compressFileList(fileList) {
-    const files = await Promise.all(Array.from(fileList).map(compressImageFile));
+  // Compress one at a time rather than Promise.all — three full-size photos
+  // decoded into canvases simultaneously is a real memory spike on a phone or
+  // an older laptop, and sequential lets us report honest "2 / 3" progress.
+  async function compressFileList(fileList, onProgress) {
+    const input = Array.from(fileList);
+    const out = [];
+    for (let i = 0; i < input.length; i++) {
+      onProgress(i, input.length);
+      out.push(await compressImageFile(input[i]));
+    }
     const transfer = new DataTransfer();
-    files.forEach((file) => transfer.items.add(file));
+    out.forEach((file) => transfer.items.add(file));
     return transfer.files;
+  }
+
+  // While compression is in flight the file input still holds the ORIGINAL
+  // files, so a guest-speed "pick photos, immediately hit Guardar" would post
+  // the full uncompressed batch — the exact slow upload this script exists to
+  // prevent. Disable the form's submit buttons (a disabled button cannot
+  // submit) and belt-and-suspenders block the submit event itself until every
+  // pending compression on that form has settled.
+  const busyForms = new Set();
+
+  function setFormBusy(form, busy) {
+    if (!form) return;
+    if (busy) busyForms.add(form);
+    else busyForms.delete(form);
+
+    form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach((button) => {
+      button.disabled = busy;
+      button.style.opacity = busy ? '0.5' : '';
+      button.style.cursor = busy ? 'progress' : '';
+    });
+  }
+
+  document.addEventListener(
+    'submit',
+    (event) => {
+      if (!busyForms.has(event.target)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    },
+    true
+  );
+
+  // Without this the admin sees nothing at all for several seconds after
+  // picking files — the thumbnail previews only render once we re-dispatch
+  // 'change' — which reads as "it didn't take" and invites a second click.
+  function statusElementFor(input) {
+    const host = input.closest('[data-gallery-upload]') || input.parentElement;
+    let el = host.querySelector('[data-compression-status]');
+    if (!el) {
+      el = document.createElement('p');
+      el.setAttribute('data-compression-status', '');
+      el.style.cssText = 'margin-top:0.5rem;font-size:0.8rem;font-weight:600;';
+      host.appendChild(el);
+    }
+    return el;
   }
 
   document.addEventListener(
@@ -92,11 +145,25 @@
 
       event.stopImmediatePropagation();
 
-      compressFileList(input.files).then((compressed) => {
-        input.files = compressed;
-        input.dataset.imageCompressed = 'true';
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      });
+      const form = input.form;
+      const status = statusElementFor(input);
+      setFormBusy(form, true);
+
+      compressFileList(input.files, (done, total) => {
+        status.textContent = `Optimizando imágenes para subirlas más rápido… (${done + 1} de ${total})`;
+      })
+        .then((compressed) => {
+          input.files = compressed;
+          input.dataset.imageCompressed = 'true';
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          status.textContent = 'Imágenes optimizadas. Ya puedes guardar.';
+        })
+        .catch(() => {
+          status.textContent = '';
+        })
+        .finally(() => {
+          setFormBusy(form, false);
+        });
     },
     true
   );
