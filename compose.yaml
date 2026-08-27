@@ -4,6 +4,9 @@ services:
       context: ~/Sites/Hotel
       args:
         - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+        # Exported by deploy.sh from the invoking account; see the dockerfile.
+        - APP_UID=${APP_UID:-1000}
+        - APP_GID=${APP_GID:-1000}
     container_name: hotel_app
     ports:
       - "8443:80"
