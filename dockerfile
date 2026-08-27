@@ -6,9 +6,11 @@ ENV BUNDLE_WITHOUT="development:test"
 ARG RAILS_MASTER_KEY
 ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
-# Install system dependencies including libvips for image processing
+# libvips backs ActiveStorage's image variants/analysis; imagemagick (the
+# `magick`/`convert` CLI) is what MiniMagick shells out to for CompressImageJob.
 RUN apt-get update && apt-get install -y \
     libvips \
+    imagemagick \
     && rm -rf /var/lib/apt/lists/*
 
 RUN rm -f /etc/service/nginx/down

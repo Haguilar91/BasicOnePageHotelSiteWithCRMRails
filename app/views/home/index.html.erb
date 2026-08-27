@@ -386,7 +386,7 @@
                               <i class="<%= room.booking_button_icon %> mr-2"></i><%= room.booking_button_label %>
                           </a>
                         <% else %>
-                          <button type="button" data-book-modal-open class="block w-full text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
+                          <button type="button" data-book-modal-open data-book-room="<%= room.name %>" class="block w-full text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
                               <i class="fa-solid fa-calendar-check mr-2"></i><%= room.booking_button_label %>
                           </button>
                         <% end %>
@@ -464,7 +464,7 @@
                               <i class="fa-solid fa-calendar-check mr-2"></i><%= t("offers.book_this_offer") %>
                           </a>
                         <% else %>
-                          <button type="button" data-book-modal-open class="block w-full text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
+                          <button type="button" data-book-modal-open data-book-room="<%= offer.room.name if offer.room_offer? && offer.room.present? %>" class="block w-full text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
                               <i class="fa-solid fa-calendar-check mr-2"></i><%= t("offers.book_this_offer") %>
                           </button>
                         <% end %>
@@ -813,29 +813,19 @@
     <% booking_phone = page_content('contact_phone', '+52 442 212 3456') %>
     <% booking_phone_digits = booking_phone.to_s.gsub(/\D/, '') %>
     <% booking_email = page_content('contact_email', 'info@hotelmeson.com') %>
-    <% booking_fb_url = page_content('social_facebook') %>
-    <% booking_messenger_username = booking_fb_url.present? ? booking_fb_url.to_s.sub(%r{\Ahttps?://(www\.)?(facebook|fb)\.com/}i, '').split(/[\/?]/).first.presence : nil %>
-    <%# Which channels the guest may pick from to be contacted back — this also
-        drives how the form itself reaches the hotel (e.g. picking WhatsApp
-        sends a WhatsApp message to the hotel's number; picking Call still
-        can't ring anyone by itself, so it's relayed by email like a written
-        note). WhatsApp/Email/Call ride the same admin "show CTA button"
-        switches (Avo > Contenidos de página > 'global') that gate the
+    <%# Guest fills in their info and stay dates; submitting hands that off as
+        one message to whichever button they pick: WhatsApp (opens a chat to
+        the hotel's number) or Email (opens a mailto to the hotel's stored
+        contact_email). Each button rides the same admin "show CTA button"
+        switch (Avo > Contenidos de página > 'global') that gates the
         matching button in the CTA section. %>
-    <% booking_channels = {} %>
-    <% booking_channels["whatsapp"] = ["fa-brands fa-whatsapp", t("booking.channel_whatsapp")] if cta_button_enabled?(:whatsapp) %>
-    <% booking_channels["email"] = ["fa-solid fa-envelope", t("booking.channel_email")] if cta_button_enabled?(:email) %>
-    <% booking_channels["imessage"] = ["fa-brands fa-apple", t("booking.channel_imessage")] %>
-    <% booking_channels["messenger"] = ["fa-brands fa-facebook-messenger", t("booking.channel_messenger")] if booking_messenger_username.present? %>
-    <% booking_channels["sms"] = ["fa-solid fa-comment-sms", t("booking.channel_sms")] %>
-    <% booking_channels["call"] = ["fa-solid fa-phone", t("booking.channel_call")] if cta_button_enabled?(:call) %>
     <div class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/70 p-4"
          data-booking-modal
          data-phone="<%= booking_phone_digits %>"
          data-email="<%= booking_email %>"
          data-email-subject="<%= t('booking.email_subject') %>"
-         data-messenger-username="<%= booking_messenger_username %>"
          data-message-template="<%= t('booking.message_template') %>"
+         data-room-type-any="<%= t('booking.room_type_any') %>"
          data-locale="<%= I18n.locale %>">
         <div class="bg-[var(--color-bg-secondary)] text-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 md:p-8 relative">
             <button type="button" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition" data-booking-modal-close aria-label="<%= t('booking.close') %>">
@@ -846,6 +836,12 @@
             <p class="text-[var(--color-text-muted)] text-sm mb-6"><%= t('booking.subtitle') %></p>
 
             <form data-booking-form novalidate>
+                <div class="mb-4">
+                    <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-guest-name"><%= t('booking.guest_name_label') %></label>
+                    <input type="text" id="booking-guest-name" name="guest_name" required placeholder="<%= t('booking.guest_name_placeholder') %>"
+                           class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                </div>
+
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-checkin"><%= t('booking.checkin_label') %></label>
@@ -859,20 +855,30 @@
                     </div>
                 </div>
 
-                <div class="mb-4">
-                    <span class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-2"><%= t('booking.channel_label') %></span>
-                    <div class="grid grid-cols-3 gap-2">
-                        <% booking_channels.each_with_index do |(value, (icon_class, label)), index| %>
-                          <label class="flex flex-col items-center justify-center gap-1 rounded-lg border border-white/10 bg-[var(--color-bg-tertiary)] py-3 text-xs text-center cursor-pointer transition hover:border-[var(--color-accent)]/60 has-[:checked]:border-[var(--color-accent)] has-[:checked]:bg-[var(--color-accent)]/10 has-[:checked]:text-[var(--color-accent)]">
-                              <input type="radio" name="channel" value="<%= value %>" class="sr-only" <%= "checked" if index.zero? %>>
-                              <i class="<%= icon_class %> text-lg"></i>
-                              <span><%= label %></span>
-                          </label>
-                        <% end %>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-guests"><%= t('booking.guests_label') %></label>
+                        <select id="booking-guests" name="guests" required
+                                class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                            <% (1..6).each do |n| %>
+                              <option value="<%= n %>" <%= "selected" if n == 2 %>><%= n %></option>
+                            <% end %>
+                            <option value="7+">7+</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-room-type"><%= t('booking.room_type_label') %></label>
+                        <select id="booking-room-type" name="room_type"
+                                class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                            <option value=""><%= t('booking.room_type_any') %></option>
+                            <% (@rooms.presence || Room.order(:position, :id)).each do |room| %>
+                              <option value="<%= room.name %>"><%= room.name %></option>
+                            <% end %>
+                        </select>
                     </div>
                 </div>
 
-                <div class="mb-4" data-booking-phone-group>
+                <div class="mb-6">
                     <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-contact-phone"><%= t('booking.phone_label') %></label>
                     <div class="flex gap-2">
                         <select id="booking-country-code"
@@ -881,22 +887,23 @@
                               <option value="<%= country.dial_code %>" title="<%= country.name %>" <%= "selected" if country.iso2 == "MX" %>><%= country.flag %> <%= country.iso2 %> <%= country.dial_code %></option>
                             <% end %>
                         </select>
-                        <input type="tel" id="booking-contact-phone" placeholder="<%= t('booking.phone_placeholder') %>"
+                        <input type="tel" id="booking-contact-phone" name="contact_phone" required placeholder="<%= t('booking.phone_placeholder') %>"
                                class="flex-1 min-w-0 rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                     </div>
                 </div>
 
-                <div class="mb-4 hidden" data-booking-email-group>
-                    <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-contact-email"><%= t('booking.contact_email_label') %></label>
-                    <input type="email" id="booking-contact-email" placeholder="<%= t('booking.contact_email_placeholder') %>"
-                           class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <% if cta_button_enabled?(:whatsapp) %>
+                      <button type="button" data-booking-send="whatsapp" class="bg-[#25D366] text-white hover:brightness-110 py-3 rounded-full font-bold transition inline-flex items-center justify-center gap-2">
+                          <i class="fa-brands fa-whatsapp"></i> <%= t('booking.submit_whatsapp') %>
+                      </button>
+                    <% end %>
+                    <% if cta_button_enabled?(:email) %>
+                      <button type="button" data-booking-send="email" class="btn-gold text-slate-900 py-3 rounded-full font-bold transition inline-flex items-center justify-center gap-2">
+                          <i class="fas fa-envelope"></i> <%= t('booking.submit_email') %>
+                      </button>
+                    <% end %>
                 </div>
-
-                <p class="text-xs text-[var(--color-text-muted)] mb-4 hidden" data-booking-call-note><%= t('booking.call_note') %></p>
-
-                <button type="submit" class="btn-gold text-slate-900 w-full py-3 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition">
-                    <%= t('booking.submit') %>
-                </button>
             </form>
         </div>
     </div>

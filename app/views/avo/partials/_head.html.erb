@@ -1,3 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<%# Compresses images picked in any file input before avo_gallery_upload.js
+    or Avo/Rails' own upload JS ever sees them — see avo_image_compression.js. %>
+<%= javascript_include_tag "avo_image_compression", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
 <%# Loaded after avo/application.js sets window.Stimulus; see avo_gallery_upload.js %>
 <%= javascript_include_tag "avo_gallery_upload", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
