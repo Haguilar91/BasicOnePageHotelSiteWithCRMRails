@@ -49,7 +49,7 @@ RUN bundle install
 COPY . .
 
 RUN bundle exec rails assets:precompile && \
-    mkdir -p storage log tmp/pids && \
+    mkdir -p storage log tmp/pids vendor/bundle && \
     chown -R app:app /home/app/webapp
 
 EXPOSE 80
