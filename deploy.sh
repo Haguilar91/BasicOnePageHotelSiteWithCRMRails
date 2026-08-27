@@ -13,7 +13,7 @@ echo "Pulling latest code..."
 git pull origin main
 
 echo "Fixing permissions..."
-chmod 777 -Rv .
+chmod 777 -R .
 
 echo "Rebuilding and restarting container..."
 docker compose build
