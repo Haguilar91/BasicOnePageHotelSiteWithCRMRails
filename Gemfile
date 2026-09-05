@@ -12,7 +12,7 @@ gem "puma", ">= 5.0"
 gem "image_processing", "~> 1.2"
 gem "devise"
 gem "devise-i18n"
-gem 'simple_form'
+gem "simple_form"
 
 # Bilingual (ES/EN) content storage for Room/PageContent/Experience/etc.
 gem "mobility", "~> 1.3"
@@ -26,4 +26,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
+
+  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase]
+  gem "rubocop-rails-omakase", require: false
 end

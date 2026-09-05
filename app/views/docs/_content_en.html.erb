@@ -8,6 +8,7 @@
     <li><a href="#rooms">Rooms</a></li>
     <li><a href="#offers">Offers</a></li>
     <li><a href="#page-contents">Site text (Page contents)</a></li>
+    <li><a href="#phones">Phones (Phone numbers)</a></li>
     <li><a href="#experiences">Experiences / Services</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#activities">What to do (local activities)</a></li>
@@ -72,8 +73,13 @@
 </figure>
 
 <h3>What you can edit here</h3>
-<p>Text, prices, badges, descriptions, features, booking and Google Maps links, and photos for: Rooms, Offers, Experiences, Features, and What to do (activities). Also the site's loose text (Page contents), including the three buttons in the final booking section (Call Now, WhatsApp, Email).</p>
-<div class="tip"><strong>Still Avo-only:</strong> creating or deleting records, ordering (Position), turning an offer or announcement on/off, validity dates, showing/hiding the Call/WhatsApp/Email buttons, theme colors, the hero image, announcements, and users. For those, go into Avo and follow the matching sections of this guide.</div>
+<p>Text, prices, badges, descriptions, features, booking and Google Maps links, and photos for: Rooms, Offers, Experiences, Features, What to do (activities), and Phones. Also the site's loose text (Page contents), including the three buttons in the final booking section (Call Now, WhatsApp, Email).</p>
+
+<h3>Deleting an element</h3>
+<p>The editing window has a <strong>red trash button</strong> (🗑️) in its bottom-left corner, apart from Save and Cancel so it can't be hit by accident. It deletes that whole element — the room, offer, activity, or phone line — and asks you to confirm first. <strong>There is no undo</strong>: once confirmed, the record is gone and has to be created again from Avo.</p>
+<p>The site's loose text (Page contents) has no trash button on purpose: those records are looked up by name by the page itself, so deleting one would silently drop a heading or a paragraph off the site. To stop showing one, clear its text instead.</p>
+
+<div class="tip"><strong>Still Avo-only:</strong> creating records, ordering (Position), turning an offer or announcement on/off, validity dates, showing/hiding the Call/WhatsApp/Email buttons, theme colors, the hero image, announcements, and users. For those, go into Avo and follow the matching sections of this guide.</div>
 <p>Easy Edit always saves in <strong>Spanish</strong>, no matter which language you're currently viewing the site in — English is still edited separately in the <a href="#translations">Translations</a> panel.</p>
 
 <h3>How to turn it off</h3>
@@ -143,19 +149,84 @@
   <li><code>services_title</code> / <code>services_subtitle</code> — headings for the Services section.</li>
   <li><code>home_activities_title</code> / <code>home_activities_subtitle</code> — headings for the "What to do" section.</li>
   <li><code>home_location_title</code> / <code>home_location_desc</code> — headings for the Location section.</li>
-  <li><code>address_line</code>, <code>contact_phone</code>, <code>contact_email</code> — the contact details shown in the Location section and in the footer.</li>
+  <li><code>address_line</code>, <code>contact_email</code> — the contact details shown in the Location section and in the footer. <strong>Phone numbers</strong> are no longer edited here: they live in their own <strong>Phones</strong> section (see below). <code>contact_phone</code> is only kept as a fallback, for as long as that section is empty.</li>
   <li><code>map_iframe_url</code> — the embedded Google Maps link.</li>
   <li><code>cta_title</code> / <code>cta_subtitle</code> — the title and subtitle of the final booking call-to-action section.</li>
-  <li>That final section shows three buttons: <strong>Call Now</strong>, <strong>Send WhatsApp</strong>, and <strong>Send Email</strong>. All three use the same <code>contact_phone</code> / <code>contact_email</code> above, and each can be shown or hidden independently from the <code>global</code> record (see below) without losing its setup — for example, if you only want to offer WhatsApp, you can turn the other two off and switch them back on any time.</li>
+  <li>That final section shows three buttons: <strong>Call Now</strong>, <strong>Send WhatsApp</strong>, and <strong>Send Email</strong>. The first two use the lines flagged under <strong>Phones</strong> and the third uses the <code>contact_email</code> above; each can be shown or hidden independently from the <code>global</code> record (see below) without losing its setup — for example, if you only want to offer WhatsApp, you can turn the other two off and switch them back on any time.</li>
   <li><code>social_facebook</code>, <code>social_instagram</code>, <code>social_twitter</code>, <code>social_tiktok</code> — social media links. If left blank, that icon simply doesn't show in the footer.</li>
   <li><code>site_title</code> — the title shown in the browser tab.</li>
 </ul>
 <p>The record with key <code>global</code> is special: instead of text, it holds the hotel's <strong>logo</strong>, <strong>favicon</strong> (browser tab icon), <strong>app icon</strong>, and three switches to show or hide each button in the final booking section (<strong>Show "Call Now" button</strong>, <strong>"Send WhatsApp"</strong>, <strong>"Send Email"</strong>).</p>
 <figure>
   <%= image_tag "docs/site-location.png", alt: "Location section showing address, phone, and email" %>
-  <figcaption>The Location section renders address_line, contact_phone, and contact_email.</figcaption>
+  <figcaption>The Location section renders address_line, the phone lines, and contact_email.</figcaption>
 </figure>
 <div class="tip"><strong>Tip:</strong> if you leave the <em>content</em> field blank, the site shows a built-in default text instead (it won't break or show blank).</div>
+
+<h2 id="phones">Phones (Phone numbers)</h2>
+<p>This is where all of the hotel's numbers live. The section controls <strong>three things</strong> on the site at once:</p>
+<ul>
+  <li>Which number the <strong>Call Now</strong> button in the final booking section dials.</li>
+  <li>Which number the <strong>WhatsApp</strong> buttons and the <em>Check availability</em> form open a chat to.</li>
+  <li>Which numbers are <strong>listed</strong> in the Location section, next to the address and the email.</li>
+</ul>
+<p>Each number is its own record, so you can have as many as you like and decide what each one does.</p>
+
+<h3>Adding a number</h3>
+<ol>
+  <li>Open <strong>Phone numbers</strong> in Avo's sidebar.</li>
+  <li>Click the create button (top right).</li>
+  <li>Fill in <strong>Number</strong> with the full number, <em>including the country code</em>: <code>+52 442 212 3456</code>.</li>
+  <li>Optionally add a <strong>Label</strong> to identify the line (e.g. <code>Recepción</code>). It shows on the page in front of the number.</li>
+  <li>Tick whichever boxes apply: <strong>Línea de WhatsApp</strong> (WhatsApp line), <strong>Línea de llamadas</strong> (call line), <strong>Mostrar en la página</strong> (show on the site).</li>
+  <li>Save. The change shows up on the site straight away.</li>
+</ol>
+<p>If this is the hotel's first and only number, tick all three boxes and you're done.</p>
+
+<h3>The fields</h3>
+<ul>
+  <li><strong>Label</strong> — the name of the line (e.g. Reception, Restaurant, Events). Optional: leave it blank and the page shows just the number.</li>
+  <li><strong>Number</strong> — the number with its country code, e.g. <code>+52 442 212 3456</code>.</li>
+  <li><strong>Línea de WhatsApp</strong> — the number the WhatsApp buttons and the booking form open a chat to.</li>
+  <li><strong>Línea de llamadas</strong> — the number the "Call Now" button dials.</li>
+  <li><strong>Mostrar en la página</strong> — whether the number is listed in the Location section.</li>
+  <li><strong>Position</strong> — the order they're listed in (1, 2, 3…). Lowest first.</li>
+</ul>
+
+<h3>The two special lines</h3>
+<p><strong>Only one number at a time</strong> can be the WhatsApp line, and only one can be the call line (they can be the same number, or two different ones).</p>
+<p>To move either role to a different number, <strong>just tick the box on the new one and save</strong>: it clears itself on the old one. You don't have to go and untick it by hand first.</p>
+<p>The two boxes are independent of each other: flagging the call line on one number never touches another number's WhatsApp line.</p>
+
+<h3>"Show on the site", explained</h3>
+<p>That switch only decides whether the number appears <em>listed</em> in the Location section. The Call and WhatsApp buttons keep using their flagged lines even when it's off.</p>
+<p>It's useful for, say, an internal reservations number that answers WhatsApp but that you'd rather not publish as part of the list.</p>
+
+<h3>Three typical setups</h3>
+<ul>
+  <li><strong>One number for everything</strong> — create a single record and tick all three boxes. Simplest setup, and the same behaviour the site had before this section existed.</li>
+  <li><strong>Mobile for WhatsApp, landline for calls</strong> — create two records. Flag the mobile as the <em>WhatsApp line</em> and the landline as the <em>call line</em>. Leave <em>show on the site</em> on for both so they both appear under Location.</li>
+  <li><strong>Several departments</strong> — on top of the two above, add as many as you want (Restaurant, Events, Spa) with their <em>Label</em>, <em>show on the site</em> on, and the other two boxes off. They get listed under Location without changing where the buttons point.</li>
+</ul>
+
+<h3>How to write the number</h3>
+<p><strong>Always include the country code</strong> (<code>+52</code> for Mexico). WhatsApp needs it: without it the button opens a chat with a wrong or non-existent number.</p>
+<p>Beyond that, write it however reads best. Spaces, dashes and parentheses are purely cosmetic — the site strips them when it builds the links. All three of these work equally well:</p>
+<ul>
+  <li><code>+52 442 212 3456</code></li>
+  <li><code>+52 (442) 212-3456</code></li>
+  <li><code>+524422123456</code></li>
+</ul>
+
+<h3>Editing from Easy Edit</h3>
+<p>With <a href="#easy-edit">Easy Edit</a> on, every number in the Location section gets its own pencil icon, and so do the Call and WhatsApp buttons. Clicking one opens that number's form, checkboxes and all, without going into Avo. The red trash button there deletes the line.</p>
+
+<h3>Translating the line name</h3>
+<p><strong>Label</strong> is translatable text: it shows up in the <a href="#translations">Translations</a> panel under "Teléfonos", so you can put "Front desk" alongside "Recepción". The number itself is not translated.</p>
+
+<div class="tip"><strong>If you don't add any numbers,</strong> the site still works: it falls back to the <code>contact_phone</code> value under Site text, which is where the phone lived before this section existed. As soon as you create the first record here, that fallback stops being used.</div>
+
+<div class="tip"><strong>If the WhatsApp button opens the wrong chat:</strong> check the <strong>Phone numbers</strong> list to see which record has <em>Línea de WhatsApp</em> ticked — remember only one can have it, and ticking it on another number clears it from the previous one automatically.</div>
 
 <h2 id="experiences">Experiences / Services</h2>
 <p>This is the "Extraordinary Experiences" section (restaurant, pool, spa, etc.). Each card has a <strong>title</strong>, a short <strong>description</strong>, and an <strong>icon</strong> — you can pick one from the icon list, or upload a <strong>custom image</strong> (icon_image) to replace it. The <strong>position</strong> field controls the order.</p>

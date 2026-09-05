@@ -151,12 +151,22 @@
             width: 100%;
         }
 
+        /* Solid, not translucent. The bar sits over the hero photo, the room
+           images and the gradient sections, and at 95% alpha + blur it took
+           on whatever happened to be scrolling underneath, so its color
+           shifted down the page. bg-secondary is one step off the page
+           background in every theme, which separates the bar without
+           hard-coding a color that would only suit one theme. */
         .mobile-bottom-nav {
+            background: var(--color-bg-secondary);
+            border-top: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+            box-shadow: 0 -8px 24px color-mix(in srgb, var(--color-bg-primary) 55%, transparent);
             padding-bottom: env(safe-area-inset-bottom, 0);
         }
 
         .mobile-nav-link.active {
             color: var(--color-accent);
+            background: color-mix(in srgb, var(--color-accent) 12%, transparent);
         }
         
         .gradient-text {
@@ -219,7 +229,7 @@
 </nav>
 
 <!-- Mobile Bottom Nav -->
-<nav class="mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-50 bg-[var(--color-bg-primary)]/95 backdrop-blur-md border-t border-white/10">
+<nav class="mobile-bottom-nav lg:hidden fixed bottom-0 inset-x-0 z-50">
     <div class="grid grid-cols-7">
         <a href="#inicio" class="mobile-nav-link flex flex-col items-center justify-center py-2 text-[var(--color-text-muted)] transition" data-mobile-nav="inicio">
             <i class="fas fa-home text-lg mb-1"></i>
@@ -628,8 +638,38 @@
                         <div class="flex items-start">
                             <i class="fas fa-phone text-[var(--color-accent)] mt-1 mr-4"></i>
                             <div>
-                                <h4 class="font-semibold"><%= t("location.phone_label") %></h4>
-                                <p class="text-[var(--color-text-muted)]"><%= editable_content('contact_phone', '+52 442 212 3456') %></p>
+                                <h4 class="font-semibold"><%= listed_phone_numbers.many? ? t("location.phones_label") : t("location.phone_label") %></h4>
+                                <%# Every line the admin marked "Mostrar en la página" (Avo > Teléfonos),
+                                    with a badge on whichever one answers WhatsApp or calls. Falls back to
+                                    the legacy single `contact_phone` value while that table is empty. %>
+                                <% if listed_phone_numbers.any? %>
+                                    <ul class="space-y-1">
+                                        <% listed_phone_numbers.each do |phone| %>
+                                            <li class="relative inline-flex flex-wrap items-center gap-2 w-full">
+                                                <a href="tel:<%= phone.dialable %>" class="text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition">
+                                                    <% if phone.label.present? %><span class="text-white/80"><%= phone.label %>:</span> <% end %><%= phone.number %>
+                                                </a>
+                                                <% if phone.whatsapp_active? %>
+                                                    <span class="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide rounded-full px-2 py-0.5 bg-[#25D366]/15 text-[#25D366]">
+                                                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                                                    </span>
+                                                <% end %>
+                                                <% if phone.call_active? %>
+                                                    <span class="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide rounded-full px-2 py-0.5 bg-[var(--color-accent)]/15 text-[var(--color-accent)]">
+                                                        <i class="fas fa-phone-alt"></i> <%= t("location.call_line_badge") %>
+                                                    </span>
+                                                <% end %>
+                                                <% if easy_edit_mode? %>
+                                                    <button type="button" class="easy-edit-pencil" style="position: static; width: 1.5rem; height: 1.5rem; font-size: 0.65rem;" data-easy-edit-trigger data-easy-edit-resource="phone_number" data-easy-edit-id="<%= phone.id %>" aria-label="Editar teléfono">
+                                                        <i class="fas fa-pen"></i>
+                                                    </button>
+                                                <% end %>
+                                            </li>
+                                        <% end %>
+                                    </ul>
+                                <% else %>
+                                    <p class="text-[var(--color-text-muted)]"><%= editable_content('contact_phone', '+52 442 212 3456') %></p>
+                                <% end %>
                             </div>
                         </div>
                         <div class="flex items-start">
@@ -663,16 +703,18 @@
             <p class="text-xl text-white/80 mb-8">
                 <%= editable_content('cta_subtitle', 'Reserva ahora y disfruta de las mejores tarifas de temporada') %>
             </p>
-            <% cta_phone = page_content('contact_phone', '+52 442 212 3456') %>
+            <%# The "Llamar" and "WhatsApp" buttons each ride their own line (Avo >
+                Teléfonos), so the hotel can publish a mobile for WhatsApp and a
+                landline for calls. Both fall back to `contact_phone`. %>
             <% cta_email = page_content('contact_email', 'info@hotelmeson.com') %>
             <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
               <% if cta_button_enabled?(:call) %>
                 <div class="relative inline-block">
-                  <a href="tel:<%= cta_phone.gsub(/[^\d+]/, '') %>" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
+                  <a href="tel:<%= PhoneNumber.dialable(call_phone) %>" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
                       <i class="fas fa-phone-alt mr-2"></i> <%= t("cta.call_now") %>
                   </a>
                   <% if easy_edit_mode? %>
-                    <button type="button" class="easy-edit-pencil" style="position: absolute; top: -0.5rem; right: -0.5rem; bottom: auto;" data-easy-edit-trigger data-easy-edit-resource="page_content" data-easy-edit-id="contact_phone" aria-label="Editar teléfono de contacto">
+                    <button type="button" class="easy-edit-pencil" style="position: absolute; top: -0.5rem; right: -0.5rem; bottom: auto;" data-easy-edit-trigger data-easy-edit-resource="<%= PhoneNumber.call_line ? 'phone_number' : 'page_content' %>" data-easy-edit-id="<%= PhoneNumber.call_line&.id || 'contact_phone' %>" aria-label="Editar teléfono de contacto">
                         <i class="fas fa-pen"></i>
                     </button>
                   <% end %>
@@ -684,7 +726,7 @@
                       <i class="fa-brands fa-whatsapp mr-2"></i> <%= t("cta.send_whatsapp") %>
                   </button>
                   <% if easy_edit_mode? %>
-                    <button type="button" class="easy-edit-pencil" style="position: absolute; top: -0.5rem; right: -0.5rem; bottom: auto;" data-easy-edit-trigger data-easy-edit-resource="page_content" data-easy-edit-id="contact_phone" aria-label="Editar número de WhatsApp">
+                    <button type="button" class="easy-edit-pencil" style="position: absolute; top: -0.5rem; right: -0.5rem; bottom: auto;" data-easy-edit-trigger data-easy-edit-resource="<%= PhoneNumber.whatsapp_line ? 'phone_number' : 'page_content' %>" data-easy-edit-id="<%= PhoneNumber.whatsapp_line&.id || 'contact_phone' %>" aria-label="Editar número de WhatsApp">
                         <i class="fas fa-pen"></i>
                     </button>
                   <% end %>
@@ -810,8 +852,8 @@
     </div>
 
     <!-- Booking / Check Availability Modal -->
-    <% booking_phone = page_content('contact_phone', '+52 442 212 3456') %>
-    <% booking_phone_digits = booking_phone.to_s.gsub(/\D/, '') %>
+    <%# wa.me only accepts digits, so strip everything else off the WhatsApp line. %>
+    <% booking_phone_digits = PhoneNumber.digits(whatsapp_phone) %>
     <% booking_email = page_content('contact_email', 'info@hotelmeson.com') %>
     <%# Guest fills in their info and stay dates; submitting hands that off as
         one message to whichever button they pick: WhatsApp (opens a chat to

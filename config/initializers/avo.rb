@@ -3,10 +3,10 @@
 Avo.configure do |config|
   ## == Routing ==
 
-  config.root_path = '/avo'
+  config.root_path = "/avo"
   # used only when you have custom `map` configuration in your config.ru
   # config.prefix_path = "/internal"
-  #config.favicon = "/"
+  # config.favicon = "/"
   # Where should the user be redirected when visiting the `/avo` url
   # config.home_path = nil
   ## == Licensing ==
@@ -19,8 +19,8 @@ Avo.configure do |config|
 
   ## == Authentication ==
   config.current_user_method = :current_user
-  
-  # Add a profile menu with a Logout link that calls Devise's sign_out route.
+
+# Add a profile menu with a Logout link that calls Devise's sign_out route.
 # Avo evaluates this in the context of Avo controllers, so we use
 # Rails route helpers to ensure the path is available.
 
@@ -31,7 +31,7 @@ end
 
 
   ## == Authorization ==
-  #config.is_admin_method = :admin?
+  # config.is_admin_method = :admin?
   # config.is_developer_method = :is_developer
   # config.authorization_methods = {
   #   index: 'index?',
@@ -45,7 +45,7 @@ end
   # }
   # config.raise_error_on_missing_policy = false
 
-  #config.authorization_client = :pundit
+  # config.authorization_client = :pundit
   # config.explicit_authorization = true
 
 
@@ -178,17 +178,17 @@ end
     logomark_dark: "/icon-dark.svg",
     favicon: "/favicon.ico",
     favicon_dark: "/favicon-dark.ico",
-    lock: [:scheme, :neutral, :accent],
-    neutrals: [:brand, :neutral, :slate, :olive],
-    accents: [:brand, :red, :blue, :sky, :purple],
+    lock: [ :scheme, :neutral, :accent ],
+    neutrals: [ :brand, :neutral, :slate, :olive ],
+    accents: [ :brand, :red, :blue, :sky, :purple ],
     mode: :static,
     neutral: :brand,
     accent: :brand,
     scheme: :auto,
     persistence: :database,
     placeholder: "/placeholder.svg",
-    chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
-    load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },
+    chart_colors: [ "#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8" ],
+    load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} }
   }
 
   ## == Breadcrumbs ==
@@ -199,6 +199,4 @@ end
   # config.profile_menu = -> {
   #   link "Profile", path: "/avo/profile", icon: "tabler/outline/user-circle"
   # }
-
-
 end

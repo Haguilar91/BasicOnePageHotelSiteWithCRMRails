@@ -1,0 +1,32 @@
+# Omakase Ruby styling for Rails — the same defaults `rails new` generates,
+# adopted whole. The gem's README is explicit that these "aren't right or
+# wrong, but merely represent the idiosyncratic aesthetic sensibilities of
+# Rails' creator", and invites projects to resolve disagreements in their own
+# .rubocop.yml rather than upstream. We take it as-is; the only carve-out is
+# the data-table exclusion below.
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  Exclude:
+    - "vendor/**/*"
+    - "node_modules/**/*"
+    - "tmp/**/*"
+    - "storage/**/*"
+    - "bin/**/*"
+    - "db/schema.rb"
+
+# Omakase wants `[ :a, :b ]` over `[:a, :b]`, and that's fine for code — but
+# CountryCallingCode::RAW is a 195-row static reference table of
+# [iso2, dial_code, name] triples, not code anyone reads or edits by hand.
+# Enforcing it there was 392 of the repo's 478 offenses for this cop (82%)
+# and would have doubled the width of every row for no benefit. Omakase
+# itself excludes "data/**/*" from every cop for exactly this reason; this
+# table just happens to live in app/models because it's wrapped in a class.
+Layout/SpaceInsideArrayLiteralBrackets:
+  Exclude:
+    - "app/models/country_calling_code.rb"

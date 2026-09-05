@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
-  devise_for :users, skip: [:registration]
+  devise_for :users, skip: [ :registration ]
 
   # Everything that can change site content lives behind login. Not
   # locale-scoped — internal tools, no public/SEO surface, and Avo's own UI
   # is already Spanish-only (config.locale = :es).
   authenticate :user do
-    mount Avo::Engine => '/avo'
+    mount Avo::Engine => "/avo"
 
     # Not a standard `resources :translations` — #update saves a whole batch
     # of records across multiple models in one submit (see
@@ -23,11 +23,14 @@ Rails.application.routes.draw do
     # the page. #enable and #disable just flip the session flag and bounce
     # back to wherever the admin was; #edit/#update aren't RESTful member
     # routes on a single resource type — they're dispatched by a
-    # `:resource` param (see EasyEditController::MODELS).
+    # `:resource` param (see EasyEditController::MODELS). #destroy shares
+    # that path and deletes the record, but only for resources flagged
+    # `deletable: true` in MODELS.
     get "easy_edit/enable", to: "easy_edit#enable", as: :enable_easy_edit
     get "easy_edit/disable", to: "easy_edit#disable", as: :disable_easy_edit
     get "easy_edit/:resource/:id/edit", to: "easy_edit#edit", as: :edit_easy_edit
     patch "easy_edit/:resource/:id", to: "easy_edit#update", as: :easy_edit
+    delete "easy_edit/:resource/:id", to: "easy_edit#destroy"
   end
 
   # Path-based locale for the public site (/es, /en) for SEO-visible,
@@ -38,7 +41,7 @@ Rails.application.routes.draw do
     # Public read-only pages (promos visitors can browse). All writes for
     # these records happen through Avo, which is why only index/show are
     # exposed here.
-    resources :announcements, only: [:index, :show]
+    resources :announcements, only: [ :index, :show ]
 
     get "home/index"
     # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

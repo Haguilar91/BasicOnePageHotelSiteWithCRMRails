@@ -37,6 +37,8 @@ en:
     eyebrow: "Location"
     address_label: "Address"
     phone_label: "Phone"
+    phones_label: "Phones"
+    call_line_badge: "Calls"
     email_label: "Email"
 
   cta:

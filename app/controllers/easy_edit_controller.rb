@@ -5,10 +5,17 @@
 # posts to #update via AJAX. Scoped deliberately to text + photo fields only
 # (matching the request this was built for); ordering, booking config,
 # dates, and toggles stay Avo-only.
+#
+# Resources marked `deletable: true` also get a red trash button in the
+# modal, which removes the record outright (see #destroy). PageContent is
+# deliberately *not* deletable — its rows are keyed site copy that the
+# templates look up by name, so deleting one silently drops a heading or a
+# paragraph off the page with no way to get it back from this UI.
 class EasyEditController < ApplicationController
   MODELS = {
     "room" => {
       model: Room,
+      deletable: true,
       label: "Habitación",
       record_label: ->(r) { Mobility.with_locale(:es) { r.name }.presence || "Room ##{r.id}" },
       fields: {
@@ -28,6 +35,7 @@ class EasyEditController < ApplicationController
     },
     "offer" => {
       model: Offer,
+      deletable: true,
       label: "Oferta",
       record_label: ->(r) { Mobility.with_locale(:es) { r.title }.presence || "Offer ##{r.id}" },
       fields: {
@@ -50,6 +58,7 @@ class EasyEditController < ApplicationController
     },
     "experience" => {
       model: Experience,
+      deletable: true,
       label: "Experiencia",
       record_label: ->(r) { Mobility.with_locale(:es) { r.title }.presence || "Experience ##{r.id}" },
       fields: {
@@ -60,6 +69,7 @@ class EasyEditController < ApplicationController
     },
     "feature" => {
       model: Feature,
+      deletable: true,
       label: "Característica",
       record_label: ->(r) { Mobility.with_locale(:es) { r.title }.presence || "Feature ##{r.id}" },
       fields: {
@@ -67,8 +77,23 @@ class EasyEditController < ApplicationController
         description: { type: :textarea, label: "Descripción" }
       }
     },
+    "phone_number" => {
+      model: PhoneNumber,
+      deletable: true,
+      label: "Teléfono",
+      record_label: ->(r) { Mobility.with_locale(:es) { r.label }.presence || r.number },
+      fields: {
+        label: { type: :text, label: "Nombre de la línea (ej. Recepción)" },
+        number: { type: :text, label: "Número" },
+        whatsapp_active: { type: :boolean, label: "Línea de WhatsApp (solo una)" },
+        call_active: { type: :boolean, label: "Línea de llamadas (solo una)" },
+        visible: { type: :boolean, label: "Mostrar en la página" },
+        position: { type: :number, label: "Orden" }
+      }
+    },
     "local_activity" => {
       model: LocalActivity,
+      deletable: true,
       label: "Actividad",
       record_label: ->(r) { Mobility.with_locale(:es) { r.title }.presence || "Activity ##{r.id}" },
       fields: {
@@ -81,8 +106,8 @@ class EasyEditController < ApplicationController
   }.freeze
 
   before_action :require_admin!
-  before_action :load_resource_config, only: [:edit, :update]
-  before_action :load_record, only: [:edit, :update]
+  before_action :load_resource_config, only: [ :edit, :update, :destroy ]
+  before_action :load_record, only: [ :edit, :update, :destroy ]
 
   layout false
 
@@ -126,6 +151,10 @@ class EasyEditController < ApplicationController
         when :files
           files = Array(params[:record][field.to_s]).reject(&:blank?)
           @record.public_send(field).attach(files) if files.any?
+        when :boolean
+          # The form pairs every checkbox with a hidden "0", so an unchecked
+          # box still submits and can actually turn a flag off.
+          @record.public_send("#{field}=", ActiveModel::Type::Boolean.new.cast(params[:record][field.to_s]))
         else
           @record.public_send("#{field}=", params[:record][field.to_s])
         end
@@ -136,6 +165,24 @@ class EasyEditController < ApplicationController
       else
         render json: { ok: false, errors: @record.errors.full_messages }, status: :unprocessable_entity
       end
+    end
+  end
+
+  # Deleting is opt-in per resource (`deletable: true`) — see the note at the
+  # top of this file for why PageContent is excluded. The modal asks for
+  # confirmation before this is ever called; the guard here is what actually
+  # enforces it, since the request can be replayed by hand.
+  def destroy
+    unless @config[:deletable]
+      return render json: { ok: false, errors: [ "Este elemento no se puede eliminar desde Easy Edit." ] },
+        status: :forbidden
+    end
+
+    if @record.destroy
+      render json: { ok: true }
+    else
+      render json: { ok: false, errors: @record.errors.full_messages.presence || [ "No se pudo eliminar." ] },
+        status: :unprocessable_entity
     end
   end
 

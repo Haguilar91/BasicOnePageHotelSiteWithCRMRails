@@ -28,6 +28,34 @@ module ApplicationHelper
     session[:easy_edit].present? && current_user&.admin?
   end
 
+  # --- Phone lines -------------------------------------------------------
+  #
+  # The hotel's numbers live in the PhoneNumber table (Avo > Teléfonos): one
+  # row can be flagged as the WhatsApp line, another as the line the "Llamar
+  # ahora" button dials, and any of them can be listed in the contact
+  # section. All three helpers fall back to the legacy `contact_phone`
+  # PageContent value when the table is empty, so a site that hasn't had its
+  # numbers entered yet renders exactly as it did before.
+
+  DEFAULT_PHONE = "+52 442 212 3456"
+
+  # Every number to list publicly, in admin-defined order. Empty until an
+  # admin adds rows — the contact section falls back to `contact_phone`
+  # then, so it is never blank.
+  def listed_phone_numbers
+    @_listed_phone_numbers ||= PhoneNumber.listed.includes(:string_translations).to_a
+  end
+
+  # The number WhatsApp links open a chat to.
+  def whatsapp_phone
+    @_whatsapp_phone ||= PhoneNumber.whatsapp_line&.number.presence || page_content("contact_phone", DEFAULT_PHONE)
+  end
+
+  # The number the "Llamar ahora" button dials.
+  def call_phone
+    @_call_phone ||= PhoneNumber.call_line&.number.presence || page_content("contact_phone", DEFAULT_PHONE)
+  end
+
   # Whether a CTA contact button (:call, :whatsapp, :email) should render.
   # Controlled from the "global" PageContent record in Avo, so an admin can
   # hide a channel they don't want to offer (e.g. phone calls) without losing

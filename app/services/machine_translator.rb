@@ -10,7 +10,7 @@ class MachineTranslator
   # invalid request), embedding a warning string inside translatedText
   # instead of a clean error status — these markers catch that so the panel
   # shows a real error rather than saving the warning text as a "translation".
-  WARNING_MARKERS = ["MYMEMORY WARNING", "QUERY LENGTH LIMIT", "INVALID"].freeze
+  WARNING_MARKERS = [ "MYMEMORY WARNING", "QUERY LENGTH LIMIT", "INVALID" ].freeze
 
   # Matches a run of decorative emoji (plus the whitespace around them) at
   # the start/end of a string — used to shield emoji from MyMemory before
@@ -28,7 +28,7 @@ class MachineTranslator
   def translate(text, from:, to:)
     return Result.new(text: "", ok: true, error: nil) if text.blank?
 
-    cache_key = ["machine_translator", from, to, text]
+    cache_key = [ "machine_translator", from, to, text ]
     cached = Rails.cache.read(cache_key)
     return Result.new(text: cached, ok: true, error: nil) if cached
 
@@ -55,14 +55,14 @@ class MachineTranslator
     result = fetch_core_translation(core, from, to)
     return result unless result.ok?
 
-    Result.new(text: [leading, result.text, trailing].compact_blank.join(" "), ok: true, error: nil)
+    Result.new(text: [ leading, result.text, trailing ].compact_blank.join(" "), ok: true, error: nil)
   end
 
   def split_decorative_emoji(text)
     match = text.match(/\A(#{DECORATIVE_EMOJI_RUN}*)(.*?)(#{DECORATIVE_EMOJI_RUN}*)\z/m)
-    return [nil, text, nil] unless match
+    return [ nil, text, nil ] unless match
 
-    [match[1].strip.presence, match[2].strip, match[3].strip.presence]
+    [ match[1].strip.presence, match[2].strip, match[3].strip.presence ]
   end
 
   def fetch_core_translation(text, from, to)

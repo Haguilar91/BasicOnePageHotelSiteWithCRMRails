@@ -41,7 +41,7 @@ module HotelMeson
     config.generators.system_tests = nil
 
     # Bilingual site support (see config/locales/es.yml, en.yml).
-    config.i18n.available_locales = [:es, :en]
+    config.i18n.available_locales = [ :es, :en ]
     config.i18n.default_locale = :es
   end
 end

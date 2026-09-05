@@ -11,15 +11,15 @@ class LocalActivity < ApplicationRecord
   # below, so existing rows and the Spanish-only Avo admin form don't need
   # to change.
   CATEGORIES = [
-    'Restaurantes',
-    'Puntos de Interés',
-    'Tours'
+    "Restaurantes",
+    "Puntos de Interés",
+    "Tours"
   ].freeze
 
   CATEGORY_I18N_KEYS = {
-    'Restaurantes' => :restaurants,
-    'Puntos de Interés' => :points_of_interest,
-    'Tours' => :tours
+    "Restaurantes" => :restaurants,
+    "Puntos de Interés" => :points_of_interest,
+    "Tours" => :tours
   }.freeze
 
   validates :title, :category, :description, :google_maps_url, presence: true

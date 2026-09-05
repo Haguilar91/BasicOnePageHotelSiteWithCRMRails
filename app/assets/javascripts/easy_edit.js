@@ -3,7 +3,9 @@
 // to open a modal with a small form for that record's text/photo fields.
 // Saving posts via fetch (multipart, so photo uploads work) and reloads the
 // page on success so every place that value appears (e.g. a page_content
-// key reused in both the hero and the footer) stays in sync.
+// key reused in both the hero and the footer) stays in sync. The modal also
+// carries a red trash button for deletable resources — same fetch-and-reload
+// flow, behind a confirm().
 document.addEventListener('DOMContentLoaded', function () {
   const modal = document.querySelector('[data-easy-edit-modal]');
   if (!modal) return;
@@ -64,6 +66,39 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Deleting only appears for resources flagged `deletable: true` server-side
+  // (EasyEditController::MODELS), and the controller re-checks that flag — the
+  // confirm() here is the guard rail for the admin, not the security boundary.
+  async function deleteRecord(button) {
+    const form = button.closest('[data-easy-edit-form]');
+    const errorEl = form.querySelector('[data-easy-edit-error]');
+    if (!window.confirm(button.dataset.easyEditDeleteConfirm || '¿Eliminar este elemento?')) return;
+
+    errorEl.classList.add('hidden');
+    button.disabled = true;
+
+    try {
+      const response = await fetch(button.dataset.easyEditDeleteUrl, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-Token': csrfToken, Accept: 'application/json' }
+      });
+      const data = await response.json();
+
+      if (response.ok && data.ok) {
+        window.location.reload();
+        return;
+      }
+
+      errorEl.textContent = (data.errors || [data.error]).filter(Boolean).join(', ') || 'No se pudo eliminar.';
+      errorEl.classList.remove('hidden');
+    } catch (e) {
+      errorEl.textContent = 'No se pudo eliminar. Revisa tu conexión.';
+      errorEl.classList.remove('hidden');
+    } finally {
+      button.disabled = false;
+    }
+  }
+
   document.addEventListener('click', (e) => {
     const trigger = e.target.closest('[data-easy-edit-trigger]');
     if (trigger) {
@@ -75,6 +110,12 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   modal.addEventListener('click', (e) => {
+    const deleteButton = e.target.closest('[data-easy-edit-delete]');
+    if (deleteButton) {
+      deleteRecord(deleteButton);
+      return;
+    }
+
     if (e.target === modal || e.target.closest('[data-easy-edit-modal-close]')) {
       closeModal();
     }

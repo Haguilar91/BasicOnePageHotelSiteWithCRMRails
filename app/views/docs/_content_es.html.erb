@@ -8,6 +8,7 @@
     <li><a href="#habitaciones">Habitaciones</a></li>
     <li><a href="#ofertas">Ofertas</a></li>
     <li><a href="#contenidos">Textos del sitio (Page contents)</a></li>
+    <li><a href="#telefonos">Teléfonos (Phone numbers)</a></li>
     <li><a href="#experiencias">Experiencias / Servicios</a></li>
     <li><a href="#caracteristicas">Características</a></li>
     <li><a href="#que-hacer">Qué hacer (actividades locales)</a></li>
@@ -72,8 +73,13 @@
 </figure>
 
 <h3>Qué se puede editar aquí</h3>
-<p>Textos, precios, etiquetas, descripciones, características, enlaces de reserva y de Google Maps, y fotos de: Habitaciones, Ofertas, Experiencias, Características y Qué hacer (actividades). También los textos sueltos del sitio (Page contents), incluyendo los tres botones de la sección final de reserva (Llamar Ahora, WhatsApp, Email).</p>
-<div class="tip"><strong>Cosas que siguen siendo solo de Avo:</strong> crear o borrar registros, el orden (Position), activar/desactivar una oferta o anuncio, las fechas de vigencia, mostrar u ocultar los botones de Llamar/WhatsApp/Email, los colores del tema, la imagen de portada, los anuncios, y los usuarios. Para eso, entra a Avo y sigue las secciones correspondientes de esta guía.</div>
+<p>Textos, precios, etiquetas, descripciones, características, enlaces de reserva y de Google Maps, y fotos de: Habitaciones, Ofertas, Experiencias, Características, Qué hacer (actividades) y Teléfonos. También los textos sueltos del sitio (Page contents), incluyendo los tres botones de la sección final de reserva (Llamar Ahora, WhatsApp, Email).</p>
+
+<h3>Cómo borrar un elemento</h3>
+<p>La ventana de edición tiene un <strong>botón rojo de basurero</strong> (🗑️) en su esquina inferior izquierda, separado de Guardar y Cancelar para que no se presione por accidente. Borra ese elemento completo — la habitación, oferta, actividad o línea telefónica — y te pide confirmar antes. <strong>No se puede deshacer</strong>: una vez confirmado, el registro desaparece y hay que volver a crearlo desde Avo.</p>
+<p>Los textos sueltos del sitio (Page contents) no tienen basurero a propósito: la página los busca por su nombre, así que borrar uno haría desaparecer en silencio un título o un párrafo del sitio. Para dejar de mostrar uno, vacía su texto en lugar de borrarlo.</p>
+
+<div class="tip"><strong>Cosas que siguen siendo solo de Avo:</strong> crear registros, el orden (Position), activar/desactivar una oferta o anuncio, las fechas de vigencia, mostrar u ocultar los botones de Llamar/WhatsApp/Email, los colores del tema, la imagen de portada, los anuncios, y los usuarios. Para eso, entra a Avo y sigue las secciones correspondientes de esta guía.</div>
 <p>Easy Edit siempre guarda en <strong>español</strong>, sin importar en qué idioma estés viendo el sitio en ese momento — el inglés se sigue editando por separado en el panel de <a href="#traducciones">Traducciones</a>.</p>
 
 <h3>Cómo desactivarlo</h3>
@@ -143,19 +149,84 @@
   <li><code>services_title</code> / <code>services_subtitle</code> — encabezados de la sección de Servicios.</li>
   <li><code>home_activities_title</code> / <code>home_activities_subtitle</code> — encabezados de la sección "Qué hacer".</li>
   <li><code>home_location_title</code> / <code>home_location_desc</code> — encabezados de la sección de Ubicación.</li>
-  <li><code>address_line</code>, <code>contact_phone</code>, <code>contact_email</code> — los datos de contacto que aparecen en la sección de Ubicación y en el pie de página.</li>
+  <li><code>address_line</code>, <code>contact_email</code> — los datos de contacto que aparecen en la sección de Ubicación y en el pie de página. Los <strong>teléfonos</strong> ya no se editan aquí: viven en su propia sección <strong>Teléfonos</strong> (ver más abajo). <code>contact_phone</code> se sigue usando solo como respaldo, mientras esa sección esté vacía.</li>
   <li><code>map_iframe_url</code> — el enlace del mapa de Google Maps incrustado.</li>
   <li><code>cta_title</code> / <code>cta_subtitle</code> — el título y subtítulo de la sección final de reserva.</li>
-  <li>La sección final de reserva muestra tres botones: <strong>Llamar Ahora</strong>, <strong>Enviar WhatsApp</strong> y <strong>Enviar Email</strong>. Los tres usan el mismo <code>contact_phone</code> / <code>contact_email</code> de arriba, y cada uno se puede mostrar u ocultar por separado desde el registro <code>global</code> (ver más abajo) sin perder su configuración — por ejemplo, si solo quieres ofrecer WhatsApp, puedes apagar los otros dos y volver a encenderlos cuando quieras.</li>
+  <li>La sección final de reserva muestra tres botones: <strong>Llamar Ahora</strong>, <strong>Enviar WhatsApp</strong> y <strong>Enviar Email</strong>. Los dos primeros usan las líneas marcadas en <strong>Teléfonos</strong> y el tercero el <code>contact_email</code> de arriba; cada uno se puede mostrar u ocultar por separado desde el registro <code>global</code> (ver más abajo) sin perder su configuración — por ejemplo, si solo quieres ofrecer WhatsApp, puedes apagar los otros dos y volver a encenderlos cuando quieras.</li>
   <li><code>social_facebook</code>, <code>social_instagram</code>, <code>social_twitter</code>, <code>social_tiktok</code> — enlaces a redes sociales. Si se dejan vacíos, ese ícono no aparece en el pie de página.</li>
   <li><code>site_title</code> — el título que aparece en la pestaña del navegador.</li>
 </ul>
 <p>El registro con clave <code>global</code> es especial: no tiene texto, sino el <strong>logo</strong>, el <strong>favicon</strong> (ícono de la pestaña del navegador), el <strong>ícono de la app</strong> del hotel, y tres interruptores para mostrar u ocultar cada botón de la sección final de reserva (<strong>Mostrar botón «Llamar Ahora»</strong>, <strong>«Enviar WhatsApp»</strong>, <strong>«Enviar Email»</strong>).</p>
 <figure>
   <%= image_tag "docs/site-location.png", alt: "Sección de Ubicación mostrando dirección, teléfono y correo" %>
-  <figcaption>La sección de Ubicación muestra address_line, contact_phone y contact_email.</figcaption>
+  <figcaption>La sección de Ubicación muestra address_line, los teléfonos y contact_email.</figcaption>
 </figure>
 <div class="tip"><strong>Consejo:</strong> si dejas el campo <em>content</em> vacío, el sitio muestra un texto predeterminado en su lugar (no se rompe ni queda en blanco).</div>
+
+<h2 id="telefonos">Teléfonos (Phone numbers)</h2>
+<p>Aquí viven todos los números del hotel. Esta sección controla <strong>tres cosas</strong> del sitio a la vez:</p>
+<ul>
+  <li>A qué número marca el botón <strong>Llamar Ahora</strong> de la sección final de reserva.</li>
+  <li>Con qué número abren chat los botones de <strong>WhatsApp</strong> y el formulario de <em>Consultar disponibilidad</em>.</li>
+  <li>Qué números se <strong>listan</strong> en la sección de Ubicación, junto a la dirección y el correo.</li>
+</ul>
+<p>Cada número es un registro independiente, así que puedes tener los que quieras y decidir qué hace cada uno.</p>
+
+<h3>Cómo dar de alta un número</h3>
+<ol>
+  <li>Entra a <strong>Phone numbers</strong> en el menú lateral de Avo.</li>
+  <li>Haz clic en el botón de crear (arriba a la derecha).</li>
+  <li>Llena <strong>Number</strong> con el número completo, <em>incluyendo la lada del país</em>: <code>+52 442 212 3456</code>.</li>
+  <li>Opcionalmente escribe un <strong>Label</strong> para identificar la línea (ej: <code>Recepción</code>). Aparece en la página antes del número.</li>
+  <li>Marca las casillas que correspondan: <strong>Línea de WhatsApp</strong>, <strong>Línea de llamadas</strong>, <strong>Mostrar en la página</strong>.</li>
+  <li>Guarda. El cambio se ve de inmediato en el sitio.</li>
+</ol>
+<p>Si es el primer y único número del hotel, marca las tres casillas y ya terminaste.</p>
+
+<h3>Los campos</h3>
+<ul>
+  <li><strong>Label</strong> — el nombre de la línea (ej: Recepción, Restaurante, Eventos). Es opcional: si lo dejas vacío, en la página solo se ve el número.</li>
+  <li><strong>Number</strong> — el número con lada, por ejemplo <code>+52 442 212 3456</code>.</li>
+  <li><strong>Línea de WhatsApp</strong> — el número al que abren los botones de WhatsApp y el formulario de reserva.</li>
+  <li><strong>Línea de llamadas</strong> — el número que marca el botón «Llamar Ahora».</li>
+  <li><strong>Mostrar en la página</strong> — si el número se lista en la sección de Ubicación.</li>
+  <li><strong>Position</strong> — el orden en que se listan (1, 2, 3…). El número más bajo aparece primero.</li>
+</ul>
+
+<h3>Las dos líneas especiales</h3>
+<p><strong>Solo un número a la vez</strong> puede ser la línea de WhatsApp, y solo uno puede ser la línea de llamadas (pueden ser el mismo, o dos distintos).</p>
+<p>Para mover el papel de un número a otro, <strong>solo marca la casilla en el número nuevo y guarda</strong>: se desmarca sola en el anterior. No hace falta que primero vayas a desmarcarla a mano.</p>
+<p>Las dos casillas son independientes entre sí: marcar la línea de llamadas en un número no toca la línea de WhatsApp de otro.</p>
+
+<h3>Mostrar en la página, explicado</h3>
+<p>Este interruptor decide únicamente si el número aparece <em>listado</em> en la sección de Ubicación. Los botones de Llamar y WhatsApp siguen usando sus líneas aunque esté apagado.</p>
+<p>Sirve, por ejemplo, para tener un número interno de reservaciones que atienda WhatsApp pero que no quieras publicar como lista.</p>
+
+<h3>Tres formas típicas de configurarlo</h3>
+<ul>
+  <li><strong>Un solo número para todo</strong> — crea un registro y márcale las tres casillas. Es la configuración más simple y equivale a como funcionaba el sitio antes.</li>
+  <li><strong>Celular para WhatsApp, fijo para llamadas</strong> — crea dos registros. Al celular márcale <em>Línea de WhatsApp</em>; al fijo, <em>Línea de llamadas</em>. Déjale <em>Mostrar en la página</em> a los dos para que ambos aparezcan en Ubicación.</li>
+  <li><strong>Varios departamentos</strong> — además de los dos anteriores, agrega los que quieras (Restaurante, Eventos, Spa) con su <em>Label</em>, <em>Mostrar en la página</em> encendido y las otras dos casillas apagadas. Se listan en Ubicación pero no cambian a dónde apuntan los botones.</li>
+</ul>
+
+<h3>Cómo escribir el número</h3>
+<p><strong>Siempre incluye la lada del país</strong> (<code>+52</code> en México). WhatsApp la necesita: sin ella, el botón abre un chat con un número equivocado o inexistente.</p>
+<p>Fuera de eso, escríbelo como se lea mejor. Los espacios, guiones y paréntesis son solo decorativos — el sitio los quita solo al armar los enlaces. Estas tres formas funcionan igual de bien:</p>
+<ul>
+  <li><code>+52 442 212 3456</code></li>
+  <li><code>+52 (442) 212-3456</code></li>
+  <li><code>+524422123456</code></li>
+</ul>
+
+<h3>Editar desde Easy Edit</h3>
+<p>Con el <a href="#easy-edit">modo Easy Edit</a> encendido, cada número de la sección de Ubicación tiene su propio ícono de lápiz, y los botones de Llamar y WhatsApp también. Al hacer clic se abre la misma ficha del número, con sus casillas incluidas, sin tener que entrar a Avo. Desde ahí también puedes borrar una línea con el botón rojo de basurero.</p>
+
+<h3>Traducir el nombre de la línea</h3>
+<p>El <strong>Label</strong> es texto traducible: aparece en el panel de <a href="#traducciones">Traducciones</a>, bajo «Teléfonos», para que puedas poner "Front desk" junto a "Recepción". El número en sí no se traduce.</p>
+
+<div class="tip"><strong>Si no das de alta ningún número,</strong> el sitio sigue funcionando: usa como respaldo el valor de <code>contact_phone</code> en Textos del sitio, que es donde vivía el teléfono antes de que existiera esta sección. En cuanto creas el primer registro aquí, ese respaldo deja de usarse.</div>
+
+<div class="tip"><strong>Si el botón de WhatsApp abre el chat equivocado:</strong> revisa en la lista de <strong>Phone numbers</strong> cuál tiene marcada la <em>Línea de WhatsApp</em> — recuerda que solo puede ser uno, y marcarlo en otro número lo quita del anterior automáticamente.</div>
 
 <h2 id="experiencias">Experiencias / Servicios</h2>
 <p>Es la sección "Experiencias Extraordinarias" (restaurante, alberca, spa, etc.). Cada tarjeta tiene un <strong>título</strong>, una <strong>descripción</strong> breve, y un <strong>ícono</strong> — puedes elegir uno de la lista de íconos disponibles, o subir una <strong>imagen personalizada</strong> (icon_image) que lo reemplaza. El campo <strong>position</strong> controla el orden.</p>

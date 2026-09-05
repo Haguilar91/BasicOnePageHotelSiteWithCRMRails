@@ -4,7 +4,7 @@ class PageContent < ApplicationRecord
   translates :content, backend: :key_value, type: :text
 
   has_many_attached :images
-  
+
   # Specific attachments for brand assets
   has_one_attached :logo
   has_one_attached :favicon

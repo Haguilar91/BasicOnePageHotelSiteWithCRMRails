@@ -35,7 +35,7 @@ class Avo::Resources::Theme < Avo::BaseResource
       help: help,
       as_html: true,
       format_using: -> {
-        next value if view.in?([:edit, :new])
+        next value if view.in?([ :edit, :new ])
         hex = value.to_s
         next "" if hex.blank?
 

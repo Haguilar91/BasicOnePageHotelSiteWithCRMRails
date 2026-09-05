@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_19_063246) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_05_120200) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -83,10 +83,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_063246) do
   create_table "local_activities", force: :cascade do |t|
     t.string "category", null: false
     t.datetime "created_at", null: false
-    t.text "description_legacy", null: false
+    t.text "description_legacy"
     t.string "google_maps_url", null: false
     t.integer "position", default: 0, null: false
-    t.string "title_legacy", null: false
+    t.string "title_legacy"
     t.datetime "updated_at", null: false
     t.index ["category"], name: "index_local_activities_on_category"
     t.index ["position"], name: "index_local_activities_on_position"
@@ -148,6 +148,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_063246) do
     t.boolean "show_cta_whatsapp", default: true, null: false
     t.string "title"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "phone_numbers", force: :cascade do |t|
+    t.boolean "call_active", default: false, null: false
+    t.datetime "created_at", null: false
+    t.string "number", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.boolean "visible", default: true, null: false
+    t.boolean "whatsapp_active", default: false, null: false
+    t.index ["call_active"], name: "index_phone_numbers_on_call_active"
+    t.index ["position"], name: "index_phone_numbers_on_position"
+    t.index ["whatsapp_active"], name: "index_phone_numbers_on_whatsapp_active"
   end
 
   create_table "rooms", force: :cascade do |t|

@@ -1,7 +1,7 @@
 class Avo::Resources::GalleryPhoto < Avo::BaseResource
   self.title = :id
   self.icon = "heroicons/outline/photograph"
-  self.includes = [:photo_attachment]
+  self.includes = [ :photo_attachment ]
 
   def fields
     field :id, as: :id, readonly: true

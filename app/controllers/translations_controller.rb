@@ -55,6 +55,11 @@ class TranslationsController < ApplicationController
       record_label: ->(r) { Mobility.with_locale(:es) { r.title }.presence || "Announcement ##{r.id}" },
       fields: { title: { type: :textarea }, description: { type: :textarea } }
     },
+    PhoneNumber => {
+      label: "Teléfonos",
+      record_label: ->(r) { Mobility.with_locale(:es) { r.label }.presence || r.number },
+      fields: { label: { type: :text } }
+    },
     GalleryPhoto => {
       label: "Galería",
       record_label: ->(r) { Mobility.with_locale(:es) { r.caption }.presence || "Photo ##{r.id}" },

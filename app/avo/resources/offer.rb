@@ -1,7 +1,7 @@
 class Avo::Resources::Offer < Avo::BaseResource
   self.title = :display_title
   self.icon = "heroicons/outline/tag"
-  self.includes = [:room, :photo_attachment]
+  self.includes = [ :room, :photo_attachment ]
   self.search = {
     query: -> { query.ransack(title_cont: q, description_cont: q).result(distinct: false) }
   }
@@ -75,12 +75,12 @@ class Avo::Resources::Offer < Avo::BaseResource
       help: "Fecha en la que empieza a mostrarse (opcional). Déjala vacía para publicarla de inmediato."
     field :valid_until, as: :date, name: "Válida hasta", hide_on: :index,
       help: "Fecha límite de la oferta (opcional). Pasada esta fecha deja de mostrarse en el sitio."
-    field :status, as: :text, name: "Estado", only_on: [:index, :show], as_html: true,
+    field :status, as: :text, name: "Estado", only_on: [ :index, :show ], as_html: true,
       format_using: -> {
-        label, color = if !record.active? then ["Inactiva", "#6b7280"]
-        elsif record.scheduled? then ["Programada · inicia #{record.valid_from.strftime("%d/%m/%Y")}", "#b45309"]
-        elsif record.expired? then ["Expirada", "#b91c1c"]
-        else ["Publicada", "#047857"]
+        label, color = if !record.active? then [ "Inactiva", "#6b7280" ]
+        elsif record.scheduled? then [ "Programada · inicia #{record.valid_from.strftime("%d/%m/%Y")}", "#b45309" ]
+        elsif record.expired? then [ "Expirada", "#b91c1c" ]
+        else [ "Publicada", "#047857" ]
         end
 
         "<span style='color:#{color};font-weight:600'>#{ERB::Util.html_escape(label)}</span>".html_safe
