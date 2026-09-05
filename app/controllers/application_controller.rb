@@ -20,6 +20,15 @@ class ApplicationController < ActionController::Base
     I18n.with_locale(locale || I18n.default_locale, &action)
   end
 
+  # How this page builds its own URL in a given locale. Drives both
+  # <link rel="canonical"> and the hreflang alternates (see SeoHelper) — the
+  # helper can't infer it, because several routes reach the same page ("/",
+  # "/es" and "/home/index" are all home#index) and only one of them is the
+  # canonical form. Actions that don't declare one fall back to the site root.
+  def seo_canonical(&builder)
+    @seo_canonical = builder
+  end
+
   # Makes route helpers (root_path, link_to, etc.) automatically carry the
   # current locale, so internal links don't need `locale:` passed explicitly.
   # Omitted for the default locale so Spanish URLs stay bare ("/") rather

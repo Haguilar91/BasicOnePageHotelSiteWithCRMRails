@@ -1,5 +1,6 @@
 class Avo::Resources::PhoneNumber < Avo::BaseResource
   self.title = :number
+  self.icon = "heroicons/outline/phone"
 
   def fields
     field :id, as: :id, readonly: true

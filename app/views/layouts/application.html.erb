@@ -10,12 +10,48 @@
   <% end %>
   <!-- Tailwind CSS (site-wide) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Dynamic Browser Tab Title from Avo -->
-    <title><%= page_content('site_title', 'Hotel Boutique') %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Hotel Boutique">
     <meta name="mobile-web-app-capable" content="yes">
+
+    <%# --- SEO ---------------------------------------------------------
+        Title and description come from the page itself where it sets them
+        (content_for :title / @seo_description) and fall back to the
+        admin-editable site copy otherwise. See SeoHelper for the rest. %>
+    <title><%= seo_title %></title>
+    <meta name="description" content="<%= seo_description %>">
+
+    <%# One canonical URL per page: the same content answers on "/", "/es"
+        and "/home/index", and without this each would compete with the
+        others in search results. %>
+    <link rel="canonical" href="<%= canonical_url %>">
+
+    <%# Tells search engines that the Spanish and English pages are
+        translations of each other, not duplicates. %>
+    <% hreflang_alternates.each do |code, href| %>
+      <link rel="alternate" hreflang="<%= code %>" href="<%= href %>">
+    <% end %>
+
+    <%# Link previews — the site's calls to action are WhatsApp-first, so
+        the card people see when the link is pasted into a chat matters as
+        much as the search result. %>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="<%= strip_tags(page_content('site_title', t('seo.site_name'))) %>">
+    <meta property="og:title" content="<%= seo_title %>">
+    <meta property="og:description" content="<%= seo_description %>">
+    <meta property="og:url" content="<%= canonical_url %>">
+    <meta property="og:locale" content="<%= I18n.locale == :en ? 'en_US' : 'es_MX' %>">
+    <% (I18n.available_locales - [I18n.locale]).each do |other| %>
+      <meta property="og:locale:alternate" content="<%= other == :en ? 'en_US' : 'es_MX' %>">
+    <% end %>
+    <% if (preview_image = seo_image_url) %>
+      <meta property="og:image" content="<%= preview_image %>">
+      <meta name="twitter:image" content="<%= preview_image %>">
+    <% end %>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= seo_title %>">
+    <meta name="twitter:description" content="<%= seo_description %>">
     
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -49,6 +85,14 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app %>
+
+    <%# schema.org/Hotel — lets a result carry the address, phone and price
+        range instead of being a plain blue link. Only on the homepage: it
+        describes the hotel as a whole, and repeating it on every page would
+        just be noise. %>
+    <% if controller_name == "home" %>
+      <script type="application/ld+json"><%= raw hotel_json_ld %></script>
+    <% end %>
   </head>
 
   <body>

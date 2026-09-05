@@ -193,7 +193,7 @@
     <!-- Logo image check... -->
     <% brand_settings = PageContent.find_by(key: 'global') %>
     <% if brand_settings&.logo&.attached? %>
-        <img src="<%= url_for(brand_settings.logo) %>" class="h-12 w-12 mr-3 rounded-full object-contain border border-[var(--color-accent)]/30 shadow-md">
+        <img src="<%= url_for(brand_settings.logo) %>" alt="<%= strip_tags(page_content('site_title', t('seo.site_name'))) %>" class="h-12 w-12 mr-3 rounded-full object-contain border border-[var(--color-accent)]/30 shadow-md">
     <% else %>
         <i class="fas fa-landmark text-[var(--color-accent)] text-2xl mr-3"></i>
     <% end %>

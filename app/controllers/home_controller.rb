@@ -1,5 +1,9 @@
 class HomeController < ApplicationController
   def index
+    # "/", "/es", "/home/index" and "/es/home/index" all land here; the bare
+    # root is the one form search engines should keep (see SeoHelper).
+    seo_canonical { |options| root_url(**options) }
+
     @rooms = Room.with_attached_photos.order(:position, :id)
     @experiences = Experience.order(:position, :id)
     @features = Feature.order(:position, :id)

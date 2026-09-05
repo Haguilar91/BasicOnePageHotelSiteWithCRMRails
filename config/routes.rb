@@ -33,6 +33,14 @@ Rails.application.routes.draw do
     delete "easy_edit/:resource/:id", to: "easy_edit#destroy"
   end
 
+  # Generated rather than static files in public/: the sitemap has to list
+  # every locale of every page (and announcements come and go), and
+  # robots.txt has to name the sitemap by absolute URL, which depends on the
+  # deployed host. Both sit outside the locale scope — search engines expect
+  # them at the domain root, and each already describes all locales.
+  get "/sitemap.xml", to: "seo#sitemap", as: :sitemap, defaults: { format: "xml" }
+  get "/robots.txt", to: "seo#robots", as: :robots, defaults: { format: "text" }
+
   # Path-based locale for the public site (/es, /en) for SEO-visible,
   # crawlable URLs per language. The locale segment is optional, so "/",
   # "/es", and "/en" all resolve here — see ApplicationController#switch_locale

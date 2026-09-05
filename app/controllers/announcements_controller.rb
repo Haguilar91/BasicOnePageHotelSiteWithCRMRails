@@ -3,6 +3,8 @@ class AnnouncementsController < ApplicationController
 
   # GET /announcements
   def index
+    seo_canonical { |options| announcements_url(**options) }
+    @seo_description = t("seo.announcements_description")
     @announcements = Announcement.all
     # The ticker links here and can carry offers, so this page lists them too.
     @offers = Offer.visible.ordered.includes(:room)
@@ -10,6 +12,10 @@ class AnnouncementsController < ApplicationController
 
   # GET /announcements/1
   def show
+    seo_canonical { |options| announcement_url(@announcement, **options) }
+    # The announcement's own text is a far better search snippet and link
+    # preview than the site-wide default.
+    @seo_description = @announcement.description
   end
 
   private

@@ -73,6 +73,11 @@ es:
     es: "ES"
     en: "EN"
 
+  seo:
+    site_name: "Hotel Mesón del Bosque"
+    default_description: "Hotel boutique en el centro histórico de Querétaro. Habitaciones cómodas, atención cercana y la mejor ubicación para conocer la ciudad. Reserva por WhatsApp."
+    announcements_description: "Anuncios, promociones y ofertas vigentes del Hotel Mesón del Bosque en Querétaro."
+
   models:
     room:
       booking_platforms:

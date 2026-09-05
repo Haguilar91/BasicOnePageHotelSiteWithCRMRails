@@ -9,6 +9,7 @@
     <li><a href="#offers">Offers</a></li>
     <li><a href="#page-contents">Site text (Page contents)</a></li>
     <li><a href="#phones">Phones (Phone numbers)</a></li>
+    <li><a href="#seo">Showing up on Google (SEO)</a></li>
     <li><a href="#experiences">Experiences / Services</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#activities">What to do (local activities)</a></li>
@@ -227,6 +228,33 @@
 <div class="tip"><strong>If you don't add any numbers,</strong> the site still works: it falls back to the <code>contact_phone</code> value under Site text, which is where the phone lived before this section existed. As soon as you create the first record here, that fallback stops being used.</div>
 
 <div class="tip"><strong>If the WhatsApp button opens the wrong chat:</strong> check the <strong>Phone numbers</strong> list to see which record has <em>Línea de WhatsApp</em> ticked — remember only one can have it, and ticking it on another number clears it from the previous one automatically.</div>
+
+<h2 id="seo">Showing up on Google (SEO)</h2>
+<p>The site already ships search-engine ready — there is nothing to switch on. What you do control from Avo is <strong>the words people read in the results</strong>.</p>
+
+<h3>The description that shows on Google</h3>
+<p>Under <strong>Page contents</strong> there's a record with the key <code>meta_description</code>. That text is the grey paragraph under the title in search results, and it's also what people see when the link is shared on WhatsApp.</p>
+<ul>
+  <li><strong>160 characters</strong> max. Go over and the site trims it at the last whole word and adds "…", but it reads much better if you write it to fit.</li>
+  <li>Leave it blank and a sensible default is used — it never comes out empty.</li>
+  <li>Write it as an invitation, not a list of keywords: it's what decides whether someone clicks.</li>
+</ul>
+<div class="tip"><strong>Tip:</strong> name the city ("in the historic centre of Querétaro"). Most hotel searches include a place, and seeing it in the result lifts click-through a lot.</div>
+
+<h3>The other details Google uses</h3>
+<p>The site hands Google a structured record of the hotel — name, address, phone, email, amenities and price range — assembled from what you've already filled in. That's what can make a result carry the phone number and address instead of being a plain blue link. It's built from:</p>
+<ul>
+  <li><strong>Phone numbers</strong> — uses whichever line is flagged as the <em>call line</em>.</li>
+  <li><strong>Page contents</strong> — <code>site_title</code>, <code>address_line</code>, <code>contact_email</code> and the social links.</li>
+  <li><strong>Features</strong> — each one is published as a hotel amenity (Wi-Fi, parking, and so on).</li>
+  <li><strong>Page contents</strong> — <code>address_locality</code> (city), <code>address_country</code> (2-letter code, <code>MX</code>) and <code>price_range</code> (<code>$</code> to <code>$$$$</code>).</li>
+</ul>
+<p>The more of those are filled in, the richer the record. Nothing else needs touching.</p>
+
+<h3>Spanish and English</h3>
+<p>The site tells Google that <code>/</code> and <code>/en</code> are one page in two languages, not two duplicate pages. That's why the <a href="#translations">Translations</a> panel matters: the more complete the English, the better the site shows for people searching in it.</p>
+
+<div class="tip"><strong>Before going live:</strong> one technical step belongs to whoever deploys — setting the <code>SITE_HOST</code> variable to the real domain. Until it's set the site deliberately asks Google <em>not</em> to index it, so a staging copy can't compete with the real one. Once live, register the site in Google Search Console and submit <code>yourdomain.com/sitemap.xml</code>.</div>
 
 <h2 id="experiences">Experiences / Services</h2>
 <p>This is the "Extraordinary Experiences" section (restaurant, pool, spa, etc.). Each card has a <strong>title</strong>, a short <strong>description</strong>, and an <strong>icon</strong> — you can pick one from the icon list, or upload a <strong>custom image</strong> (icon_image) to replace it. The <strong>position</strong> field controls the order.</p>

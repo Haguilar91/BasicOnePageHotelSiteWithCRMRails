@@ -40,14 +40,14 @@
                class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[var(--color-accent,#b8860b)] focus:outline-none">
       <% elsif field_config[:type] == :file %>
         <% if value.respond_to?(:attached?) && value.attached? %>
-          <img src="<%= url_for(value) %>" class="w-full max-h-40 object-cover rounded-lg mb-2 border border-slate-200">
+          <img src="<%= url_for(value) %>" alt="<%= field_config[:label] %>" class="w-full max-h-40 object-cover rounded-lg mb-2 border border-slate-200">
         <% end %>
         <input type="file" name="record[<%= field %>]" accept="image/*" class="block w-full text-sm text-slate-600">
       <% elsif field_config[:type] == :files %>
         <% if value.respond_to?(:attached?) && value.attached? %>
           <div class="grid grid-cols-4 gap-2 mb-2">
             <% value.each do |photo| %>
-              <img src="<%= url_for(photo) %>" class="w-full aspect-square object-cover rounded-lg border border-slate-200">
+              <img src="<%= url_for(photo) %>" alt="<%= field_config[:label] %>" class="w-full aspect-square object-cover rounded-lg border border-slate-200">
             <% end %>
           </div>
         <% end %>

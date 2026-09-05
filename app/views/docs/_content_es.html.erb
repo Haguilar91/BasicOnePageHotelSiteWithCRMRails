@@ -9,6 +9,7 @@
     <li><a href="#ofertas">Ofertas</a></li>
     <li><a href="#contenidos">Textos del sitio (Page contents)</a></li>
     <li><a href="#telefonos">Teléfonos (Phone numbers)</a></li>
+    <li><a href="#seo">Aparecer en Google (SEO)</a></li>
     <li><a href="#experiencias">Experiencias / Servicios</a></li>
     <li><a href="#caracteristicas">Características</a></li>
     <li><a href="#que-hacer">Qué hacer (actividades locales)</a></li>
@@ -227,6 +228,33 @@
 <div class="tip"><strong>Si no das de alta ningún número,</strong> el sitio sigue funcionando: usa como respaldo el valor de <code>contact_phone</code> en Textos del sitio, que es donde vivía el teléfono antes de que existiera esta sección. En cuanto creas el primer registro aquí, ese respaldo deja de usarse.</div>
 
 <div class="tip"><strong>Si el botón de WhatsApp abre el chat equivocado:</strong> revisa en la lista de <strong>Phone numbers</strong> cuál tiene marcada la <em>Línea de WhatsApp</em> — recuerda que solo puede ser uno, y marcarlo en otro número lo quita del anterior automáticamente.</div>
+
+<h2 id="seo">Aparecer en Google (SEO)</h2>
+<p>El sitio ya viene preparado para buscadores: no hay nada que configurar para que funcione. Lo que sí puedes controlar desde Avo es <strong>el texto que la gente lee en los resultados</strong>.</p>
+
+<h3>La descripción que sale en Google</h3>
+<p>En <strong>Page contents</strong> hay un registro con clave <code>meta_description</code>. Ese texto es el párrafo gris que aparece debajo del título en los resultados de búsqueda, y también el que se ve cuando alguien comparte el enlace por WhatsApp.</p>
+<ul>
+  <li>Máximo <strong>160 caracteres</strong>. Si te pasas, el sitio lo corta solo en la última palabra completa y le pone «…», pero es mejor que lo escribas tú a la medida.</li>
+  <li>Si lo dejas vacío, se usa un texto predeterminado razonable — no queda en blanco.</li>
+  <li>Escríbelo como una invitación, no como una lista de palabras clave: es lo que decide si alguien hace clic.</li>
+</ul>
+<div class="tip"><strong>Consejo:</strong> menciona la ciudad («en el centro histórico de Querétaro»). La mayoría de las búsquedas de hotel incluyen el lugar, y ver la ciudad en el resultado sube mucho el clic.</div>
+
+<h3>Los otros datos que Google usa</h3>
+<p>El sitio le entrega a Google una ficha estructurada del hotel (nombre, dirección, teléfono, correo, servicios y rango de precios) que se arma sola con lo que ya tienes cargado. Eso es lo que puede hacer que el resultado salga con el teléfono y la dirección en vez de ser solo un enlace azul. Se alimenta de:</p>
+<ul>
+  <li><strong>Teléfonos</strong> — usa la línea marcada como <em>Línea de llamadas</em>.</li>
+  <li><strong>Page contents</strong> — <code>site_title</code>, <code>address_line</code>, <code>contact_email</code> y los enlaces de redes sociales.</li>
+  <li><strong>Características</strong> — cada una se publica como un servicio del hotel (Wi-Fi, estacionamiento, etc.).</li>
+  <li><strong>Page contents</strong> — <code>address_locality</code> (ciudad), <code>address_country</code> (código de 2 letras, <code>MX</code>) y <code>price_range</code> (de <code>$</code> a <code>$$$$</code>).</li>
+</ul>
+<p>Mientras más completos estén esos campos, más rica es la ficha. No hace falta tocar nada más.</p>
+
+<h3>Español e inglés</h3>
+<p>El sitio le avisa a Google que <code>/</code> y <code>/en</code> son la misma página en dos idiomas, no dos páginas repetidas. Por eso importa el panel de <a href="#traducciones">Traducciones</a>: entre más completo esté el inglés, mejor aparece el sitio para quien busca en ese idioma.</p>
+
+<div class="tip"><strong>Antes de publicar:</strong> hay un paso técnico que le toca a quien haga el despliegue — definir la variable <code>SITE_HOST</code> con el dominio real. Mientras no esté puesta, el sitio le pide a Google <em>que no lo indexe</em>, a propósito, para que una copia de pruebas no compita con el sitio de verdad. Una vez publicado, hay que dar de alta el sitio en Google Search Console y enviar <code>tudominio.com/sitemap.xml</code>.</div>
 
 <h2 id="experiencias">Experiencias / Servicios</h2>
 <p>Es la sección "Experiencias Extraordinarias" (restaurante, alberca, spa, etc.). Cada tarjeta tiene un <strong>título</strong>, una <strong>descripción</strong> breve, y un <strong>ícono</strong> — puedes elegir uno de la lista de íconos disponibles, o subir una <strong>imagen personalizada</strong> (icon_image) que lo reemplaza. El campo <strong>position</strong> controla el orden.</p>
