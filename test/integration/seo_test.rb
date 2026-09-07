@@ -208,8 +208,8 @@ class SeoTest < ActionDispatch::IntegrationTest
     assert_no_match(/Sitemap:/, response.body)
   end
 
-  test "robots opens the site up and points at the sitemap in production" do
-    with_production_host do
+  test "robots opens the site up and points at the sitemap on the live site" do
+    as_live_site do
       get robots_path
 
       assert_match(/Sitemap: https:\/\/hotel\.example\/sitemap\.xml/, response.body)
@@ -218,12 +218,60 @@ class SeoTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "robots shuts out a copy of the site served on another host" do
+    # The scenario this guards: a staging deploy restored from a production
+    # database dump. Same config, same content, different host — and it must
+    # not invite crawlers in, or it competes with the real site.
+    as_live_site(host: "hotel.example", requested_host: "staging.hotel.example") do
+      get robots_path
+      assert_match(/User-agent: \*\nDisallow: \/\n/, response.body)
+      assert_no_match(/Sitemap:/, response.body)
+    end
+  end
+
+  test "robots treats the www variant as the same site" do
+    as_live_site(host: "hotel.example", requested_host: "www.hotel.example") do
+      get robots_path
+      assert_match(/Sitemap:/, response.body)
+    end
+  end
+
+  test "a pre-launch deploy can serve correct URLs and still stay unindexed" do
+    # The site goes up on hotelmesondelbosque.hectoraguilar.dev before the
+    # real domain is pointed at it. Setting SITE_HOST there keeps canonical
+    # URLs and link previews self-consistent for the people reviewing it,
+    # and ALLOW_INDEXING=false is what keeps it out of search meanwhile.
+    ENV["ALLOW_INDEXING"] = "false"
+    as_live_site(host: "hotelmesondelbosque.hectoraguilar.dev") do
+      get root_path
+      assert_equal "https://hotelmesondelbosque.hectoraguilar.dev/", canonical
+
+      get robots_path
+      assert_match(/User-agent: \*\nDisallow: \/\n/, response.body)
+      assert_no_match(/Sitemap:/, response.body)
+    end
+  ensure
+    ENV.delete("ALLOW_INDEXING")
+  end
+
+  test "removing the hold is all it takes to go live" do
+    as_live_site(host: "hotelmesondelbosque.com.mx") do
+      get robots_path
+      assert_match(%r{Sitemap: https://hotelmesondelbosque\.com\.mx/sitemap\.xml}, response.body)
+      assert_no_match(/^Disallow: \/$/, response.body)
+    end
+  end
+
   # --- deployed host -----------------------------------------------------
+
+  test "the domain ships with a default, so production needs no configuration" do
+    assert_equal "hotelmesondelbosque.com.mx", Rails.configuration.x.site_host
+  end
 
   test "SITE_HOST overrides the request host in every canonical URL" do
     # Without this the site can be indexed under whatever Host header
     # arrives — an IP, a staging domain, or an attacker-supplied value.
-    with_production_host do
+    as_live_site do
       get root_path
       assert_equal "https://hotel.example/", canonical
       assert_equal "https://hotel.example/en", alternates["en"]
@@ -239,14 +287,19 @@ class SeoTest < ActionDispatch::IntegrationTest
     }.merge(overrides))
   end
 
-  def with_production_host
+  # Pretends to be the live site: production, and answering on the very host
+  # the canonical URLs name. `host!` is what makes request.host match, which
+  # is what SeoHelper#canonical_host? checks.
+  def as_live_site(host: "hotel.example", requested_host: host)
     original_env = Rails.env
     Rails.env = "production"
-    ENV["SITE_HOST"] = "hotel.example"
+    ENV["SITE_HOST"] = host
+    host! requested_host
     yield
   ensure
     ENV.delete("SITE_HOST")
     Rails.env = original_env
+    host! "www.example.com"
   end
 
   def title = css_select("title").first.text

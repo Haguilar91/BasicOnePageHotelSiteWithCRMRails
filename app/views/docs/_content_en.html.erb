@@ -254,7 +254,18 @@
 <h3>Spanish and English</h3>
 <p>The site tells Google that <code>/</code> and <code>/en</code> are one page in two languages, not two duplicate pages. That's why the <a href="#translations">Translations</a> panel matters: the more complete the English, the better the site shows for people searching in it.</p>
 
-<div class="tip"><strong>Before going live:</strong> one technical step belongs to whoever deploys — setting the <code>SITE_HOST</code> variable to the real domain. Until it's set the site deliberately asks Google <em>not</em> to index it, so a staging copy can't compete with the real one. Once live, register the site in Google Search Console and submit <code>yourdomain.com/sitemap.xml</code>.</div>
+<h3>The domain</h3>
+<p>The site ships configured for <strong>hotelmesondelbosque.com.mx</strong>, the final domain. That value decides every address the site declares to Google.</p>
+<p>Should it ever change, it's changed by setting the <code>SITE_HOST</code> variable on the server (no <code>https://</code>, no trailing slash — e.g. <code>SITE_HOST=otherdomain.mx</code>). It is deliberately not editable from Avo: a slip there — an extra slash, a <code>www</code> that doesn't match — would silently point Google at the wrong address with nothing visibly broken.</p>
+
+<h3>Before and after launch</h3>
+<p>The site will live at <code>hotelmesondelbosque.hectoraguilar.dev</code> first, before the final domain points at it. That's two configurations:</p>
+<ul>
+  <li><strong>While it's on the preview address</strong> — set <code>SITE_HOST=hotelmesondelbosque.hectoraguilar.dev</code> and <code>ALLOW_INDEXING=false</code>. Internal addresses and WhatsApp link previews are then correct for whoever is reviewing the site, while Google is told not to index it.</li>
+  <li><strong>At launch</strong> — remove both variables. The defaults <em>are</em> the live configuration, so there's nothing else to change.</li>
+</ul>
+<div class="tip"><strong>Automatic safeguard:</strong> even if all of the above is forgotten, the site only lets itself be indexed while it's answering on its own domain. A copy on any other address (or reached by IP) tells Google <em>not</em> to index it, on its own — so a copy can never compete with the real site.</div>
+<div class="tip"><strong>On launch day:</strong> the one manual step is registering the site in Google Search Console and submitting <code>hotelmesondelbosque.com.mx/sitemap.xml</code>. It doesn't speed up ranking, but it gets the site discovered in days rather than weeks.</div>
 
 <h2 id="experiences">Experiences / Services</h2>
 <p>This is the "Extraordinary Experiences" section (restaurant, pool, spa, etc.). Each card has a <strong>title</strong>, a short <strong>description</strong>, and an <strong>icon</strong> — you can pick one from the icon list, or upload a <strong>custom image</strong> (icon_image) to replace it. The <strong>position</strong> field controls the order.</p>

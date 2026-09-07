@@ -16,14 +16,23 @@ services:
     environment:
       - RAILS_ENV=production
       - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-      # The public domain, without scheme (e.g. hotelmesondelbosque.com).
-      # Every canonical/hreflang/Open Graph URL and the sitemap are built
-      # from this, so search engines index one host instead of whatever the
-      # Host header happens to say. Until it is set, robots.txt answers
-      # "Disallow: /" and the site stays out of the index on purpose — which
-      # is what you want for a staging deploy, and what you must change on
-      # the day the real site goes live.
-      - SITE_HOST=${SITE_HOST}
+      # The public domain, without a scheme. Defaults to
+      # hotelmesondelbosque.com.mx (config/initializers/site_host.rb); every
+      # canonical/hreflang/Open Graph URL and the sitemap follow it.
+      #
+      #   Pre-launch, on hotelmesondelbosque.hectoraguilar.dev:
+      #     SITE_HOST=hotelmesondelbosque.hectoraguilar.dev
+      #     ALLOW_INDEXING=false
+      #
+      #   At launch, once hotelmesondelbosque.com.mx points here:
+      #     unset both — the defaults are already the live configuration.
+      - SITE_HOST=${SITE_HOST:-}
+      # Set to "false" to keep a deploy out of search results even when it is
+      # answering on its canonical domain — the pre-launch hold. Any other
+      # value (or unset) leaves the normal rule in charge: crawlers are let
+      # in only while the site is answering on its own domain, so a copy on
+      # any other host stays unindexed by itself.
+      - ALLOW_INDEXING=${ALLOW_INDEXING:-}
     restart: unless-stopped
 
 volumes:

@@ -29,5 +29,43 @@ export APP_GID="$(id -g)"
 docker compose build
 docker compose up -d --force-recreate
 
+# Whether the site is indexable is invisible from the outside — nothing looks
+# broken either way — and it is the one thing that has to change on launch
+# day. Report it on every deploy so it can't be silently forgotten. Ask the
+# running container rather than guessing from the environment, so this
+# reflects what crawlers will actually be served.
+CANONICAL_HOST="${SITE_HOST:-hotelmesondelbosque.com.mx}"
+echo
+echo "--------------------------------------------------------------------"
+echo " Canonical domain : ${CANONICAL_HOST}"
+
+ROBOTS=""
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  ROBOTS="$(curl -sf -H "Host: ${CANONICAL_HOST}" http://localhost:8443/robots.txt 2>/dev/null || true)"
+  [ -n "$ROBOTS" ] && break
+  sleep 2
+done
+
+if [ -z "$ROBOTS" ]; then
+  echo " Search engines   : could not check (app still starting?)"
+  echo "                    Try: curl -H 'Host: ${CANONICAL_HOST}' http://localhost:8443/robots.txt"
+elif printf '%s' "$ROBOTS" | grep -q "^Sitemap:"; then
+  echo " Search engines   : INDEXING THIS SITE"
+  echo "                    Submit the sitemap once, in Google Search Console:"
+  echo "                    https://${CANONICAL_HOST}/sitemap.xml"
+else
+  echo " Search engines   : blocked (robots.txt says Disallow: /)"
+  if [ "${ALLOW_INDEXING}" = "false" ]; then
+    echo "                    Reason: ALLOW_INDEXING=false — the pre-launch hold."
+  else
+    echo "                    Reason: this deploy is not answering on the canonical domain."
+  fi
+  echo "                    To go live: unset SITE_HOST and ALLOW_INDEXING,"
+  echo "                    point ${CANONICAL_HOST} here, and re-run this script."
+  echo "                    Full checklist: DEPLOY.md"
+fi
+echo "--------------------------------------------------------------------"
+echo
+
 echo "Tailing logs (Ctrl+C to exit, container keeps running)..."
 docker compose logs -f --tail=50

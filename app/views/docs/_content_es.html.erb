@@ -254,7 +254,18 @@
 <h3>Español e inglés</h3>
 <p>El sitio le avisa a Google que <code>/</code> y <code>/en</code> son la misma página en dos idiomas, no dos páginas repetidas. Por eso importa el panel de <a href="#traducciones">Traducciones</a>: entre más completo esté el inglés, mejor aparece el sitio para quien busca en ese idioma.</p>
 
-<div class="tip"><strong>Antes de publicar:</strong> hay un paso técnico que le toca a quien haga el despliegue — definir la variable <code>SITE_HOST</code> con el dominio real. Mientras no esté puesta, el sitio le pide a Google <em>que no lo indexe</em>, a propósito, para que una copia de pruebas no compita con el sitio de verdad. Una vez publicado, hay que dar de alta el sitio en Google Search Console y enviar <code>tudominio.com/sitemap.xml</code>.</div>
+<h3>El dominio</h3>
+<p>El sitio ya viene configurado para <strong>hotelmesondelbosque.com.mx</strong>, que es el dominio definitivo. Ese valor decide todas las direcciones que el sitio le declara a Google.</p>
+<p>Si algún día cambia, se cambia definiendo la variable <code>SITE_HOST</code> en el servidor (sin <code>https://</code> y sin diagonal al final, por ejemplo <code>SITE_HOST=otrodominio.mx</code>). No es algo editable desde Avo a propósito: un dedazo ahí —una diagonal de más, un <code>www</code> de diferencia— mandaría a Google a la dirección equivocada en silencio, sin que nada se vea roto.</p>
+
+<h3>Antes y después de lanzar</h3>
+<p>El sitio va a vivir primero en <code>hotelmesondelbosque.hectoraguilar.dev</code>, antes de que el dominio definitivo apunte ahí. Son dos configuraciones:</p>
+<ul>
+  <li><strong>Mientras está en la dirección de pruebas</strong> — se definen <code>SITE_HOST=hotelmesondelbosque.hectoraguilar.dev</code> y <code>ALLOW_INDEXING=false</code>. Así todas las direcciones internas y las vistas previas de WhatsApp son correctas para quien está revisando el sitio, pero Google tiene prohibido indexarlo.</li>
+  <li><strong>Al lanzar</strong> — se quitan las dos variables. Los valores predeterminados <em>ya son</em> la configuración final, así que no hay nada más que cambiar.</li>
+</ul>
+<div class="tip"><strong>Protección automática:</strong> aunque se olvide todo lo anterior, el sitio solo se deja indexar cuando está contestando en su propio dominio. Una copia en otra dirección (o entrando por IP) le pide a Google que <em>no</em> la indexe, sola. Así una copia nunca compite con el sitio real.</div>
+<div class="tip"><strong>El día del lanzamiento:</strong> el único paso manual es dar de alta el sitio en Google Search Console y enviar <code>hotelmesondelbosque.com.mx/sitemap.xml</code>. Eso no acelera el posicionamiento, pero hace que Google lo descubra en días en vez de semanas.</div>
 
 <h2 id="experiencias">Experiencias / Servicios</h2>
 <p>Es la sección "Experiencias Extraordinarias" (restaurante, alberca, spa, etc.). Cada tarjeta tiene un <strong>título</strong>, una <strong>descripción</strong> breve, y un <strong>ícono</strong> — puedes elegir uno de la lista de íconos disponibles, o subir una <strong>imagen personalizada</strong> (icon_image) que lo reemplaza. El campo <strong>position</strong> controla el orden.</p>

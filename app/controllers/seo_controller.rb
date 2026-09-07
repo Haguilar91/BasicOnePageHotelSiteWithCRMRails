@@ -5,9 +5,11 @@
 # announcements come and go), and robots.txt has to name the sitemap by its
 # absolute URL, which depends on the host the site is deployed under.
 #
-# Generating robots.txt also lets it close the door on non-production
-# deployments — a staging copy that answers on a public URL gets indexed
-# otherwise, and then competes with the real site for its own content.
+# Generating robots.txt also lets it close the door on any copy of the site
+# that isn't the real one: it opens up only when the deploy is answering on
+# the domain its own canonical URLs name (SeoHelper#canonical_host?), so a
+# staging copy — even one restored from a production database — serves
+# "Disallow: /" without anyone having to configure it.
 class SeoController < ApplicationController
   layout false
 
@@ -52,7 +54,7 @@ class SeoController < ApplicationController
   def robots_body
     lines = [ "# https://www.robotstxt.org/robotstxt.html" ]
 
-    if Rails.env.production? && ENV["SITE_HOST"].present?
+    if helpers.indexable?
       lines << "User-agent: *"
       # Admin and staff-only surfaces: all of these redirect to a login form,
       # so letting crawlers walk them wastes crawl budget on nothing.
@@ -65,7 +67,10 @@ class SeoController < ApplicationController
       lines << "Sitemap: #{sitemap_url(**host_options)}"
     else
       # Anything that isn't the real production site — staging, a preview
-      # deploy, a developer's laptop — stays out of the index entirely.
+      # deploy, the site reached by raw IP, a developer's laptop — stays out
+      # of the index entirely, so a second copy can never compete with the
+      # real one for its own content — as does a site held back before
+      # launch with ALLOW_INDEXING=false. See SeoHelper#indexable?.
       lines << "User-agent: *"
       lines << "Disallow: /"
     end

@@ -17,16 +17,54 @@
 module SeoHelper
   # Canonical URLs must name one host, not whichever Host header arrived —
   # otherwise the site can be indexed under an IP, a staging domain, or an
-  # attacker-supplied header. SITE_HOST is that one host in production; in
-  # development it's unset and the request's own host keeps local links
-  # working (and dev is never indexed anyway).
+  # attacker-supplied header. That host is config.x.site_host (see
+  # config/initializers/site_host.rb), overridable with the SITE_HOST
+  # environment variable.
+  #
+  # Only production uses it. Development and test fall back to the request's
+  # own host so local links stay clickable and tests aren't pinned to the
+  # real domain — setting SITE_HOST explicitly forces the production
+  # behaviour anywhere, which is how that path gets tested.
   def seo_host_options
     configured = ENV["SITE_HOST"].presence
-    return { host: request.host_with_port, protocol: request.protocol } if configured.nil?
+    configured ||= Rails.configuration.x.site_host if Rails.env.production?
+    return { host: request.host_with_port, protocol: request.protocol } if configured.blank?
 
     host, _, port = configured.rpartition(":")
     host.presence ? { host: host, port: port, protocol: "https" } : { host: configured, protocol: "https" }
   end
+
+  # Whether this deploy is the real, public site — that is, it is answering on
+  # the very domain its canonical URLs name.
+  #
+  # This is what decides whether robots.txt opens the site up. Deriving it
+  # from the host, rather than from "is some env var set?", means a second
+  # copy of the site can never invite crawlers in: a staging deploy, a preview
+  # URL or the site reached by raw IP all answer on a different host than the
+  # canonical one, so they serve "Disallow: /" without anyone having to
+  # remember to configure them. It also means the real site needs no
+  # configuration to be indexed.
+  def canonical_host?
+    return false unless Rails.env.production?
+
+    strip_www(request.host) == strip_www(seo_host_options[:host].to_s)
+  end
+
+  # Whether crawlers should be let in at all.
+  #
+  # Answering on the canonical domain is necessary but not always sufficient:
+  # a site can be up on its real host and still not be ready to be found —
+  # the pre-launch case, where the deploy is live for the people reviewing it
+  # but shouldn't be turning up in search yet. ALLOW_INDEXING=false holds the
+  # door shut without having to lie about the domain in every canonical URL.
+  def indexable?
+    canonical_host? && ENV["ALLOW_INDEXING"] != "false"
+  end
+
+  # "www.example.com" and "example.com" are the same site for this purpose.
+  # Without this, a crawler that fetched robots.txt from the www variant
+  # (when no redirect is in place) would be told the site is closed.
+  def strip_www(host) = host.to_s.downcase.delete_prefix("www.")
 
   # Spanish is the default locale and its URLs stay bare ("/" not "/es/"),
   # so the canonical form of a Spanish page carries no locale segment.

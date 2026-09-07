@@ -66,6 +66,18 @@ module ApplicationHelper
     global.nil? || global.public_send("show_cta_#{button}")
   end
 
+  # Active announcements plus any offer flagged for the ticker. Memoized so
+  # the layout (which renders the ribbon) and the home nav (which needs to
+  # know whether the ribbon is showing, to clear the right amount of space)
+  # share one query instead of two.
+  def announcement_ticker_items
+    @_announcement_ticker_items ||= begin
+      active_announcements = Announcement.where(active: true).where("start_date <= ? AND end_date >= ?", Time.current, Time.current)
+      items = active_announcements.map { |a| { title: a.title, description: a.description } }
+      items + Offer.on_ticker.ordered.includes(:room).map { |o| { title: o.display_title, description: o.ticker_text } }
+    end
+  end
+
   # Wraps a page_content value with an Easy Edit pencil trigger when edit
   # mode is on; otherwise renders identically to a plain page_content call,
   # so this is safe to use everywhere page_content already is.
