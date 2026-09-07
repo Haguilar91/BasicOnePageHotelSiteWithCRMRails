@@ -474,7 +474,10 @@
                               <i class="fa-solid fa-calendar-check mr-2"></i><%= t("offers.book_this_offer") %>
                           </a>
                         <% else %>
-                          <button type="button" data-book-modal-open data-book-room="<%= offer.room.name if offer.room_offer? && offer.room.present? %>" class="block w-full text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
+                          <button type="button" data-book-modal-open
+                                  data-book-offer-title="<%= offer.display_title %>"
+                                  data-book-offer-description="<%= offer.display_description %>"
+                                  class="block w-full text-center bg-[var(--color-bg-tertiary)] hover:brightness-125 py-3 rounded-lg transition">
                               <i class="fa-solid fa-calendar-check mr-2"></i><%= t("offers.book_this_offer") %>
                           </button>
                         <% end %>
@@ -868,6 +871,15 @@
          data-email-subject="<%= t('booking.email_subject') %>"
          data-message-template="<%= t('booking.message_template') %>"
          data-room-type-any="<%= t('booking.room_type_any') %>"
+         data-room-type-label="<%= t('booking.room_type_label') %>"
+         data-offer-label="<%= t('booking.offer_label') %>"
+         data-contact-not-provided="<%= t('booking.contact_not_provided') %>"
+         data-phone-toggle-label="<%= t('booking.phone_toggle_label') %>"
+         data-phone-toggle-hint="<%= t('booking.phone_toggle_hint') %>"
+         data-phone-toggle-label-whatsapp="<%= t('booking.phone_toggle_label_whatsapp') %>"
+         data-phone-toggle-hint-whatsapp="<%= t('booking.phone_toggle_hint_whatsapp') %>"
+         data-phone-toggle-label-email="<%= t('booking.phone_toggle_label_email') %>"
+         data-phone-toggle-hint-email="<%= t('booking.phone_toggle_hint_email') %>"
          data-locale="<%= I18n.locale %>">
         <div class="bg-[var(--color-bg-secondary)] text-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 md:p-8 relative">
             <button type="button" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition" data-booking-modal-close aria-label="<%= t('booking.close') %>">
@@ -909,32 +921,51 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-room-type"><%= t('booking.room_type_label') %></label>
-                        <select id="booking-room-type" name="room_type"
+                        <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" data-booking-room-label for="booking-room-type"><%= t('booking.room_type_label') %></label>
+                        <select id="booking-room-type" name="room_type" data-booking-room-select
                                 class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                             <option value=""><%= t('booking.room_type_any') %></option>
                             <% (@rooms.presence || Room.order(:position, :id)).each do |room| %>
                               <option value="<%= room.name %>"><%= room.name %></option>
                             <% end %>
                         </select>
+                        <%# Shown instead of the select above when the modal was opened from an
+                            Offer card — the guest already picked the offer, so re-asking them to
+                            pick a room from the full list would just lose that context. %>
+                        <div class="hidden rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--color-accent)]/40 px-3 py-2" data-booking-offer-box>
+                            <p class="text-sm font-semibold text-white" data-booking-offer-title></p>
+                            <p class="text-xs text-[var(--color-text-muted)] mt-0.5" data-booking-offer-description></p>
+                        </div>
+                        <input type="hidden" id="booking-offer-context" name="offer_context">
                     </div>
                 </div>
 
                 <div class="mb-6">
-                    <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-contact-phone"><%= t('booking.phone_label') %></label>
-                    <div class="flex gap-2">
-                        <select id="booking-country-code"
-                                class="rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-2 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
-                            <% CountryCallingCode.all.each do |country| %>
-                              <option value="<%= country.dial_code %>" title="<%= country.name %>" <%= "selected" if country.iso2 == "MX" %>><%= country.flag %> <%= country.iso2 %> <%= country.dial_code %></option>
-                            <% end %>
-                        </select>
-                        <input type="tel" id="booking-contact-phone" name="contact_phone" required placeholder="<%= t('booking.phone_placeholder') %>"
-                               class="flex-1 min-w-0 rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                    <label class="flex items-start gap-2 text-sm cursor-pointer select-none">
+                        <input type="checkbox" id="booking-wants-phone-contact"
+                               class="mt-1 rounded border-white/20 bg-[var(--color-bg-tertiary)] text-[var(--color-accent)] focus:ring-[var(--color-accent)]">
+                        <span>
+                            <span class="block text-white" data-booking-phone-toggle-label><%= t('booking.phone_toggle_label') %></span>
+                            <span class="block text-xs text-[var(--color-text-muted)]" data-booking-phone-toggle-hint><%= t('booking.phone_toggle_hint') %></span>
+                        </span>
+                    </label>
+
+                    <div class="hidden mt-3" data-booking-phone-fields>
+                        <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-contact-phone"><%= t('booking.phone_label') %></label>
+                        <div class="flex gap-2">
+                            <select id="booking-country-code"
+                                    class="rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-2 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                                <% CountryCallingCode.all.each do |country| %>
+                                  <option value="<%= country.dial_code %>" title="<%= country.name %>" <%= "selected" if country.iso2 == "MX" %>><%= country.flag %> <%= country.iso2 %> <%= country.dial_code %></option>
+                                <% end %>
+                            </select>
+                            <input type="tel" id="booking-contact-phone" name="contact_phone" placeholder="<%= t('booking.phone_placeholder') %>"
+                                   class="flex-1 min-w-0 rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" data-booking-send-row>
                     <% if cta_button_enabled?(:whatsapp) %>
                       <button type="button" data-booking-send="whatsapp" class="bg-[#25D366] text-white hover:brightness-110 py-3 rounded-full font-bold transition inline-flex items-center justify-center gap-2">
                           <i class="fa-brands fa-whatsapp"></i> <%= t('booking.submit_whatsapp') %>

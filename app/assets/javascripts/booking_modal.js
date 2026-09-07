@@ -16,32 +16,112 @@ document.addEventListener('DOMContentLoaded', function () {
   const checkoutInput = form.querySelector('#booking-checkout');
   const guestsSelect = form.querySelector('#booking-guests');
   const roomTypeSelect = form.querySelector('#booking-room-type');
+  const roomTypeLabel = form.querySelector('[data-booking-room-label]');
+  const offerBox = form.querySelector('[data-booking-offer-box]');
+  const offerTitleEl = form.querySelector('[data-booking-offer-title]');
+  const offerDescriptionEl = form.querySelector('[data-booking-offer-description]');
+  const offerContextInput = form.querySelector('#booking-offer-context');
+  const wantsPhoneCheckbox = form.querySelector('#booking-wants-phone-contact');
+  const phoneFields = form.querySelector('[data-booking-phone-fields]');
   const countryCodeSelect = form.querySelector('#booking-country-code');
   const phoneInput = form.querySelector('#booking-contact-phone');
   const sendButtons = form.querySelectorAll('[data-booking-send]');
+  const sendButtonsRow = form.querySelector('[data-booking-send-row]');
+  const whatsappButton = form.querySelector('[data-booking-send="whatsapp"]');
+  const emailButton = form.querySelector('[data-booking-send="email"]');
+  const phoneToggleLabelEl = form.querySelector('[data-booking-phone-toggle-label]');
+  const phoneToggleHintEl = form.querySelector('[data-booking-phone-toggle-hint]');
 
   const phone = modal.dataset.phone || '';
   const email = modal.dataset.email || '';
   const emailSubject = modal.dataset.emailSubject || '';
   const messageTemplate = modal.dataset.messageTemplate || '';
   const roomTypeAny = modal.dataset.roomTypeAny || '';
+  const roomTypeLabelText = modal.dataset.roomTypeLabel || '';
+  const offerLabelText = modal.dataset.offerLabel || '';
+  const contactNotProvidedText = modal.dataset.contactNotProvided || '';
+  const phoneToggleLabelText = modal.dataset.phoneToggleLabel || '';
+  const phoneToggleHintText = modal.dataset.phoneToggleHint || '';
+  const phoneToggleLabelWhatsapp = modal.dataset.phoneToggleLabelWhatsapp || phoneToggleLabelText;
+  const phoneToggleHintWhatsapp = modal.dataset.phoneToggleHintWhatsapp || phoneToggleHintText;
+  const phoneToggleLabelEmail = modal.dataset.phoneToggleLabelEmail || phoneToggleLabelText;
+  const phoneToggleHintEmail = modal.dataset.phoneToggleHintEmail || phoneToggleHintText;
   const locale = modal.dataset.locale === 'en' ? 'en-US' : 'es-MX';
 
   const today = new Date().toISOString().slice(0, 10);
   checkinInput.min = today;
 
-  function openModal(preselectChannel, preselectRoom) {
-    const roomMatch = preselectRoom
-      ? Array.from(roomTypeSelect.options).find((option) => option.value === preselectRoom)
+  // Toggles the "want a callback number?" checkbox: the phone fields (and
+  // their required-ness) only exist while it's checked, since WhatsApp
+  // already shares the guest's number and email guests may not want to
+  // leave one at all.
+  function updatePhoneVisibility() {
+    const show = wantsPhoneCheckbox.checked;
+    phoneFields.classList.toggle('hidden', !show);
+    phoneInput.required = show;
+    if (!show) phoneInput.value = '';
+  }
+
+  wantsPhoneCheckbox.addEventListener('change', updatePhoneVisibility);
+  updatePhoneVisibility();
+
+  // When the guest arrives via a channel-specific trigger (e.g. the CTA
+  // section's dedicated "Send WhatsApp"/"Send Email" buttons), only that
+  // channel's send button stays visible and the phone-contact copy adapts:
+  // for WhatsApp it's framed as an alternate number (WhatsApp already
+  // shares theirs); for Email — which carries no phone at all — it's framed
+  // as a direct ask. Falls back to showing both buttons with the generic
+  // copy when no channel was specified (nav, room cards, offer cards).
+  function updateChannelContext(requestedChannel) {
+    const targetButton = requestedChannel === 'whatsapp' ? whatsappButton
+      : requestedChannel === 'email' ? emailButton
       : null;
-    roomTypeSelect.value = roomMatch ? roomMatch.value : '';
+    const channel = targetButton ? requestedChannel : null;
+
+    if (whatsappButton) whatsappButton.classList.toggle('hidden', channel === 'email');
+    if (emailButton) emailButton.classList.toggle('hidden', channel === 'whatsapp');
+    if (sendButtonsRow) sendButtonsRow.classList.toggle('sm:grid-cols-2', !channel);
+
+    phoneToggleLabelEl.textContent = channel === 'whatsapp' ? phoneToggleLabelWhatsapp
+      : channel === 'email' ? phoneToggleLabelEmail
+      : phoneToggleLabelText;
+    phoneToggleHintEl.textContent = channel === 'whatsapp' ? phoneToggleHintWhatsapp
+      : channel === 'email' ? phoneToggleHintEmail
+      : phoneToggleHintText;
+  }
+
+  function openModal({ channel, room, offerTitle, offerDescription } = {}) {
+    updateChannelContext(channel);
+
+    if (offerTitle) {
+      // Opened from an Offer card: show its title/description instead of
+      // asking the guest to pick a room off the full list again.
+      offerTitleEl.textContent = offerTitle;
+      offerDescriptionEl.textContent = offerDescription || '';
+      offerDescriptionEl.classList.toggle('hidden', !offerDescription);
+      offerBox.classList.remove('hidden');
+      roomTypeSelect.classList.add('hidden');
+      roomTypeSelect.value = '';
+      roomTypeLabel.textContent = offerLabelText;
+      offerContextInput.value = offerDescription ? `${offerTitle} — ${offerDescription}` : offerTitle;
+    } else {
+      offerBox.classList.add('hidden');
+      roomTypeSelect.classList.remove('hidden');
+      roomTypeLabel.textContent = roomTypeLabelText;
+      offerContextInput.value = '';
+
+      const roomMatch = room
+        ? Array.from(roomTypeSelect.options).find((option) => option.value === room)
+        : null;
+      roomTypeSelect.value = roomMatch ? roomMatch.value : '';
+    }
 
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
 
-    const focusButton = preselectChannel
-      ? form.querySelector(`[data-booking-send="${preselectChannel}"]`)
+    const focusButton = channel
+      ? form.querySelector(`[data-booking-send="${channel}"]`)
       : null;
     (focusButton || guestNameInput).focus();
   }
@@ -60,21 +140,29 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function currentContact() {
+    if (!wantsPhoneCheckbox.checked) return contactNotProvidedText;
     return `${countryCodeSelect.value} ${phoneInput.value.trim()}`.trim();
   }
 
   function buildMessage() {
+    const roomType = offerContextInput.value || roomTypeSelect.value || roomTypeAny;
+
     return messageTemplate
       .replace('{{guestName}}', guestNameInput.value.trim())
       .replace('{{checkin}}', formatDate(checkinInput.value))
       .replace('{{checkout}}', formatDate(checkoutInput.value))
       .replace('{{guests}}', guestsSelect.value)
-      .replace('{{roomType}}', roomTypeSelect.value || roomTypeAny)
+      .replace('{{roomType}}', roomType)
       .replace('{{contact}}', currentContact());
   }
 
   openTriggers.forEach((trigger) => {
-    trigger.addEventListener('click', () => openModal(trigger.dataset.bookChannel, trigger.dataset.bookRoom));
+    trigger.addEventListener('click', () => openModal({
+      channel: trigger.dataset.bookChannel,
+      room: trigger.dataset.bookRoom,
+      offerTitle: trigger.dataset.bookOfferTitle,
+      offerDescription: trigger.dataset.bookOfferDescription
+    }));
   });
 
   modal.addEventListener('click', (e) => {
@@ -121,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       closeModal();
       form.reset();
+      updatePhoneVisibility();
     });
   });
 });
