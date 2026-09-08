@@ -103,22 +103,31 @@
         .btn-gold {
             background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-soft) 50%, var(--color-accent) 100%);
             background-size: 200% 200%;
-            animation: shine 3s ease infinite;
         }
-        
+
         @keyframes shine {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
+
         @keyframes floating {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
+        }
+
+        <%# Both loop forever and add no task value beyond decoration, so
+            visitors who've asked their OS for reduced motion get none of it
+            — the gradient/position are still fully visible and correct,
+            just static. %>
+        @media (prefers-reduced-motion: no-preference) {
+            .btn-gold {
+                animation: shine 3s ease infinite;
+            }
+
+            .floating {
+                animation: floating 3s ease-in-out infinite;
+            }
         }
         
         .fade-in {
