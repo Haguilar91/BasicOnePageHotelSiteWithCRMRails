@@ -182,7 +182,7 @@
     </style>
 <% end %>
 
-<div class="bg-[var(--color-bg-primary)] text-white pb-20 md:pb-0">    
+<div class="bg-[var(--color-bg-primary)] text-[var(--color-text-on-primary)] pb-20 md:pb-0">    
     <!-- Navigation -->
 <nav class="fixed <%= announcement_ticker_items.any? ? 'top-10' : 'top-0' %> w-full z-50 bg-[var(--color-bg-primary)]/90 backdrop-blur-md border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -204,24 +204,24 @@
     </span>
 </a>
             <div class="hidden lg:flex items-center space-x-5 text-sm">
-                <a href="#inicio" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.home") %></a>
-                <a href="#habitaciones" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.rooms") %></a>
+                <a href="#inicio" class="nav-link text-[var(--color-text-on-primary)]/80 hover:text-[var(--color-text-on-primary)] transition"><%= t("nav.home") %></a>
+                <a href="#habitaciones" class="nav-link text-[var(--color-text-on-primary)]/80 hover:text-[var(--color-text-on-primary)] transition"><%= t("nav.rooms") %></a>
                 <% if @offers.present? %>
-                  <a href="#ofertas" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.offers") %></a>
+                  <a href="#ofertas" class="nav-link text-[var(--color-text-on-primary)]/80 hover:text-[var(--color-text-on-primary)] transition"><%= t("nav.offers") %></a>
                 <% end %>
                 <% if @gallery_photos.present? %>
-                  <a href="#galeria" class="nav-link text-white/80 hover:text-white transition"><%= t("gallery.nav_label") %></a>
+                  <a href="#galeria" class="nav-link text-[var(--color-text-on-primary)]/80 hover:text-[var(--color-text-on-primary)] transition"><%= t("gallery.nav_label") %></a>
                 <% end %>
-                <a href="#servicios" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.services") %></a>
-                <a href="#que-hacer" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.activities") %></a>
-                <a href="#contacto" class="nav-link text-white/80 hover:text-white transition"><%= t("nav.contact") %></a>
+                <a href="#servicios" class="nav-link text-[var(--color-text-on-primary)]/80 hover:text-[var(--color-text-on-primary)] transition"><%= t("nav.services") %></a>
+                <a href="#que-hacer" class="nav-link text-[var(--color-text-on-primary)]/80 hover:text-[var(--color-text-on-primary)] transition"><%= t("nav.activities") %></a>
+                <a href="#contacto" class="nav-link text-[var(--color-text-on-primary)]/80 hover:text-[var(--color-text-on-primary)] transition"><%= t("nav.contact") %></a>
                 <div class="flex items-center space-x-2 pl-2 border-l border-white/10">
-                    <%= link_to t("language_switcher.es"), switch_locale_path("es"), class: "transition #{I18n.locale == :es ? 'text-[var(--color-accent)] font-bold' : 'text-white/60 hover:text-white'}" %>
-                    <span class="text-white/30">/</span>
-                    <%= link_to t("language_switcher.en"), switch_locale_path("en"), class: "transition #{I18n.locale == :en ? 'text-[var(--color-accent)] font-bold' : 'text-white/60 hover:text-white'}" %>
+                    <%= link_to t("language_switcher.es"), switch_locale_path("es"), class: "transition #{I18n.locale == :es ? 'text-[var(--color-accent)] font-bold' : 'text-[var(--color-text-on-primary)]/60 hover:text-[var(--color-text-on-primary)]'}" %>
+                    <span class="text-[var(--color-text-on-primary)]/30">/</span>
+                    <%= link_to t("language_switcher.en"), switch_locale_path("en"), class: "transition #{I18n.locale == :en ? 'text-[var(--color-accent)] font-bold' : 'text-[var(--color-text-on-primary)]/60 hover:text-[var(--color-text-on-primary)]'}" %>
                 </div>
             </div>
-            <button type="button" data-book-modal-open class="btn-gold text-slate-900 px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-accent)]/50 transition">
+            <button type="button" data-book-modal-open class="btn-gold text-[var(--color-text-on-accent)] px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-accent)]/50 transition">
                 <%= t("nav.book_now") %>
             </button>
         </div>
@@ -286,7 +286,7 @@
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#habitaciones" class="btn-gold text-slate-900 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
+              <a href="#habitaciones" class="btn-gold text-[var(--color-text-on-accent)] px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
                   <i class="fas fa-bed mr-2"></i> <%= t("hero.view_rooms") %>
               </a>
               <a href="#reservar" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-slate-900 transition inline-flex items-center justify-center">
@@ -360,18 +360,18 @@
                         <% room_offer = @room_offers[room.id] %>
                         <% room_discounted = room_offer&.discounted_price %>
                         <% if room_discounted.present? %>
-                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold flex items-baseline gap-2">
+                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-[var(--color-text-on-accent)] px-3 py-1 rounded-full text-sm font-semibold flex items-baseline gap-2">
                               <span class="line-through opacity-60 font-normal text-xs"><%= room.price %></span>
                               <span><%= room_discounted %></span>
                           </div>
                         <% elsif room.price.present? %>
-                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
+                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-[var(--color-text-on-accent)] px-3 py-1 rounded-full text-sm font-semibold">
                               <%= room.price %>
                           </div>
                         <% end %>
                         <% room_badge = room_offer&.display_badge.presence || room.badge %>
                         <% if room_badge.present? %>
-                          <div class="absolute top-4 left-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
+                          <div class="absolute top-4 left-4 bg-[var(--color-accent)] text-[var(--color-text-on-accent)] px-3 py-1 rounded-full text-xs font-bold uppercase">
                               <%= room_badge %>
                           </div>
                         <% end %>
@@ -385,14 +385,14 @@
                         <h3 class="text-2xl font-serif font-semibold mb-2"><%= room.name %></h3>
                         <p class="text-[var(--color-text-muted)] mb-4"><%= room.description %></p>
                         <% if room.features.present? %>
-                          <ul class="text-sm text-white/80 space-y-2 mb-6">
+                          <ul class="text-sm text-[var(--color-text-on-secondary)]/80 space-y-2 mb-6">
                             <% room.features.split("\n").map(&:strip).reject(&:empty?).each do |feature| %>
                               <li><i class="fas fa-check text-[var(--color-accent)] mr-2"></i> <%= feature %></li>
                             <% end %>
                           </ul>
                         <% end %>
                         <% if room.booking_url.present? %>
-                          <a href="<%= room.booking_url %>" target="_blank" rel="noopener" class="block text-center <%= room.badge.present? ? 'bg-[var(--color-accent)] text-slate-900 hover:brightness-90 font-semibold' : 'bg-[var(--color-bg-tertiary)] hover:brightness-125' %> py-3 rounded-lg transition">
+                          <a href="<%= room.booking_url %>" target="_blank" rel="noopener" class="block text-center <%= room.badge.present? ? 'bg-[var(--color-accent)] text-[var(--color-text-on-accent)] hover:brightness-90 font-semibold' : 'bg-[var(--color-bg-tertiary)] hover:brightness-125' %> py-3 rounded-lg transition">
                               <i class="<%= room.booking_button_icon %> mr-2"></i><%= room.booking_button_label %>
                           </a>
                         <% else %>
@@ -434,22 +434,22 @@
                         <% end %>
                         <% if offer.room_offer? %>
                           <% if offer.discounted_price.present? %>
-                            <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold flex items-baseline gap-2">
+                            <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-[var(--color-text-on-accent)] px-3 py-1 rounded-full text-sm font-semibold flex items-baseline gap-2">
                                 <span class="line-through opacity-60 font-normal text-xs"><%= offer.original_price %></span>
                                 <span><%= offer.discounted_price %></span>
                             </div>
                           <% elsif offer.original_price.present? %>
-                            <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
+                            <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-[var(--color-text-on-accent)] px-3 py-1 rounded-full text-sm font-semibold">
                                 <%= offer.original_price %>
                             </div>
                           <% end %>
                         <% elsif offer.price.present? %>
-                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-sm font-semibold">
+                          <div class="absolute top-4 right-4 bg-[var(--color-accent)] text-[var(--color-text-on-accent)] px-3 py-1 rounded-full text-sm font-semibold">
                               <%= number_to_currency(offer.price) %>
                           </div>
                         <% end %>
                         <% if offer_badge.present? %>
-                          <div class="absolute top-4 left-4 bg-[var(--color-accent)] text-slate-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
+                          <div class="absolute top-4 left-4 bg-[var(--color-accent)] text-[var(--color-text-on-accent)] px-3 py-1 rounded-full text-xs font-bold uppercase">
                               <%= offer_badge %>
                           </div>
                         <% end %>
@@ -470,7 +470,7 @@
                           </p>
                         <% end %>
                         <% if booking_link.present? %>
-                          <a href="<%= booking_link %>" target="_blank" rel="noopener" class="block text-center bg-[var(--color-accent)] text-slate-900 hover:brightness-90 font-semibold py-3 rounded-lg transition">
+                          <a href="<%= booking_link %>" target="_blank" rel="noopener" class="block text-center bg-[var(--color-accent)] text-[var(--color-text-on-accent)] hover:brightness-90 font-semibold py-3 rounded-lg transition">
                               <i class="fa-solid fa-calendar-check mr-2"></i><%= t("offers.book_this_offer") %>
                           </a>
                         <% else %>
@@ -567,7 +567,7 @@
                             <button
                                 type="button"
                                 data-tab-button="<%= category.parameterize %>"
-                                class="px-6 py-3 text-sm font-semibold transition <%= index.zero? ? 'bg-[var(--color-accent)] text-slate-900' : 'text-white/80 hover:bg-[var(--color-bg-tertiary)] hover:text-white' %>">
+                                class="px-6 py-3 text-sm font-semibold transition <%= index.zero? ? 'bg-[var(--color-accent)] text-[var(--color-text-on-accent)]' : 'text-[var(--color-text-on-secondary)]/80 hover:bg-[var(--color-bg-tertiary)] hover:text-[var(--color-text-on-tertiary)]' %>">
                                 <%= LocalActivity.category_label(category) %>
                             </button>
                         <% end %>
@@ -597,13 +597,13 @@
                                     <div class="p-8">
                                         <div class="flex items-center justify-between mb-4">
                                             <div>
-                                                <h3 class="text-2xl font-serif font-semibold text-white"><%= activity.title %></h3>
+                                                <h3 class="text-2xl font-serif font-semibold text-[var(--color-text-on-secondary)]"><%= activity.title %></h3>
                                                 <p class="text-[var(--color-text-muted)] text-sm mt-2"><%= LocalActivity.category_label(category) %></p>
                                             </div>
                                             <i class="fas fa-<%= category == 'Restaurantes' ? 'utensils' : (category == 'Puntos de Interés' ? 'map-marker-alt' : 'route') %> text-[var(--color-accent)] text-3xl"></i>
                                         </div>
-                                        <p class="text-white/80 mb-6"><%= activity.description %></p>
-                                        <a href="<%= activity.google_maps_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-slate-900 transition hover:brightness-110">
+                                        <p class="text-[var(--color-text-on-secondary)]/80 mb-6"><%= activity.description %></p>
+                                        <a href="<%= activity.google_maps_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-[var(--color-text-on-accent)] transition hover:brightness-110">
                                             <i class="fas fa-map-marked-alt mr-2"></i> <%= t("activities.google_maps_button") %>
                                         </a>
                                     </div>
@@ -627,7 +627,7 @@
                 <div class="fade-in">
                     <p class="text-[var(--color-accent)] tracking-widest mb-2 uppercase text-sm"><%= t("location.eyebrow") %></p>
                     <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= editable_content('home_location_title', 'En el Corazón de Querétaro') %></h2>
-                    <p class="text-white/80 mb-6">
+                    <p class="text-[var(--color-text-on-primary)]/80 mb-6">
                         <%= editable_content('home_location_desc', 'Nuestra ubicación privilegiada en el centro histórico de Querétaro te permite disfrutar de la historia, la cultura y el colonialismo en un solo lugar.', tag: :span) %>
                     </p>
                     <div class="space-y-4">
@@ -650,7 +650,7 @@
                                         <% listed_phone_numbers.each do |phone| %>
                                             <li class="relative inline-flex flex-wrap items-center gap-2 w-full">
                                                 <a href="tel:<%= phone.dialable %>" class="text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition">
-                                                    <% if phone.label.present? %><span class="text-white/80"><%= phone.label %>:</span> <% end %><%= phone.number %>
+                                                    <% if phone.label.present? %><span class="text-[var(--color-text-on-primary)]/80"><%= phone.label %>:</span> <% end %><%= phone.number %>
                                                 </a>
                                                 <% if phone.whatsapp_active? %>
                                                     <span class="inline-flex items-center gap-1 text-[10px] uppercase tracking-wide rounded-full px-2 py-0.5 bg-[#25D366]/15 text-[#25D366]">
@@ -703,7 +703,7 @@
         <div class="absolute inset-0 bg-[var(--color-accent)]/10"></div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center fade-in">
             <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6"><%= editable_content('cta_title', '¡Listo para una experiencia inolvidable?') %></h2>
-            <p class="text-xl text-white/80 mb-8">
+            <p class="text-xl text-[var(--color-text-on-primary)]/80 mb-8">
                 <%= editable_content('cta_subtitle', 'Reserva ahora y disfruta de las mejores tarifas de temporada') %>
             </p>
             <%# The "Llamar" and "WhatsApp" buttons each ride their own line (Avo >
@@ -713,7 +713,7 @@
             <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
               <% if cta_button_enabled?(:call) %>
                 <div class="relative inline-block">
-                  <a href="tel:<%= PhoneNumber.dialable(call_phone) %>" class="btn-gold text-slate-900 px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
+                  <a href="tel:<%= PhoneNumber.dialable(call_phone) %>" class="btn-gold text-[var(--color-text-on-accent)] px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-[var(--color-accent)]/50 transition inline-flex items-center justify-center">
                       <i class="fas fa-phone-alt mr-2"></i> <%= t("cta.call_now") %>
                   </a>
                   <% if easy_edit_mode? %>
@@ -797,7 +797,7 @@
                     <h4 class="font-semibold mb-4"><%= t("footer.follow_us") %></h4>
                     <div class="flex space-x-4">
                         <% social_links.each do |icon, url| %>
-                          <a href="<%= url %>" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-slate-900 transition">
+                          <a href="<%= url %>" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center hover:bg-[var(--color-accent)] hover:text-[var(--color-text-on-accent)] transition">
                               <i class="fab fa-<%= icon %>"></i>
                           </a>
                         <% end %>
@@ -881,7 +881,7 @@
          data-phone-toggle-label-email="<%= t('booking.phone_toggle_label_email') %>"
          data-phone-toggle-hint-email="<%= t('booking.phone_toggle_hint_email') %>"
          data-locale="<%= I18n.locale %>">
-        <div class="bg-[var(--color-bg-secondary)] text-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 md:p-8 relative">
+        <div class="bg-[var(--color-bg-secondary)] text-[var(--color-text-on-secondary)] rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 md:p-8 relative">
             <button type="button" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition" data-booking-modal-close aria-label="<%= t('booking.close') %>">
                 <i class="fas fa-times"></i>
             </button>
@@ -893,19 +893,19 @@
                 <div class="mb-4">
                     <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-guest-name"><%= t('booking.guest_name_label') %></label>
                     <input type="text" id="booking-guest-name" name="guest_name" required placeholder="<%= t('booking.guest_name_placeholder') %>"
-                           class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                           class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-[var(--color-text-on-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-checkin"><%= t('booking.checkin_label') %></label>
                         <input type="date" id="booking-checkin" name="checkin" required
-                               class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                               class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-[var(--color-text-on-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                     </div>
                     <div>
                         <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-checkout"><%= t('booking.checkout_label') %></label>
                         <input type="date" id="booking-checkout" name="checkout" required
-                               class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                               class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-[var(--color-text-on-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                     </div>
                 </div>
 
@@ -913,7 +913,7 @@
                     <div>
                         <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-guests"><%= t('booking.guests_label') %></label>
                         <select id="booking-guests" name="guests" required
-                                class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                                class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-[var(--color-text-on-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                             <% (1..6).each do |n| %>
                               <option value="<%= n %>" <%= "selected" if n == 2 %>><%= n %></option>
                             <% end %>
@@ -923,7 +923,7 @@
                     <div>
                         <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" data-booking-room-label for="booking-room-type"><%= t('booking.room_type_label') %></label>
                         <select id="booking-room-type" name="room_type" data-booking-room-select
-                                class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                                class="w-full rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-[var(--color-text-on-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                             <option value=""><%= t('booking.room_type_any') %></option>
                             <% (@rooms.presence || Room.order(:position, :id)).each do |room| %>
                               <option value="<%= room.name %>"><%= room.name %></option>
@@ -933,7 +933,7 @@
                             Offer card — the guest already picked the offer, so re-asking them to
                             pick a room from the full list would just lose that context. %>
                         <div class="hidden rounded-lg bg-[var(--color-bg-tertiary)] border border-[var(--color-accent)]/40 px-3 py-2" data-booking-offer-box>
-                            <p class="text-sm font-semibold text-white" data-booking-offer-title></p>
+                            <p class="text-sm font-semibold text-[var(--color-text-on-tertiary)]" data-booking-offer-title></p>
                             <p class="text-xs text-[var(--color-text-muted)] mt-0.5" data-booking-offer-description></p>
                         </div>
                         <input type="hidden" id="booking-offer-context" name="offer_context">
@@ -945,7 +945,7 @@
                         <input type="checkbox" id="booking-wants-phone-contact"
                                class="mt-1 rounded border-white/20 bg-[var(--color-bg-tertiary)] text-[var(--color-accent)] focus:ring-[var(--color-accent)]">
                         <span>
-                            <span class="block text-white" data-booking-phone-toggle-label><%= t('booking.phone_toggle_label') %></span>
+                            <span class="block text-[var(--color-text-on-secondary)]" data-booking-phone-toggle-label><%= t('booking.phone_toggle_label') %></span>
                             <span class="block text-xs text-[var(--color-text-muted)]" data-booking-phone-toggle-hint><%= t('booking.phone_toggle_hint') %></span>
                         </span>
                     </label>
@@ -954,13 +954,13 @@
                         <label class="block text-xs uppercase tracking-wide text-[var(--color-text-muted)] mb-1" for="booking-contact-phone"><%= t('booking.phone_label') %></label>
                         <div class="flex gap-2">
                             <select id="booking-country-code"
-                                    class="rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-2 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                                    class="rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-2 py-2 text-[var(--color-text-on-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                                 <% CountryCallingCode.all.each do |country| %>
                                   <option value="<%= country.dial_code %>" title="<%= country.name %>" <%= "selected" if country.iso2 == "MX" %>><%= country.flag %> <%= country.iso2 %> <%= country.dial_code %></option>
                                 <% end %>
                             </select>
                             <input type="tel" id="booking-contact-phone" name="contact_phone" placeholder="<%= t('booking.phone_placeholder') %>"
-                                   class="flex-1 min-w-0 rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
+                                   class="flex-1 min-w-0 rounded-lg bg-[var(--color-bg-tertiary)] border border-white/10 px-3 py-2 text-[var(--color-text-on-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]">
                         </div>
                     </div>
                 </div>
@@ -972,7 +972,7 @@
                       </button>
                     <% end %>
                     <% if cta_button_enabled?(:email) %>
-                      <button type="button" data-booking-send="email" class="btn-gold text-slate-900 py-3 rounded-full font-bold transition inline-flex items-center justify-center gap-2">
+                      <button type="button" data-booking-send="email" class="btn-gold text-[var(--color-text-on-accent)] py-3 rounded-full font-bold transition inline-flex items-center justify-center gap-2">
                           <i class="fas fa-envelope"></i> <%= t('booking.submit_email') %>
                       </button>
                     <% end %>
@@ -1032,16 +1032,16 @@
                 const target = button.dataset.tabButton;
 
                 document.querySelectorAll('[data-tab-button]').forEach(btn => {
-                    btn.classList.remove('bg-[var(--color-accent)]', 'text-slate-900');
-                    btn.classList.add('text-white/80');
+                    btn.classList.remove('bg-[var(--color-accent)]', 'text-[var(--color-text-on-accent)]');
+                    btn.classList.add('text-[var(--color-text-on-secondary)]/80');
                 });
 
                 document.querySelectorAll('[data-tab-panel]').forEach(panel => {
                     panel.classList.add('hidden');
                 });
 
-                button.classList.add('bg-[var(--color-accent)]', 'text-slate-900');
-                button.classList.remove('text-white/80');
+                button.classList.add('bg-[var(--color-accent)]', 'text-[var(--color-text-on-accent)]');
+                button.classList.remove('text-[var(--color-text-on-secondary)]/80');
 
                 const activePanel = document.querySelector(`[data-tab-panel="${target}"]`);
                 if (activePanel) {
