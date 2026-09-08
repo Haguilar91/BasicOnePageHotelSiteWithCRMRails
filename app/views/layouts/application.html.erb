@@ -64,7 +64,15 @@
         --color-bg-secondary: <%= theme.bg_secondary %>;
         --color-bg-tertiary: <%= theme.bg_tertiary %>;
         --color-accent: <%= theme.accent %>;
-        --color-accent-soft: <%= theme.accent_soft %>;
+        <%# A tint of accent itself, not the separately admin-set accent_soft
+            field — that field can drift out of sync with accent (e.g. an
+            admin changes accent for contrast reasons and never revisits
+            accent_soft), which is exactly what happened: the .btn-gold and
+            .gradient-text shine gradients read accent -> accent_soft ->
+            accent, so a mismatched accent_soft made every primary CTA
+            button visibly flash an unrelated color on every animation loop.
+            Deriving it from accent instead makes that impossible. %>
+        --color-accent-soft: color-mix(in srgb, var(--color-accent) 55%, white);
         --color-text-muted: <%= theme.muted_text_color %>;
         --color-text-on-primary: <%= theme.text_on_bg_primary %>;
         --color-text-on-secondary: <%= theme.text_on_bg_secondary %>;
