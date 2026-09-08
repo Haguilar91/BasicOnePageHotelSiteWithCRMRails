@@ -1,8 +1,17 @@
 require "test_helper"
 
 class ThemeTest < ActiveSupport::TestCase
+  # Distinct, contrasting values — not all the same hex — since Theme now
+  # validates that accent actually contrasts against each background.
   def build_colors
-    Theme::COLOR_ATTRIBUTES.index_with { "#d4af37" }
+    {
+      "bg_primary" => "#0f172a",
+      "bg_secondary" => "#1e293b",
+      "bg_tertiary" => "#334155",
+      "accent" => "#d4af37",
+      "accent_soft" => "#f4e4bc",
+      "text_muted" => "#9ca3af"
+    }
   end
 
   test "every colour must be a six-digit hex value" do
@@ -11,6 +20,24 @@ class ThemeTest < ActiveSupport::TestCase
     theme = Theme.new(name: "Dorado", **build_colors.merge("accent" => "dorado"))
     assert_not theme.valid?
     assert_includes theme.errors.attribute_names, :accent
+  end
+
+  test "accent must contrast against every background" do
+    # accent is used as text-[var(--color-accent)] for icons and badges
+    # against bg_primary, bg_secondary AND bg_tertiary, so it has to hold up
+    # against all three — this is the exact bug that shipped when an admin
+    # set accent to the same hex as bg_primary.
+    theme = Theme.new(name: "Invisible", **build_colors.merge("accent" => build_colors["bg_primary"]))
+    assert_not theme.valid?
+    assert_includes theme.errors.attribute_names, :accent
+  end
+
+  test "accent contrasting fine against two backgrounds but not the third is still rejected" do
+    theme = Theme.new(name: "Partial", **build_colors.merge(
+      "bg_primary" => "#0f172a", "bg_secondary" => "#1e293b", "bg_tertiary" => "#e2e8f0", "accent" => "#94a3b8"
+    ))
+    assert_not theme.valid?
+    assert_includes theme.errors[:accent].join, "el fondo terciario"
   end
 
   test "a three-digit hex shorthand is rejected" do
