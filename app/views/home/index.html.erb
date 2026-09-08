@@ -268,7 +268,7 @@
            class="hero min-h-screen flex items-center justify-center"
            style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('<%= hero_bg_url %>'); background-size: cover; background-position: center; background-attachment: fixed;">
       <div class="text-center px-4">
-          <p class="text-[var(--color-accent)] tracking-widest mb-4 uppercase text-sm"><%= editable_content('home_welcome_title', 'Bienvenido al Hotel Mesón') %></p>
+          <p class="inline-block bg-black/45 px-4 py-1 rounded-full text-[var(--color-accent)] tracking-widest mb-4 uppercase text-sm"><%= editable_content('home_welcome_title', 'Bienvenido al Hotel Mesón') %></p>
           
           <!-- Large Centered Hero Emblem -->
           <% brand_settings = PageContent.find_by(key: 'global') %>
