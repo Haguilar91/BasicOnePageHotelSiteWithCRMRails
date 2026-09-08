@@ -70,6 +70,31 @@
         --color-text-on-secondary: <%= theme.text_on_bg_secondary %>;
         --color-text-on-tertiary: <%= theme.text_on_bg_tertiary %>;
         --color-text-on-accent: <%= theme.text_on_accent %>;
+
+        <%# Faded variants of the vars above (named `--color-<base>-<percent>`,
+            meaning "<base> at <percent>% opacity"), for text/borders/shadows
+            that shouldn't be full-strength. NOT done with Tailwind's `/NN`
+            opacity modifier: that modifier can't be applied to a `var()` —
+            Tailwind has no way to know the color inside a custom property
+            at build time, so e.g. `text-[var(--x)]/80` or `border-[var(--x)]/30`
+            silently generates no rule at all, quietly falling back to
+            Tailwind's preflight default border color (or fully transparent
+            for backgrounds). This bit both new code and existing uses of
+            this pattern — e.g. the nav had NO background at all (only its
+            blur), and the logo/hero borders and CTA tint were invisible.
+            color-mix() does the blending in plain CSS instead, so it always
+            works regardless of what the var resolves to. %>
+        --color-text-on-primary-80: color-mix(in srgb, var(--color-text-on-primary) 80%, transparent);
+        --color-text-on-secondary-80: color-mix(in srgb, var(--color-text-on-secondary) 80%, transparent);
+        --color-text-on-secondary-10: color-mix(in srgb, var(--color-text-on-secondary) 10%, transparent);
+        --color-text-on-secondary-20: color-mix(in srgb, var(--color-text-on-secondary) 20%, transparent);
+        --color-accent-10: color-mix(in srgb, var(--color-accent) 10%, transparent);
+        --color-accent-15: color-mix(in srgb, var(--color-accent) 15%, transparent);
+        --color-accent-30: color-mix(in srgb, var(--color-accent) 30%, transparent);
+        --color-accent-40: color-mix(in srgb, var(--color-accent) 40%, transparent);
+        --color-accent-50: color-mix(in srgb, var(--color-accent) 50%, transparent);
+        --color-bg-primary-90: color-mix(in srgb, var(--color-bg-primary) 90%, transparent);
+        --color-bg-primary-95: color-mix(in srgb, var(--color-bg-primary) 95%, transparent);
       }
     </style>
 
