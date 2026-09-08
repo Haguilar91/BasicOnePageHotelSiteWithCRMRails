@@ -11,6 +11,7 @@ class Theme < ApplicationRecord
   # them).
   LIGHT_TEXT = "#ffffff"
   DARK_TEXT = "#0f172a"
+  MUTED_ALPHA = 0.6
 
   def self.contrasting_text_for(hex)
     r, g, b = hex[1..2].to_i(16), hex[3..4].to_i(16), hex[5..6].to_i(16)
@@ -42,6 +43,21 @@ class Theme < ApplicationRecord
 
     def text_on_accent
       Theme.contrasting_text_for(accent)
+    end
+
+    # A dimmed version of the contrast color rather than the admin-set
+    # `text_muted` field: `text_muted` was designed assuming bg_primary is
+    # always dark (see its Avo help text) and, like the old hardcoded
+    # `text-white` classes, went unreadable the moment a light theme was
+    # created. Using alpha instead of a flat hex also keeps it legible
+    # whether it lands on bg_primary, bg_secondary, or bg_tertiary — the
+    # same call site is used against all three.
+    def muted_text_color
+      if Theme.contrasting_text_for(bg_primary) == Theme::LIGHT_TEXT
+        "rgba(255, 255, 255, #{Theme::MUTED_ALPHA})"
+      else
+        "rgba(15, 23, 42, #{Theme::MUTED_ALPHA})"
+      end
     end
   end
 

@@ -23,7 +23,7 @@ class Avo::Resources::Theme < Avo::BaseResource
     swatch_field :bg_tertiary, name: "Fondo terciario", help: "Fondo de elementos como iconos y botones secundarios."
     swatch_field :accent, name: "Acento", help: "Color principal de marca: botones, íconos y detalles destacados."
     swatch_field :accent_soft, name: "Acento suave", help: "Tono claro del acento, usado en degradados y brillos."
-    swatch_field :text_muted, name: "Texto atenuado", help: "Color de textos secundarios sobre fondos oscuros."
+    swatch_field :text_muted, name: "Texto atenuado (sin uso)", help: "Ya no afecta al sitio: el color de los textos secundarios ahora se calcula automáticamente según el fondo, para que siga siendo legible en temas claros u oscuros."
   end
 
   private
