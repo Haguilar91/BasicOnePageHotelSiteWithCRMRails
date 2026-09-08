@@ -8,9 +8,7 @@ class ThemeTest < ActiveSupport::TestCase
       "bg_primary" => "#0f172a",
       "bg_secondary" => "#1e293b",
       "bg_tertiary" => "#334155",
-      "accent" => "#d4af37",
-      "accent_soft" => "#f4e4bc",
-      "text_muted" => "#9ca3af"
+      "accent" => "#d4af37"
     }
   end
 

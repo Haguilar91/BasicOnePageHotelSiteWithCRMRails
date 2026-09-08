@@ -1,7 +1,7 @@
 class Theme < ApplicationRecord
   HEX_FORMAT = /\A#[0-9a-fA-F]{6}\z/
 
-  COLOR_ATTRIBUTES = %w[bg_primary bg_secondary bg_tertiary accent accent_soft text_muted].freeze
+  COLOR_ATTRIBUTES = %w[bg_primary bg_secondary bg_tertiary accent].freeze
 
   # Readable text color to place on top of a given background hex — picked
   # as whichever of near-black or white gives the better WCAG contrast
@@ -83,9 +83,7 @@ class Theme < ApplicationRecord
     bg_primary: "#0f172a",
     bg_secondary: "#1e293b",
     bg_tertiary: "#334155",
-    accent: "#d4af37",
-    accent_soft: "#f4e4bc",
-    text_muted: "#9ca3af"
+    accent: "#d4af37"
   ).freeze
 
   validates :name, presence: true

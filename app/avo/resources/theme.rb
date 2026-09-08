@@ -21,9 +21,7 @@ class Avo::Resources::Theme < Avo::BaseResource
     swatch_field :bg_primary, name: "Fondo principal", help: "Fondo más oscuro: navegación, pie de página, secciones base."
     swatch_field :bg_secondary, name: "Fondo secundario", help: "Fondo de tarjetas y secciones alternas."
     swatch_field :bg_tertiary, name: "Fondo terciario", help: "Fondo de elementos como iconos y botones secundarios."
-    swatch_field :accent, name: "Acento", help: "Color principal de marca: botones, íconos y detalles destacados."
-    swatch_field :accent_soft, name: "Acento suave (sin uso)", help: "Ya no afecta al sitio: el tono claro para degradados y brillos ahora se calcula automáticamente a partir del Acento, para que nunca queden desincronizados."
-    swatch_field :text_muted, name: "Texto atenuado (sin uso)", help: "Ya no afecta al sitio: el color de los textos secundarios ahora se calcula automáticamente según el fondo, para que siga siendo legible en temas claros u oscuros."
+    swatch_field :accent, name: "Acento", help: "Color principal de marca: botones, íconos y detalles destacados. El tono claro para degradados (antes 'Acento suave') y el color de textos secundarios (antes 'Texto atenuado') ahora se calculan automáticamente a partir de este color y de los fondos."
   end
 
   private
