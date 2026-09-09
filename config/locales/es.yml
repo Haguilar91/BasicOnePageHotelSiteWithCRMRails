@@ -29,7 +29,7 @@ es:
     book_this_offer: "Reservar esta oferta"
 
   activities:
-    eyebrow: "Querétaro"
+    eyebrow: "Actividades"
     google_maps_button: "Ver en Google Maps"
     empty_state: "No hay elementos disponibles en esta categoría todavía. Añade actividades en Avo."
 
