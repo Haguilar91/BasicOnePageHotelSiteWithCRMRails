@@ -315,6 +315,14 @@ PageContent.find_or_create_by!(key: 'services_subtitle') do |p|
   p.title = "Services Section Subtitle"
   p.content = "Experiencias Extraordinarias"
 end
+PageContent.find_or_create_by!(key: 'home_activities_title') do |p|
+  p.title = "Activities Section Title"
+  p.content = "Qué hacer en Querétaro"
+end
+PageContent.find_or_create_by!(key: 'home_activities_subtitle') do |p|
+  p.title = "Activities Section Subtitle"
+  p.content = "Restaurantes, puntos de interés y tours que hacen único tu viaje a Querétaro."
+end
 
 # Social media links — footer icons only render when these are filled in
 PageContent.find_or_create_by!(key: 'social_facebook') { |p| p.title = "Facebook URL" }
