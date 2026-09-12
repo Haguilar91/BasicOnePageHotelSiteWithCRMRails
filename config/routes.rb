@@ -41,6 +41,11 @@ Rails.application.routes.draw do
   get "/sitemap.xml", to: "seo#sitemap", as: :sitemap, defaults: { format: "xml" }
   get "/robots.txt", to: "seo#robots", as: :robots, defaults: { format: "text" }
 
+  # Reveal health status on /up that returns 200 if the app boots with no
+  # exceptions, otherwise 500. Kamal's proxy polls this before routing traffic
+  # to a new container, so it lives at the plain path, outside the locale scope.
+  get "up" => "rails/health#show", as: :rails_health_check
+
   # Path-based locale for the public site (/es, /en) for SEO-visible,
   # crawlable URLs per language. The locale segment is optional, so "/",
   # "/es", and "/en" all resolve here — see ApplicationController#switch_locale
@@ -52,9 +57,6 @@ Rails.application.routes.draw do
     resources :announcements, only: [ :index, :show ]
 
     get "home/index"
-    # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-    # Can be used by load balancers and uptime monitors to verify that the app is live.
-    # get "up" => "rails/health#show", as: :rails_health_check
     # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
     # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
     # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker

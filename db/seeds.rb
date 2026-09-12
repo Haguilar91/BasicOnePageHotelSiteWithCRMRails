@@ -115,7 +115,7 @@ PageContent.create(
   end
 
   # Default Rooms
-  Room.find_or_create_by!(name: 'Habitación Standard') do |r|
+  Room.i18n.find_or_create_by!(name: 'Habitación Standard') do |r|
     r.price = 'Desde $150'
     r.description = 'Perfecta para viajeros que buscan comodidad y tranquilidad en el corazón histórico.'
     r.features = "Cama King Size\nBalcón con vista al centro\nConexión histórica incluida\nSpa incluido"
@@ -123,7 +123,7 @@ PageContent.create(
     r.position = 1
   end
 
-  Room.find_or_create_by!(name: 'Habitación Deluxe') do |r|
+  Room.i18n.find_or_create_by!(name: 'Habitación Deluxe') do |r|
     r.price = 'Desde $250'
     r.badge = 'POPULAR'
     r.description = 'Amplia y lujosa con todos los servicios exclusivos.'
@@ -132,7 +132,7 @@ PageContent.create(
     r.position = 2
   end
 
-  Room.find_or_create_by!(name: 'Suite Presidencial') do |r|
+  Room.i18n.find_or_create_by!(name: 'Suite Presidencial') do |r|
     r.price = 'Desde $400'
     r.description = 'El lujo absoluto para experiencias inolvidables.'
     r.features = "Cama King Size\nSala de estar independiente\nJacuzzi privado\nButler personal\nAcceso VIP al spa"
@@ -143,107 +143,107 @@ PageContent.create(
   # Amenities as published by the hotel on hotelmesondelbosque.com.mx.
   # "Admite Mascotas" comes from the hotel's listings (Booking/Hotels.com)
   # rather than its own site — confirm before relying on it.
-  Feature.find_or_create_by!(title: 'Estacionamiento Gratuito') do |f|
+  Feature.i18n.find_or_create_by!(title: 'Estacionamiento Gratuito') do |f|
     f.description = 'Amplio estacionamiento gratuito exclusivo para huéspedes, a su servicio las 24 horas del día.'
     f.icon = 'square-parking'
     f.position = 1
   end
 
-  Feature.find_or_create_by!(title: 'Wi-Fi de Banda Ancha') do |f|
+  Feature.i18n.find_or_create_by!(title: 'Wi-Fi de Banda Ancha') do |f|
     f.description = 'Internet de banda ancha en todas las habitaciones, para su entretenimiento o su negocio.'
     f.icon = 'wifi'
     f.position = 2
   end
 
-  Feature.find_or_create_by!(title: 'Atención 24 Horas') do |f|
+  Feature.i18n.find_or_create_by!(title: 'Atención 24 Horas') do |f|
     f.description = 'Recepción y personal a su servicio las 24 horas del día, todos los días del año.'
     f.icon = 'bell-concierge'
     f.position = 3
   end
 
-  Feature.find_or_create_by!(title: 'Admite Mascotas') do |f|
+  Feature.i18n.find_or_create_by!(title: 'Admite Mascotas') do |f|
     f.description = 'Viaje con su mascota: son bienvenidas en el hotel.'
     f.icon = 'paw'
     f.position = 4
   end
 
   # Default Experiences
-  Experience.find_or_create_by!(title: 'Ambiente Familiar') do |e|
+  Experience.i18n.find_or_create_by!(title: 'Ambiente Familiar') do |e|
     e.description = 'Ambiente familiar y atención personalizada para que se sienta como en casa durante toda su estancia.'
     e.icon = 'users'
     e.position = 1
   end
 
-  Experience.find_or_create_by!(title: 'Centro Histórico') do |e|
+  Experience.i18n.find_or_create_by!(title: 'Centro Histórico') do |e|
     e.description = 'En el corazón del Centro, a pasos del Jardín Zenea, la Catedral y el Teatro de la República.'
     e.icon = 'landmark'
     e.position = 2
   end
 
-  Experience.find_or_create_by!(title: 'Negocios o Placer') do |e|
+  Experience.i18n.find_or_create_by!(title: 'Negocios o Placer') do |e|
     e.description = 'El lugar ideal para su viaje de negocios o de placer, en la mejor zona de la ciudad.'
     e.icon = 'briefcase'
     e.position = 3
   end
 
   # Default Local Activities
-  LocalActivity.find_or_create_by!(title: 'Restaurante 1810') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Restaurante 1810') do |activity|
     activity.category = 'Restaurantes'
     activity.description = 'Alta cocina mexicana con inspiración de recetas queretanas, ubicado junto a la Plaza de Armas.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Restaurante+1810+Quer%C3%A9taro'
     activity.position = 1
   end
 
-  LocalActivity.find_or_create_by!(title: 'Cocina de Doña Esthela') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Cocina de Doña Esthela') do |activity|
     activity.category = 'Restaurantes'
     activity.description = 'Famosa por su cocina tradicional, chiles en nogada y platillos caseros.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Cocina+de+Do%C3%B1a+Esthela+Quer%C3%A9taro'
     activity.position = 2
   end
 
-  LocalActivity.find_or_create_by!(title: 'Hacienda La Laborcilla') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Hacienda La Laborcilla') do |activity|
     activity.category = 'Restaurantes'
     activity.description = 'Cena elegante en una antigua hacienda con jardines y cocina de autor.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Hacienda+La+Laborcilla+Quer%C3%A9taro'
     activity.position = 3
   end
 
-  LocalActivity.find_or_create_by!(title: 'Plaza de Armas') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Plaza de Armas') do |activity|
     activity.category = 'Puntos de Interés'
     activity.description = 'Ep icentro del centro histórico con su catedral, cafés y arquitectura colonial.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Plaza+de+Armas+Quer%C3%A9taro'
     activity.position = 1
   end
 
-  LocalActivity.find_or_create_by!(title: 'Acueducto de Querétaro') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Acueducto de Querétaro') do |activity|
     activity.category = 'Puntos de Interés'
     activity.description = 'Imponente acueducto de 74 arcos y símbolo de la ciudad.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Acueducto+de+Quer%C3%A9taro'
     activity.position = 2
   end
 
-  LocalActivity.find_or_create_by!(title: 'Teatro de la República') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Teatro de la República') do |activity|
     activity.category = 'Puntos de Interés'
     activity.description = 'Teatro histórico donde se firmó la Constitución de 1917.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Teatro+de+la+Rep%C3%BAblica+Quer%C3%A9taro'
     activity.position = 3
   end
 
-  LocalActivity.find_or_create_by!(title: 'Tour Peatonal Centro Histórico') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Tour Peatonal Centro Histórico') do |activity|
     activity.category = 'Tours'
     activity.description = 'Recorrido guiado por plazas, iglesias y calles coloniales del centro.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Centro+Hist%C3%B3rico+de+Quer%C3%A9taro'
     activity.position = 1
   end
 
-  LocalActivity.find_or_create_by!(title: 'Ruta del Queso y Vino') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Ruta del Queso y Vino') do |activity|
     activity.category = 'Tours'
     activity.description = 'Degustación de quesos artesanales y vinos regionales en Querétaro.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Ruta+del+Queso+y+Vino+Quer%C3%A9taro'
     activity.position = 2
   end
 
-  LocalActivity.find_or_create_by!(title: 'Viñedos La Redonda') do |activity|
+  LocalActivity.i18n.find_or_create_by!(title: 'Viñedos La Redonda') do |activity|
     activity.category = 'Tours'
     activity.description = 'Cata de vinos y visita a una de las bodegas más reconocidas de la región.'
     activity.google_maps_url = 'https://www.google.com/maps/search/?api=1&query=Vi%C3%B1edos+La+Redonda+Quer%C3%A9taro'
@@ -270,7 +270,7 @@ PageContent.create(
 # db/seeds.rb
 
 # Sample Offers
-Offer.find_or_create_by!(title: 'Escapada de Fin de Semana') do |o|
+Offer.i18n.find_or_create_by!(title: 'Escapada de Fin de Semana') do |o|
   o.description = '2 noches en Habitación Deluxe con desayuno incluido para dos personas.'
   o.price = 4500
   o.badge = '15% DESCUENTO'
@@ -278,7 +278,7 @@ Offer.find_or_create_by!(title: 'Escapada de Fin de Semana') do |o|
   o.active = true
 end
 
-Offer.find_or_create_by!(title: 'Luna de Miel Colonial') do |o|
+Offer.i18n.find_or_create_by!(title: 'Luna de Miel Colonial') do |o|
   o.description = 'Suite Presidencial, cena romántica y botella de vino de bienvenida.'
   o.price = 8900
   o.badge = 'ROMÁNTICO'

@@ -30,3 +30,8 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase]
   gem "rubocop-rails-omakase", require: false
 end
+
+gem "dockerfile-rails", ">= 1.7", group: :development
+
+# Deploy to our own server with Docker over SSH [https://kamal-deploy.org]
+gem "kamal", require: false

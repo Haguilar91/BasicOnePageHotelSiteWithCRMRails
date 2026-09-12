@@ -1,0 +1,69 @@
+# Kamal deploy config — see https://kamal-deploy.org/docs/configuration
+#
+# The bits below marked TODO are things only you can fill in (which server,
+# which registry account). Everything else follows from how this app is
+# already built: a single sqlite-backed Rails 8 container (Dockerfile),
+# serving hotelmesondelbosque.com.mx (config/initializers/site_host.rb) with
+# a pre-launch phase on hotelmesondelbosque.hectoraguilar.dev (DEPLOY.md).
+
+service: hotel_meson
+
+# TODO: where the built image gets pushed/pulled from, e.g.
+#   your-docker-hub-user/hotel_meson
+#   ghcr.io/your-github-user/hotel_meson
+image: TODO/hotel_meson
+
+# TODO: the server(s) to deploy to (an IP or hostname you can SSH into).
+servers:
+  web:
+    - TODO.server.ip
+
+# Kamal's built-in proxy (kamal-proxy) terminates TLS and gets a cert from
+# Let's Encrypt automatically, replacing docker/nginx.conf from the old
+# compose-based setup.
+proxy:
+  ssl: true
+  host: hotelmesondelbosque.com.mx
+  app_port: 3000
+
+registry:
+  # TODO: registry host, if not Docker Hub — ghcr.io, registry.digitalocean.com, etc.
+  # server: ghcr.io
+  # TODO: your registry username
+  username: TODO
+
+  # Read from .kamal/secrets (KAMAL_REGISTRY_PASSWORD) — an access token, not
+  # your real account password.
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+
+# Same two knobs as compose.yaml/DEPLOY.md's two deploy phases. Leave both
+# commented out for the launched, indexable site; uncomment them only while
+# testing on the *.hectoraguilar.dev domain (see DEPLOY.md).
+env:
+  clear: {}
+    # SITE_HOST: hotelmesondelbosque.hectoraguilar.dev
+    # ALLOW_INDEXING: "false"
+  secret:
+    - RAILS_MASTER_KEY
+    # DEVISE_SECRET_KEY isn't set in compose.yaml's production env either —
+    # config/initializers/devise.rb falls back to secret_key_base (derived
+    # from RAILS_MASTER_KEY) when it's unset. .envrc only sets it for local
+    # dev. Add it here (and to .kamal/secrets) if that ever needs to change.
+
+# The sqlite database (config/database.yml) and ActiveStorage's local files
+# (config/storage.yml) both live under storage/ — persist it across deploys,
+# same as the /data mount in the old fly.toml attempt, just at the path this
+# app's config actually uses.
+volumes:
+  - "hotel_meson_storage:/rails/storage"
+
+# Bridges fingerprinted JS/CSS between the old and new container during a
+# deploy so in-flight requests don't 404 mid-rollout.
+asset_path: /rails/public/assets
+
+# ssh:
+#   user: app
