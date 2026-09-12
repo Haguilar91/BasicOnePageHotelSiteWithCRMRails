@@ -53,25 +53,57 @@ No hace falta crear el repositorio de imagen a mano; Docker Hub lo crea solo
 
 Usa tu cuenta de GitHub que ya tienes — no necesitas crear nada nuevo.
 
+**Generar el token:**
+
 1. Ve a **github.com → foto de perfil → Settings → Developer settings →
    Personal access tokens → Tokens (classic)** ([enlace
    directo](https://github.com/settings/tokens)) y genera uno nuevo.
    (Los *fine-grained tokens* no siempre alcanzan a cubrir paquetes/GHCR de
    forma confiable todavía — el token clásico es la vía segura.)
 2. Marca el scope **`write:packages`** (esto arrastra `read:packages`
-   automáticamente). Sin fecha de expiración corta, o vas a tener que
-   regenerarlo y volver a exportarlo cada tanto.
-3. Cópialo al generarlo — no se vuelve a mostrar.
-4. Anota tu **nombre de usuario de GitHub** — lo necesitas en el paso 3.
-5. La primera vez que Kamal suba la imagen, el paquete se crea en
-   `github.com/<tu-usuario>?tab=packages` como **privado** por defecto. Para
-   que el servidor pueda descargarlo sin fricción, dos caminos:
+   automáticamente). Ponle una fecha de expiración razonable — GitHub ya no
+   deja crear uno sin expiración — y anota cuándo vence: ese día
+   `kamal deploy` empezará a fallar en el push/pull hasta que generes otro y
+   repitas los pasos de "dárselo a Kamal" de abajo.
+3. Al generarlo, GitHub te lo muestra **una sola vez**. Cópialo ya mismo a
+   un gestor de contraseñas (1Password, Bitwarden, lo que uses) — si lo
+   pierdes no hay forma de recuperarlo, solo de revocarlo y generar otro.
+
+**Qué hacer con el token una vez generado:**
+
+Todavía no lo pongas en `config/deploy.yml` — ese archivo va al repo, y un
+token ahí quedaría expuesto. Dos usos, ambos como variable de entorno en tu
+terminal, nunca en un archivo del repo:
+
+1. **Probarlo antes de meterlo en Kamal** (opcional, pero te ahorra
+   confundir un token malo con un error de Kamal):
+
+   ```bash
+   echo "TU_TOKEN" | docker login ghcr.io -u tu-usuario-de-github --password-stdin
+   ```
+
+   Un `Login Succeeded` confirma que el token y el usuario están bien.
+2. **Dárselo a Kamal**, que es lo que de verdad necesitas — es el **Paso 4**
+   de esta guía, más abajo (`export KAMAL_REGISTRY_PASSWORD=...`). Es el
+   mismo token en los dos casos.
+
+Y anota tu **nombre de usuario de GitHub** — lo necesitas en el **Paso 3**
+de esta guía, para `registry.username`.
+
+**Después del primer `kamal setup`/`kamal deploy`** (el push crea el
+paquete solo — no hay nada que crear a mano antes):
+
+1. El paquete aparece en `github.com/<tu-usuario>?tab=packages`, como
+   **privado** por defecto. Para que el servidor lo descargue sin fricción,
+   dos caminos:
    - Entra al paquete → **Package settings → Change visibility → Public**
      (más simple, igual que Docker Hub); o
-   - Déjalo privado y usa el mismo token (con `read:packages`) como
-     `KAMAL_REGISTRY_PASSWORD` también en el servidor — Kamal ya hace el
-     `docker login` ahí con esas mismas credenciales antes del `pull`, así
-     que no necesitas ningún paso extra aparte de esto.
+   - Déjalo privado — no hace falta nada más, porque Kamal ya hace el mismo
+     `docker login` en el servidor con este token (el
+     `KAMAL_REGISTRY_PASSWORD` del Paso 4) antes de cada `pull`.
+2. Opcional: en la página del paquete, **Package settings → Connect
+   repository**, para ligarlo a este repo — aparece entonces en su sidebar
+   de GitHub, útil si más adelante alguien más además de ti va a desplegar.
 
 ## Paso 2 — acceso SSH al servidor
 
