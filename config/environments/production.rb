@@ -21,11 +21,16 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 
+  # TEMP: disabled while testing over the bare droplet IP without a TLS cert
+  # (see KAMAL.md's "Cuando el DNS ya apunte a este droplet: activar dominio
+  # y TLS"). Re-enable both before going live for real — without them,
+  # there's no forced HTTPS, no HSTS, and cookies aren't marked secure.
+  #
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  config.assume_ssl = true
+  # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # config.force_ssl = true
 
   config.active_storage.service = :local
 

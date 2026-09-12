@@ -11,26 +11,28 @@ service: hotel_meson
 # TODO: where the built image gets pushed/pulled from, e.g.
 #   your-docker-hub-user/hotel_meson
 #   ghcr.io/your-github-user/hotel_meson
-image: TODO/hotel_meson
+image: haguilar91/hotel_meson
 
 # TODO: the server(s) to deploy to (an IP or hostname you can SSH into).
 servers:
   web:
-    - TODO.server.ip
+    - <%= ENV.fetch("SERVER_IP") %>
 
 # Kamal's built-in proxy (kamal-proxy) terminates TLS and gets a cert from
 # Let's Encrypt automatically, replacing docker/nginx.conf from the old
-# compose-based setup.
+# compose-based setup. `ssl`/`host` left out for now — neither domain's DNS
+# points at this droplet yet, so Let's Encrypt would just fail; add them
+# back (ssl: true, host: <domain>) once DNS is pointed here. `app_port` is
+# NOT optional: the container listens on 3000 (Dockerfile), and without this
+# kamal-proxy defaults to checking port 80, which nothing answers.
 proxy:
-  ssl: true
-  host: hotelmesondelbosque.com.mx
   app_port: 3000
 
 registry:
   # TODO: registry host, if not Docker Hub — ghcr.io, registry.digitalocean.com, etc.
-  # server: ghcr.io
+  server: ghcr.io
   # TODO: your registry username
-  username: TODO
+  username: Haguilar91
 
   # Read from .kamal/secrets (KAMAL_REGISTRY_PASSWORD) — an access token, not
   # your real account password.
@@ -57,13 +59,15 @@ env:
 # The sqlite database (config/database.yml) and ActiveStorage's local files
 # (config/storage.yml) both live under storage/ — persist it across deploys,
 # same as the /data mount in the old fly.toml attempt, just at the path this
-# app's config actually uses.
+# app's config actually uses. Bind-mounted to a folder on the host (instead
+# of a named Docker volume) so it's the same storage/ already sitting on the
+# droplet at /home/deploy/Sites/Hotel.
 volumes:
-  - "hotel_meson_storage:/rails/storage"
+  - "/home/deploy/Sites/Hotel/storage:/rails/storage"
 
 # Bridges fingerprinted JS/CSS between the old and new container during a
 # deploy so in-flight requests don't 404 mid-rollout.
 asset_path: /rails/public/assets
 
-# ssh:
-#   user: app
+ssh:
+  user: deploy

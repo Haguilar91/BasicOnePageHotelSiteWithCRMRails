@@ -111,13 +111,94 @@ Kamal se conecta por SSH igual que lo harías tú a mano. Necesitas poder
 hacer, desde tu máquina:
 
 ```bash
-ssh root@IP_DEL_SERVIDOR
+ssh TU_USUARIO@IP_DEL_SERVIDOR
 ```
 
 sin que te pida contraseña (con tu llave SSH ya autorizada en
-`~/.ssh/authorized_keys` del servidor). Si el servidor solo tiene un usuario
-sin privilegios de root, se puede usar (ver `ssh:` al final de
-`config/deploy.yml`), pero ese usuario necesita poder correr Docker.
+`~/.ssh/authorized_keys` del servidor). Si `TU_USUARIO` no es `root`, ese
+usuario necesita:
+
+- Pertenecer al grupo `docker` (o poder correr `docker` sin `sudo`) — si no,
+  cada comando de Kamal falla con un `permission denied` contra
+  `/var/run/docker.sock`.
+- `sudo` sin contraseña (`NOPASSWD`) **solo** si Docker todavía no está
+  instalado en el servidor — `kamal setup` lo instala la primera vez y
+  necesita privilegios para eso. Si Docker ya está instalado (o lo instalas
+  tú una vez a mano como root), no hace falta darle sudo a este usuario en
+  absoluto.
+
+Esto se configura del lado del servidor (no en este repo). Con acceso a
+`root` una sola vez (por SSH o por la consola web del proveedor):
+
+```bash
+usermod -aG docker TU_USUARIO        # para que corra docker sin sudo
+# Opcional, solo si Docker no está instalado aún y quieres que
+# `kamal setup` lo instale por ti:
+echo "TU_USUARIO ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/TU_USUARIO
+```
+
+Luego, en `config/deploy.yml`, descomenta y rellena `ssh.user` con
+`TU_USUARIO` (ver `# ssh:` al final del archivo) — sin esto Kamal intenta
+conectarse como `root`. En este repo ya está puesto como `ssh: user: deploy`,
+así que si tu droplet usa un usuario `deploy`, sustituye `TU_USUARIO` por
+`deploy` en todos los comandos de esta sección.
+
+**Si tu droplet de DigitalOcean solo tiene contraseña** (no elegiste una
+llave SSH al crearlo, o lo creaste hace tiempo): Kamal abre muchas conexiones
+SSH en paralelo durante un deploy y no tiene forma de pedirte la contraseña
+interactivamente en cada una, así que necesitas pasar antes a autenticación
+por llave. Es un paso único:
+
+1. **Genera una llave** en tu máquina, si no tienes ninguna todavía
+   (`ls ~/.ssh/*.pub` para comprobarlo):
+
+   ```bash
+   ssh-keygen -t ed25519 -C "tu-email"
+   ```
+
+   Enter para aceptar la ruta por defecto; puedes dejar la passphrase vacía
+   o ponerle una (te la pedirá tu agente SSH, no Kamal).
+
+2. **Cópiala al servidor** con la contraseña que ya tienes de ese usuario —
+   la vas a escribir una última vez, aquí:
+
+   ```bash
+   ssh-copy-id TU_USUARIO@IP_DEL_SERVIDOR
+   ```
+
+   Esto añade tu llave pública a `~/.ssh/authorized_keys` de `TU_USUARIO` en
+   el servidor. Si el comando no está disponible o el servidor bloquea SSH
+   por contraseña desde fuera, usa la alternativa de abajo.
+
+3. **Verifica** que ya entra sin contraseña:
+
+   ```bash
+   ssh TU_USUARIO@IP_DEL_SERVIDOR
+   ```
+
+**Alternativa sin `ssh-copy-id`** — vía la consola web de DigitalOcean
+(droplet → pestaña **Access** → **Launch Droplet Console**, entra con la
+contraseña ahí mismo sin pasar por tu SSH local; si el usuario no es
+`root` puede que primero tengas que entrar como `root` en esa consola y
+hacer el resto como ese usuario, o con `sudo -u TU_USUARIO -i`):
+
+```bash
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
+echo "PEGA_AQUI_TU_LLAVE_PUBLICA" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+(corriendo esto ya como `TU_USUARIO`, para que quede en su propio
+`~/.ssh/authorized_keys` y no en el de `root`). Tu llave pública (lo que
+pegas arriba) es el contenido de `~/.ssh/id_ed25519.pub` en tu máquina
+(`cat ~/.ssh/id_ed25519.pub`) — nunca compartas el archivo sin `.pub`, ese
+es el privado.
+
+Una vez que `ssh TU_USUARIO@IP_DEL_SERVIDOR` entra sin pedir contraseña, ya
+no necesitas esa contraseña para nada más de esta guía — Kamal usa la
+llave. Si quieres, desde el panel de DigitalOcean (o editando
+`/etc/ssh/sshd_config` en el servidor) puedes desactivar el login por
+contraseña, pero no es imprescindible para que Kamal funcione.
 
 ## Paso 3 — rellenar `config/deploy.yml`
 
@@ -137,6 +218,11 @@ servers:
 registry:
   # server: ghcr.io        # descomenta solo si usas GitHub Container Registry
   username: tu-usuario
+
+# Al final del archivo — solo si te conectas por SSH con un usuario que no
+# es root (ver Paso 2)
+ssh:
+  user: tu_usuario_no_root
 ```
 
 Nota que `image:` **nunca** lleva el prefijo del registro (ni `ghcr.io/` ni
@@ -148,6 +234,13 @@ paso 1; lo único que cambia entre Docker Hub y GHCR es:
 |---|---|---|
 | Docker Hub | *(déjalo comentado)* | tu usuario de Docker Hub |
 | GHCR | `ghcr.io` | tu usuario de GitHub |
+
+`registry.username` sí puede llevar mayúsculas (como aparece tu usuario de
+GitHub, por ejemplo) — el login no distingue mayúsculas/minúsculas. Pero
+`image:` es un nombre de repositorio Docker y **tiene que ir todo en
+minúsculas**; si tu usuario de GitHub/Docker Hub tiene mayúsculas, escríbelo
+en minúsculas solo en `image:` (`docker buildx build` falla con `repository
+name must be lowercase` si no).
 
 Todo lo demás del archivo (el dominio, el volumen de la base de datos, el
 health check) ya está resuelto — no necesita edición.
@@ -190,11 +283,84 @@ En este primer arranque, con el volumen `hotel_meson_storage` vacío,
 siembra** (`db/seeds.rb`) — igual que pasa hoy en un `docker compose up`
 contra un volumen nuevo.
 
-Verifica que responde:
+Como el DNS del dominio real puede no apuntar todavía a este droplet, el
+bloque `proxy:` de `config/deploy.yml` arranca sin `ssl`/`host` — solo con
+`app_port: 3000` (necesario siempre: el contenedor escucha en el 3000, y sin
+esto `kamal-proxy` revisa por defecto el puerto 80, donde no responde nada, y
+el deploy falla con "target failed to become healthy"). Así puedes probar
+que el contenedor arrancó bien pegándole directo a la IP, sin TLS:
 
 ```bash
-curl -I https://hotelmesondelbosque.com.mx/up
+curl -I http://104.248.53.21/up
 ```
+
+## Después de transferir el dominio a este droplet
+
+Checklist completo para cuando el registro A de `hotelmesondelbosque.com.mx`
+(o de `hotelmesondelbosque.hectoraguilar.dev` en fase de pruebas — ver [Las
+dos fases del sitio](#las-dos-fases-del-sitio)) ya apunte a la IP de este
+droplet:
+
+1. **Confirma que el DNS ya resuelve aquí** — debe devolver la IP del
+   droplet (puede tardar minutos u horas en propagar tras cambiar el DNS en
+   el registrador):
+
+   ```bash
+   dig +short tu-dominio
+   ```
+
+2. **Reactiva `force_ssl`/`assume_ssl` en `config/environments/production.rb`**
+   — si en algún momento los desactivaste para probar por IP sin TLS (ver
+   la nota `TEMP` en ese archivo), descoméntalos ahora. Sin esto no hay
+   HTTPS forzado, ni HSTS, ni cookies marcadas `secure` — quedaría corriendo
+   en "modo prueba" en producción:
+
+   ```ruby
+   config.assume_ssl = true
+   config.force_ssl = true
+   ```
+
+3. **Añade `ssl: true` y `host: tu-dominio` al bloque `proxy:`** de
+   `config/deploy.yml` (que ya tiene `app_port: 3000` desde el Paso 5):
+
+   ```yaml
+   proxy:
+     ssl: true
+     host: hotelmesondelbosque.com.mx   # o el de pruebas, según la fase
+     app_port: 3000
+   ```
+
+4. **Si este es el lanzamiento definitivo** (no la fase de pruebas en
+   `.hectoraguilar.dev`), quita `SITE_HOST`/`ALLOW_INDEXING` de `env.clear`
+   en `config/deploy.yml` si las habías descomentado — ver [Las dos fases
+   del sitio](#las-dos-fases-del-sitio). Dejarlas puestas mantiene el sitio
+   sirviendo bajo el dominio de pruebas y bloqueado para buscadores aunque
+   ya estés en el dominio real.
+
+5. **Redeploy** — en este paso `kamal-proxy` pide el certificado a Let's
+   Encrypt automáticamente (necesita el DNS del paso 1 ya propagado):
+
+   ```bash
+   bundle exec kamal deploy
+   ```
+
+6. **Verifica que responde por HTTPS y que las imágenes cargan** (antes de
+   los pasos 2-3 de este checklist, los links de ActiveStorage se generaban
+   en `https://` pero no había TLS real, así que las imágenes rotas son la
+   señal de que faltó alguno de estos pasos):
+
+   ```bash
+   curl -I https://tu-dominio/up
+   ```
+
+   Abre el sitio en el navegador y confirma que las imágenes cargan y que
+   el candado del certificado es válido (no autofirmado).
+
+7. **Si este servidor reemplaza al de `deploy.sh`/`compose.yaml`** (mismo
+   dominio, servidor distinto): una vez confirmado que todo funciona aquí,
+   ese otro servidor deja de recibir tráfico en cuanto el DNS termine de
+   propagar — no hace falta apagarlo de inmediato, pero ya no lo actualiza
+   ningún deploy nuevo.
 
 ## Despliegues siguientes
 
