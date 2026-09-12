@@ -107,11 +107,23 @@ paquete solo — no hay nada que crear a mano antes):
 
 ## Paso 2 — acceso SSH al servidor
 
+Antes que nada, define la IP del servidor como variable de entorno — se usa
+en los comandos de esta guía y en `config/deploy.yml` (que la lee vía
+`<%= ENV.fetch("SERVER_IP") %>` en `servers:`), así que solo hace falta
+ponerla en un lugar:
+
+```bash
+export SERVER_IP=tu_ip_o_hostname
+```
+
+(o en `.envrc` si usas `direnv` — así queda puesta cada vez que entras a la
+carpeta del proyecto, sin repetir el `export`.)
+
 Kamal se conecta por SSH igual que lo harías tú a mano. Necesitas poder
 hacer, desde tu máquina:
 
 ```bash
-ssh TU_USUARIO@IP_DEL_SERVIDOR
+ssh TU_USUARIO@$SERVER_IP
 ```
 
 sin que te pida contraseña (con tu llave SSH ya autorizada en
@@ -163,7 +175,7 @@ por llave. Es un paso único:
    la vas a escribir una última vez, aquí:
 
    ```bash
-   ssh-copy-id TU_USUARIO@IP_DEL_SERVIDOR
+   ssh-copy-id TU_USUARIO@$SERVER_IP
    ```
 
    Esto añade tu llave pública a `~/.ssh/authorized_keys` de `TU_USUARIO` en
@@ -173,7 +185,7 @@ por llave. Es un paso único:
 3. **Verifica** que ya entra sin contraseña:
 
    ```bash
-   ssh TU_USUARIO@IP_DEL_SERVIDOR
+   ssh TU_USUARIO@$SERVER_IP
    ```
 
 **Alternativa sin `ssh-copy-id`** — vía la consola web de DigitalOcean
@@ -194,7 +206,7 @@ pegas arriba) es el contenido de `~/.ssh/id_ed25519.pub` en tu máquina
 (`cat ~/.ssh/id_ed25519.pub`) — nunca compartas el archivo sin `.pub`, ese
 es el privado.
 
-Una vez que `ssh TU_USUARIO@IP_DEL_SERVIDOR` entra sin pedir contraseña, ya
+Una vez que `ssh TU_USUARIO@$SERVER_IP` entra sin pedir contraseña, ya
 no necesitas esa contraseña para nada más de esta guía — Kamal usa la
 llave. Si quieres, desde el panel de DigitalOcean (o editando
 `/etc/ssh/sshd_config` en el servidor) puedes desactivar el login por
@@ -209,10 +221,10 @@ Abre [`config/deploy.yml`](config/deploy.yml) y edita solo estas líneas
 # Línea ~14 — tu cuenta del paso 1 + el nombre de este proyecto
 image: tu-usuario/hotel_meson
 
-# Línea ~19 — la IP o el hostname del servidor del paso 2
+# Línea ~19 — ya lee SERVER_IP (paso 2) vía ERB, no hace falta tocarla aquí
 servers:
   web:
-    - 203.0.113.10
+    - <%= ENV.fetch("SERVER_IP") %>
 
 # Líneas ~30-33 — tu usuario del registro (y el server, si no es Docker Hub)
 registry:
@@ -291,7 +303,7 @@ el deploy falla con "target failed to become healthy"). Así puedes probar
 que el contenedor arrancó bien pegándole directo a la IP, sin TLS:
 
 ```bash
-curl -I http://104.248.53.21/up
+curl -I http://$SERVER_IP/up
 ```
 
 ## Después de transferir el dominio a este droplet
